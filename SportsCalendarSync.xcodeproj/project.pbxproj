@@ -1,0 +1,404 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0221049DF7CF8DE2B7BE19A0 /* ESPNService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AD6B7CFABED4A2B0D60916 /* ESPNService.swift */; };
+		19FB2208D567E8D5661A46AA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF01D45EB9EE870252B5D04 /* ContentView.swift */; };
+		2D20FA9F6BCE7FAE15F4AA62 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E1CE0A05CAC1E8E774050B /* AppSettings.swift */; };
+		358181D453FEA918B8925E27 /* UpcomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1ABE18234D1190ABB285E5 /* UpcomingView.swift */; };
+		412B18B740BE2ED1EDC08694 /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD233FFCC07FFEABE9A6CD /* League.swift */; };
+		418C1F0E20FEF5708891D0FD /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C697FD2DB0AE984D11C102 /* Secrets.swift */; };
+		4CCB4C8D7B1F6E9B356BCE88 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE45D9116E55EBF01000F7 /* ProfileView.swift */; };
+		509D86E7D84DE80BB1A40B22 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C990849E8919E1FD396D357 /* ToastView.swift */; };
+		637BCDC37F9BFD772087FCED /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73F4AF01F71077A055F67FA /* CalendarService.swift */; };
+		6433510B4171F8EA27F463D0 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B67D81E8B99E526174A28 /* APIError.swift */; };
+		85316BC76F3CF71CD7248B82 /* TeamDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360CFAA22BCD5B0D6AFE107B /* TeamDetailView.swift */; };
+		8B04A9EB66056C8E8CDD94AE /* TrackedTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B517B8DE0CDB668F920C9 /* TrackedTeam.swift */; };
+		8E75D63BE4A80E5566122528 /* SportsCalendarSyncApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FFC01B01E76CCA54F34CCC /* SportsCalendarSyncApp.swift */; };
+		B005534288A691EC33A49CF7 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C36619B3503A73AE3DEFD0 /* SeedData.swift */; };
+		B161FB9B42E7B2C15292AF39 /* TeamManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD088C9A685E87EDE85329A5 /* TeamManager.swift */; };
+		D35B03471A83B7DECB9308FD /* TrackedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEEB4EB681472A64382863E /* TrackedGame.swift */; };
+		E7467DDAF593A56104B95AF2 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDAEC5315CEA125C926117A5 /* DiscoverView.swift */; };
+		E9F472A5A9522D977F1247D2 /* APIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388A48991EE1B171CFD94E7 /* APIModels.swift */; };
+		F3277A065F1D8957FC48F27B /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B701D87D75ECCEA25A8667 /* Color+Theme.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		17AD6B7CFABED4A2B0D60916 /* ESPNService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESPNService.swift; sourceTree = "<group>"; };
+		1C990849E8919E1FD396D357 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		25B701D87D75ECCEA25A8667 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
+		27C697FD2DB0AE984D11C102 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		2DCD233FFCC07FFEABE9A6CD /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
+		307B52401C12FCC1519A1803 /* SportsCalendarSync.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SportsCalendarSync.entitlements; sourceTree = "<group>"; };
+		360CFAA22BCD5B0D6AFE107B /* TeamDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailView.swift; sourceTree = "<group>"; };
+		4388A48991EE1B171CFD94E7 /* APIModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModels.swift; sourceTree = "<group>"; };
+		4AF01D45EB9EE870252B5D04 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		51599D9D567D8382C99D9FD4 /* SportsCalendarSync.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SportsCalendarSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CEEB4EB681472A64382863E /* TrackedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedGame.swift; sourceTree = "<group>"; };
+		6EEE45D9116E55EBF01000F7 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		8E1ABE18234D1190ABB285E5 /* UpcomingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingView.swift; sourceTree = "<group>"; };
+		939B517B8DE0CDB668F920C9 /* TrackedTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedTeam.swift; sourceTree = "<group>"; };
+		A73F4AF01F71077A055F67FA /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		AFF14711D65B0F0371FEBE4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		BE0B67D81E8B99E526174A28 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		C4E1CE0A05CAC1E8E774050B /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		C5C36619B3503A73AE3DEFD0 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
+		DD088C9A685E87EDE85329A5 /* TeamManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamManager.swift; sourceTree = "<group>"; };
+		F6FFC01B01E76CCA54F34CCC /* SportsCalendarSyncApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsCalendarSyncApp.swift; sourceTree = "<group>"; };
+		FDAEC5315CEA125C926117A5 /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		358E2184B7CEB6DDF6BA4D30 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				51599D9D567D8382C99D9FD4 /* SportsCalendarSync.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3DE9FFB5D046ED6DCDA17E38 /* SportsCalendarSync */ = {
+			isa = PBXGroup;
+			children = (
+				4AF01D45EB9EE870252B5D04 /* ContentView.swift */,
+				AFF14711D65B0F0371FEBE4D /* Info.plist */,
+				27C697FD2DB0AE984D11C102 /* Secrets.swift */,
+				307B52401C12FCC1519A1803 /* SportsCalendarSync.entitlements */,
+				F6FFC01B01E76CCA54F34CCC /* SportsCalendarSyncApp.swift */,
+				CD3AD79C85086388C3D04C09 /* Extensions */,
+				563DF44FAF94AD29AFBC79A9 /* Models */,
+				B24DFF8C5D1359A9F2A06626 /* Services */,
+				998841DE8D57966960282A1F /* Views */,
+			);
+			path = SportsCalendarSync;
+			sourceTree = "<group>";
+		};
+		563DF44FAF94AD29AFBC79A9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4388A48991EE1B171CFD94E7 /* APIModels.swift */,
+				2DCD233FFCC07FFEABE9A6CD /* League.swift */,
+				6CEEB4EB681472A64382863E /* TrackedGame.swift */,
+				939B517B8DE0CDB668F920C9 /* TrackedTeam.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		70B6A54BF65444134F247169 = {
+			isa = PBXGroup;
+			children = (
+				3DE9FFB5D046ED6DCDA17E38 /* SportsCalendarSync */,
+				358E2184B7CEB6DDF6BA4D30 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		998841DE8D57966960282A1F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FDAEC5315CEA125C926117A5 /* DiscoverView.swift */,
+				6EEE45D9116E55EBF01000F7 /* ProfileView.swift */,
+				360CFAA22BCD5B0D6AFE107B /* TeamDetailView.swift */,
+				1C990849E8919E1FD396D357 /* ToastView.swift */,
+				8E1ABE18234D1190ABB285E5 /* UpcomingView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B24DFF8C5D1359A9F2A06626 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BE0B67D81E8B99E526174A28 /* APIError.swift */,
+				C4E1CE0A05CAC1E8E774050B /* AppSettings.swift */,
+				A73F4AF01F71077A055F67FA /* CalendarService.swift */,
+				17AD6B7CFABED4A2B0D60916 /* ESPNService.swift */,
+				C5C36619B3503A73AE3DEFD0 /* SeedData.swift */,
+				DD088C9A685E87EDE85329A5 /* TeamManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		CD3AD79C85086388C3D04C09 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				25B701D87D75ECCEA25A8667 /* Color+Theme.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		511582DF97C8B8079096CD55 /* SportsCalendarSync */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8212086E5C93DED1D0DC790D /* Build configuration list for PBXNativeTarget "SportsCalendarSync" */;
+			buildPhases = (
+				2A3DC7F89E275719FDB49C68 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SportsCalendarSync;
+			packageProductDependencies = (
+			);
+			productName = SportsCalendarSync;
+			productReference = 51599D9D567D8382C99D9FD4 /* SportsCalendarSync.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		903D4B912A2C431950F0F391 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					511582DF97C8B8079096CD55 = {
+						DevelopmentTeam = BXKNJTU253;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = FA56B09396E5C89BD563B1ED /* Build configuration list for PBXProject "SportsCalendarSync" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 70B6A54BF65444134F247169;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 358E2184B7CEB6DDF6BA4D30 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				511582DF97C8B8079096CD55 /* SportsCalendarSync */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A3DC7F89E275719FDB49C68 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6433510B4171F8EA27F463D0 /* APIError.swift in Sources */,
+				E9F472A5A9522D977F1247D2 /* APIModels.swift in Sources */,
+				2D20FA9F6BCE7FAE15F4AA62 /* AppSettings.swift in Sources */,
+				637BCDC37F9BFD772087FCED /* CalendarService.swift in Sources */,
+				F3277A065F1D8957FC48F27B /* Color+Theme.swift in Sources */,
+				19FB2208D567E8D5661A46AA /* ContentView.swift in Sources */,
+				E7467DDAF593A56104B95AF2 /* DiscoverView.swift in Sources */,
+				0221049DF7CF8DE2B7BE19A0 /* ESPNService.swift in Sources */,
+				412B18B740BE2ED1EDC08694 /* League.swift in Sources */,
+				4CCB4C8D7B1F6E9B356BCE88 /* ProfileView.swift in Sources */,
+				418C1F0E20FEF5708891D0FD /* Secrets.swift in Sources */,
+				B005534288A691EC33A49CF7 /* SeedData.swift in Sources */,
+				8E75D63BE4A80E5566122528 /* SportsCalendarSyncApp.swift in Sources */,
+				85316BC76F3CF71CD7248B82 /* TeamDetailView.swift in Sources */,
+				B161FB9B42E7B2C15292AF39 /* TeamManager.swift in Sources */,
+				509D86E7D84DE80BB1A40B22 /* ToastView.swift in Sources */,
+				D35B03471A83B7DECB9308FD /* TrackedGame.swift in Sources */,
+				8B04A9EB66056C8E8CDD94AE /* TrackedTeam.swift in Sources */,
+				358181D453FEA918B8925E27 /* UpcomingView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5242903F99D5228711FB062A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SportsCalendarSync/SportsCalendarSync.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = SportsCalendarSync/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8CAF5F6193A71E162E06A088 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = BXKNJTU253;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BED45745E13DCAC688D10940 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SportsCalendarSync/SportsCalendarSync.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = SportsCalendarSync/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FD2D14A70B7547E24C35A8C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = BXKNJTU253;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8212086E5C93DED1D0DC790D /* Build configuration list for PBXNativeTarget "SportsCalendarSync" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BED45745E13DCAC688D10940 /* Debug */,
+				5242903F99D5228711FB062A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FA56B09396E5C89BD563B1ED /* Build configuration list for PBXProject "SportsCalendarSync" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CAF5F6193A71E162E06A088 /* Debug */,
+				FD2D14A70B7547E24C35A8C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 903D4B912A2C431950F0F391 /* Project object */;
+}

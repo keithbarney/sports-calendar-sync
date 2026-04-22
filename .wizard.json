@@ -1,0 +1,62 @@
+{
+  "projectName": "Sports Calendar Sync",
+  "createdAt": "2026-04-22",
+  "updatedAt": "2026-04-22",
+  "phases": {
+    "idea-vision": {
+      "steps": {
+        "problem-statement": {
+          "tasks": {
+            "ps-1": { "completed": true, "value": "Soccer fans have no seamless way to get upcoming match fixtures for their favorite teams onto their personal calendar. Existing options are paid, web-only, or league-specific." },
+            "ps-2": { "completed": true, "value": "Soccer fans who follow multiple clubs across MLS and top European leagues, and who actively manage what they watch. People who already live out of their Apple Calendar and want kickoffs to appear there automatically." },
+            "ps-3": { "completed": true, "value": "Pain" },
+            "ps-4": { "completed": true, "value": "Manually checking ESPN / league apps, paying for SofaScore Pro or similar, subscribing to club-specific iCal feeds (one per team, no unification), or forgetting kickoff times and missing matches." },
+            "ps-5": { "completed": true, "value": "Weekly (matchdays) — daily during international tournaments" }
+          },
+          "notes": "Sibling product to TV & Movie Calendar Sync. Same architecture, different data domain."
+        },
+        "vision-positioning": {
+          "tasks": {
+            "vp-1": { "completed": true, "value": "Sports Calendar Sync puts your team's fixtures directly on your Apple Calendar — free, automatic, and unified across MLS and top 5 European leagues." },
+            "vp-2": { "completed": false },
+            "vp-3": { "completed": false }
+          }
+        },
+        "competitive-landscape": {
+          "tasks": {
+            "cl-1": { "completed": false },
+            "cl-2": { "completed": false },
+            "cl-3": { "completed": false }
+          },
+          "notes": "TODO: Audit FotMob, OneFootball, SofaScore, ESPN app, club-specific iCal feeds, TeamSnap, fubo, TV Guide-style match apps."
+        }
+      }
+    },
+    "business-model": {
+      "steps": {
+        "revenue-and-costs": {
+          "tasks": {
+            "rc-1": { "completed": true, "value": "Free at launch. IAP pattern carried forward from ShowSync if needed." },
+            "rc-2": { "completed": true, "value": "No feature gating. Entire app is free." },
+            "rc-3": { "completed": true, "value": "Apple IAP (disabled for now)" },
+            "rc-4": { "completed": false },
+            "rc-5": { "completed": false }
+          }
+        }
+      }
+    },
+    "technical-architecture": {
+      "steps": {
+        "stack-and-infrastructure": {
+          "tasks": {
+            "si-1": { "completed": true, "value": "SwiftUI (iOS 17+), Xcode build system. Native iOS app." },
+            "si-2": { "completed": true, "value": "N/A — SwiftUI native" },
+            "si-3": { "completed": true, "value": "App Store" },
+            "si-4": { "completed": true, "value": "ESPN hidden API — free, no auth, covers MLS + EPL + La Liga + Bundesliga + Serie A + Ligue 1" },
+            "si-5": { "completed": false }
+          }
+        }
+      }
+    }
+  }
+}
