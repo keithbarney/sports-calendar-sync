@@ -12,78 +12,117 @@ struct ProfileView: View {
     @State private var isSyncing = false
 
     var body: some View {
-        NavigationStack {
-            List {
-                Section("Appearance") {
-                    Picker("Appearance", selection: Binding(
-                        get: { appSettings.appearanceMode },
-                        set: { appSettings.appearanceMode = $0 }
-                    )) {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                Text("Settings")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.textPrimary)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+
+                section(title: "Appearance") {
+                    VStack(spacing: 0) {
                         ForEach(AppearanceMode.allCases) { mode in
-                            Text(mode.label).tag(mode)
+                            SettingsRow(
+                                icon: icon(for: mode),
+                                label: mode.label,
+                                isSelected: appSettings.appearanceMode == mode
+                            ) {
+                                appSettings.appearanceMode = mode
+                            }
                         }
                     }
-                    .pickerStyle(.segmented)
+                    .background(Color.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.horizontal, 16)
                 }
 
-                Section("Followed teams (\(followed.count))") {
+                section(title: "Teams (\(followed.count))") {
                     if followed.isEmpty {
-                        Text("No teams yet.").foregroundStyle(.secondary)
+                        Text("Not following any teams yet.")
+                            .font(.subheadline)
+                            .foregroundStyle(.textSecondary)
+                            .padding(.horizontal, 16)
                     } else {
-                        ForEach(followed) { team in
-                            HStack {
-                                Text(team.name)
-                                Spacer()
-                                if let league = team.league {
-                                    Text(league.shortName).foregroundStyle(.secondary).font(.caption)
-                                }
+                        VStack(spacing: 0) {
+                            ForEach(followed) { team in
+                                SettingsRow(
+                                    icon: "sparkles",
+                                    label: "\(team.name) — \(team.league?.shortName ?? "")",
+                                    isSelected: false
+                                )
                             }
                         }
+                        .background(Color.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .padding(.horizontal, 16)
                     }
                 }
 
-                Section("Calendar") {
-                    if !calendar.isAuthorized {
-                        Button("Grant calendar access") {
-                            Task {
-                                let granted = await calendar.requestAccess()
-                                if granted {
-                                    await syncAll()
+                section(title: "Calendar") {
+                    VStack(spacing: 0) {
+                        if !calendar.isAuthorized {
+                            SettingsRow(icon: "calendar-plus", label: "Grant calendar access") {
+                                Task {
+                                    let granted = await calendar.requestAccess()
+                                    if granted { await syncAll() }
                                 }
                             }
-                        }
-                    } else {
-                        Text("Sports calendar connected")
-                            .foregroundStyle(.secondary)
-                        Button {
-                            Task { await syncAll() }
-                        } label: {
-                            HStack {
-                                Text(isSyncing ? "Syncing fixtures…" : "Sync all fixtures now")
-                                if isSyncing {
-                                    Spacer()
-                                    ProgressView()
-                                }
+                        } else {
+                            SettingsRow(
+                                icon: isSyncing ? "sparkles" : "calendar-check",
+                                label: isSyncing ? "Syncing fixtures…" : "Sync all fixtures now"
+                            ) {
+                                Task { await syncAll() }
                             }
-                        }
-                        .disabled(isSyncing)
-
-                        Button(role: .destructive) {
-                            let n = calendar.removeAllEvents()
-                            toast.show("Removed \(n) events", style: .success)
-                        } label: {
-                            Text("Remove all calendar events")
+                            SettingsRow(icon: "trash-2", label: "Remove all calendar events") {
+                                let n = calendar.removeAllEvents()
+                                toast.show("Removed \(n) events", icon: "minus.circle.fill", isDestructive: true)
+                            }
                         }
                     }
+                    .background(Color.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.horizontal, 16)
                 }
 
-                Section("About") {
-                    Text("Sports Calendar Sync")
-                    Text("Version 1.0").foregroundStyle(.secondary).font(.caption)
+                section(title: "About") {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Sports Calendar Sync")
+                            .font(.system(size: 16))
+                            .foregroundStyle(.textPrimary)
+                        Text("Version 1.0")
+                            .font(.system(size: 12))
+                            .foregroundStyle(.textSecondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
+                    .background(Color.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.horizontal, 16)
                 }
             }
-            .navigationTitle("Profile")
-            .toolbar(.hidden, for: .navigationBar)
+            .padding(.bottom, 24)
+        }
+        .background(Color.background)
+    }
+
+    @ViewBuilder
+    private func section<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .sectionHeader()
+                .padding(.horizontal, 16)
+            content()
+        }
+    }
+
+    private func icon(for mode: AppearanceMode) -> String {
+        switch mode {
+        case .system: return "contrast"
+        case .light:  return "sun"
+        case .dark:   return "moon"
         }
     }
 
@@ -91,6 +130,6 @@ struct ProfileView: View {
         isSyncing = true
         defer { isSyncing = false }
         await teamManager.syncAllFollowed(context: context, espn: espn, calendar: calendar)
-        toast.show("Synced \(followed.count) team(s)", style: .success)
+        toast.show("Synced \(followed.count) team(s)")
     }
 }

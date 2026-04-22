@@ -1,71 +1,79 @@
 import SwiftUI
 
-enum ToastStyle { case success, danger, info }
+struct ToastMessage: Equatable {
+    let text: String
+    let icon: String
+    let isDestructive: Bool
 
-struct Toast: Identifiable, Equatable {
-    let id = UUID()
-    let message: String
-    let style: ToastStyle
-}
-
-@MainActor
-final class ToastManager: ObservableObject {
-    @Published var current: Toast?
-
-    func show(_ message: String, style: ToastStyle = .info) {
-        current = Toast(message: message, style: style)
-        Task {
-            try? await Task.sleep(nanoseconds: 2_500_000_000)
-            if current?.message == message { current = nil }
-        }
+    init(_ text: String, icon: String = "checkmark.circle.fill", isDestructive: Bool = false) {
+        self.text = text
+        self.icon = icon
+        self.isDestructive = isDestructive
     }
 }
 
 struct ToastView: View {
-    let toast: Toast
+    let message: ToastMessage
+
     var body: some View {
-        HStack(spacing: 10) {
-            Image(systemName: iconName)
-            Text(toast.message)
-                .font(.system(size: 14, weight: .medium))
-        }
-        .padding(.horizontal, 16).padding(.vertical, 12)
-        .background(.thinMaterial, in: Capsule())
-        .overlay(Capsule().stroke(tint.opacity(0.4), lineWidth: 1))
-        .foregroundStyle(tint)
-    }
+        HStack(spacing: 12) {
+            Image(systemName: message.icon)
+                .font(.title3)
+                .foregroundStyle(message.isDestructive ? Color.danger : Color.success)
 
-    private var iconName: String {
-        switch toast.style {
-        case .success: return "checkmark.circle.fill"
-        case .danger:  return "xmark.octagon.fill"
-        case .info:    return "info.circle.fill"
+            Text(message.text)
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundStyle(.textPrimary)
+                .lineLimit(2)
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.ultraThinMaterial)
+        .background(Color.surfaceElevated.opacity(0.8))
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .padding(.horizontal, 16)
+        .transition(.move(edge: .bottom).combined(with: .opacity))
     }
+}
 
-    private var tint: Color {
-        switch toast.style {
-        case .success: return .green
-        case .danger:  return .red
-        case .info:    return .primary
+// Observable toast manager — API parity with ShowSync.
+@MainActor
+class ToastManager: ObservableObject {
+    @Published var current: ToastMessage?
+
+    func show(_ text: String, icon: String = "checkmark.circle.fill", isDestructive: Bool = false) {
+        withAnimation(.spring(duration: 0.3)) {
+            current = ToastMessage(text, icon: icon, isDestructive: isDestructive)
+        }
+        Task {
+            try? await Task.sleep(for: .seconds(2.5))
+            withAnimation(.easeOut(duration: 0.2)) {
+                if current?.text == text {
+                    current = nil
+                }
+            }
         }
     }
 }
 
-private struct ToastModifier: ViewModifier {
+// Modifier to attach toast to any view
+struct ToastModifier: ViewModifier {
     @ObservedObject var manager: ToastManager
+
     func body(content: Content) -> some View {
-        content.overlay(alignment: .top) {
-            if let t = manager.current {
-                ToastView(toast: t)
-                    .padding(.top, 12)
-                    .transition(.move(edge: .top).combined(with: .opacity))
+        content.overlay(alignment: .bottom) {
+            if let message = manager.current {
+                ToastView(message: message)
+                    .padding(.bottom, 100)
             }
         }
-        .animation(.spring(duration: 0.3), value: manager.current)
     }
 }
 
 extension View {
-    func toast(_ manager: ToastManager) -> some View { modifier(ToastModifier(manager: manager)) }
+    func toast(_ manager: ToastManager) -> some View {
+        modifier(ToastModifier(manager: manager))
+    }
 }
