@@ -69,13 +69,15 @@ class CalendarService: ObservableObject {
     // MARK: - Match events
 
     /// Create a calendar event for a soccer match. Returns the EKEvent identifier.
+    /// `reminderOffset` is a negative TimeInterval (seconds before kickoff) or nil for no alarm.
     func addGame(
         homeTeam: String,
         awayTeam: String,
         kickoff: Date,
         venue: String?,
         broadcasts: [String],
-        leagueName: String
+        leagueName: String,
+        reminderOffset: TimeInterval? = -1800
     ) -> String? {
         guard isAuthorized, let calendar = appCalendar else { return nil }
 
@@ -92,8 +94,9 @@ class CalendarService: ObservableObject {
         }
         event.notes = notes
 
-        // 30 minutes before kickoff
-        event.addAlarm(EKAlarm(relativeOffset: -1800))
+        if let reminderOffset {
+            event.addAlarm(EKAlarm(relativeOffset: reminderOffset))
+        }
 
         do {
             try store.save(event, span: .thisEvent)

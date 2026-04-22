@@ -14,10 +14,10 @@ enum AppTab: Int, CaseIterable {
         }
     }
 
-    /// Lucide icon name (matches Assets.xcassets/Icons).
+    /// Lucide icon name (matches Assets.xcassets/Icons). Same set as TV & Movie Calendar Sync.
     var icon: String {
         switch self {
-        case .following: return "star"
+        case .following: return "calendar-check"
         case .discover:  return "search"
         case .profile:   return "user-round"
         }

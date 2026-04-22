@@ -13,6 +13,13 @@ final class TeamManager: ObservableObject {
     /// Human-readable summary of the last sync, for on-device debugging.
     @Published var lastSyncSummary: String = ""
 
+    /// Resolve the user's current kickoff-reminder preference from UserDefaults
+    /// (shared storage with `@AppStorage("kickoffReminder")` in AppSettings).
+    private var currentReminderOffset: TimeInterval? {
+        let raw = UserDefaults.standard.string(forKey: "kickoffReminder") ?? KickoffReminder.thirtyMin.rawValue
+        return KickoffReminder(rawValue: raw)?.offsetSeconds ?? -1800
+    }
+
     /// Follow a team: persist + immediately fetch & mirror schedule to Calendar.
     func follow(
         espnTeam: ESPNTeam,
@@ -158,7 +165,8 @@ final class TeamManager: ObservableObject {
                     kickoff: kickoff,
                     venue: competition.venue?.fullName,
                     broadcasts: broadcasts,
-                    leagueName: league.displayName
+                    leagueName: league.displayName,
+                    reminderOffset: currentReminderOffset
                 )
                 if calId != nil { calendarWrites += 1 }
                 let tracked = TrackedGame(

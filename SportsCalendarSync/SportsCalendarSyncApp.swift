@@ -35,7 +35,6 @@ struct SportsCalendarSyncApp: App {
                 .environmentObject(teamManager)
                 .environmentObject(espnService)
                 .toast(toastManager)
-                .onChange(of: appSettings.appearanceMode) { _, _ in appSettings.applyAppearance() }
                 #if DEBUG
                 .task {
                     if CommandLine.arguments.contains("-seed-data") {

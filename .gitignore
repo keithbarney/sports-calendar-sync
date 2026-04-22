@@ -28,7 +28,8 @@ ExportOptions.plist
 # Node
 node_modules/
 
-# Temporary debug scripts
+# Temporary debug scripts and commit-message drafts
 _*.sh
+_*.txt
 /tmp/
 
