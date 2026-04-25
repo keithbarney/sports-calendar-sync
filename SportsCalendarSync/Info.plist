@@ -7,7 +7,7 @@
 	<key>CFBundleName</key>
 	<string>SportsSync</string>
 	<key>CFBundleDisplayName</key>
-	<string>Sports</string>
+	<string>Sports Sync</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>CFBundleShortVersionString</key>

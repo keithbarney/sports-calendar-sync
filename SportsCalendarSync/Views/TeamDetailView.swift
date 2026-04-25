@@ -13,6 +13,7 @@ struct TeamDetailView: View {
 
     @EnvironmentObject var espn: ESPNService
     @EnvironmentObject var calendar: CalendarService
+    @EnvironmentObject var notifications: NotificationService
     @EnvironmentObject var teamManager: TeamManager
     @EnvironmentObject var toast: ToastManager
     @Environment(\.modelContext) private var context
@@ -277,7 +278,8 @@ struct TeamDetailView: View {
                 context: context,
                 espn: espn,
                 calendar: calendar,
-                league: league
+                league: league,
+                notifications: notifications
             )
         } else {
             // Unfollowed — fetch a preview directly without persisting.
@@ -318,14 +320,15 @@ struct TeamDetailView: View {
             league: league,
             context: context,
             espn: espn,
-            calendar: calendar
+            calendar: calendar,
+            notifications: notifications
         )
         toast.show("Following \(displayName)", icon: "checkmark.circle.fill", isDestructive: false)
     }
 
     private func unfollow() {
         guard let tracked else { return }
-        teamManager.unfollow(team: tracked, context: context, calendar: calendar)
+        teamManager.unfollow(team: tracked, context: context, calendar: calendar, notifications: notifications)
         toast.show("Unfollowed \(displayName)", icon: "minus.circle.fill", isDestructive: true)
         dismiss()
     }

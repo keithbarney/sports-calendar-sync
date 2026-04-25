@@ -62,7 +62,7 @@ League slugs map to the six above. Match objects return `competitions[0].competi
 - **Floating bottom tab bar** — Upcoming + Discover + Profile (capsule, icon-only, glass material) — ported from ShowSync
 - **Segmented filter** — All / MLS / EPL / La Liga / Bundesliga / Serie A / Ligue 1 (top, capsule container, scrollable if overflow; hidden on Profile)
 - **No nav bar** — toolbar hidden
-- **Home screen label:** "Sports" (`CFBundleDisplayName`), App Store name: "Sports Calendar Sync"
+- **Home screen label:** "Sports Sync" (`CFBundleDisplayName` — "Sports" alone was rejected as ITMS-90129 / already taken), App Store name: "Sports Calendar Sync"
 - **Back button:** Floating capsule overlaid on team crest / hero
 - **Team detail** — `TeamDetailTemplate` shared layout: crest/hero, team name + league chip, form (last 5), upcoming fixtures list, standings position, 3-state action button (Follow/Following/Unfollow). Mirrors `DetailTemplate` in ShowSync.
 - **Match detail** — optional v1.5: kickoff time, venue, broadcast, H2H, lineups
