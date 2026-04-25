@@ -28,6 +28,9 @@ ExportOptions.plist
 # App Store Connect API creds
 .env.appstore
 
+# Claude Code session state
+.claude/
+
 # Node
 node_modules/
 
