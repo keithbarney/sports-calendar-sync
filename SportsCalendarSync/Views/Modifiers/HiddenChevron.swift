@@ -5,13 +5,11 @@ struct HiddenChevronNavigationLink<Destination: View, Label: View>: View {
     @ViewBuilder let label: () -> Label
 
     var body: some View {
-        ZStack(alignment: .leading) {
-            NavigationLink(destination: destination) {
-                EmptyView()
-            }
-            .opacity(0)
-
+        NavigationLink {
+            destination()
+        } label: {
             label()
         }
+        .buttonStyle(.plain)
     }
 }

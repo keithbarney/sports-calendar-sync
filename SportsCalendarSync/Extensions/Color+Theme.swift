@@ -95,3 +95,16 @@ extension ShapeStyle where Self == Color {
     static var resultDraw: Color { Color.resultDraw }
     static var resultLoss: Color { Color.resultLoss }
 }
+
+extension Color {
+    /// Accepts "RRGGBB" or "#RRGGBB". Returns nil on invalid input.
+    init?(hex: String?) {
+        guard let raw = hex?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        let cleaned = raw.hasPrefix("#") ? String(raw.dropFirst()) : raw
+        guard cleaned.count == 6, let value = UInt32(cleaned, radix: 16) else { return nil }
+        let r = Double((value >> 16) & 0xFF) / 255.0
+        let g = Double((value >> 8) & 0xFF) / 255.0
+        let b = Double(value & 0xFF) / 255.0
+        self.init(red: r, green: g, blue: b)
+    }
+}

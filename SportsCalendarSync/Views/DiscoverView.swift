@@ -47,21 +47,25 @@ struct DiscoverView: View {
                         if !teams.isEmpty {
                             FeedSection(title: league.displayName) {
                                 ForEach(teams, id: \.id) { t in
-                                    FeedRow(
-                                        logoURL: t.logos?.first?.href,
-                                        fallbackIcon: "sparkles",
-                                        title: t.displayName ?? t.name ?? "Unknown"
-                                    ) {
-                                        Text(league.shortName)
-                                            .font(.system(size: 13))
-                                            .foregroundStyle(.textSecondary)
-                                    } trailing: {
-                                        FeedRowActionButton(
-                                            isTracked: isFollowed(t, league: league),
-                                            isAdding: addingIds.contains(t.id),
-                                            onAdd: { Task { await follow(t, league: league) } },
-                                            onRemove: { unfollow(t, league: league) }
-                                        )
+                                    HiddenChevronNavigationLink {
+                                        TeamDetailView(espnTeam: t, league: league)
+                                    } label: {
+                                        FeedRow(
+                                            logoURL: t.logos?.first?.href,
+                                            fallbackIcon: "sparkles",
+                                            title: t.displayName ?? t.name ?? "Unknown"
+                                        ) {
+                                            Text(league.shortName)
+                                                .font(.system(size: 13))
+                                                .foregroundStyle(.textSecondary)
+                                        } trailing: {
+                                            FeedRowActionButton(
+                                                isTracked: isFollowed(t, league: league),
+                                                isAdding: addingIds.contains(t.id),
+                                                onAdd: { Task { await follow(t, league: league) } },
+                                                onRemove: { unfollow(t, league: league) }
+                                            )
+                                        }
                                     }
                                 }
                             }

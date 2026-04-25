@@ -16,7 +16,7 @@ struct FollowingView: View {
             LazyVStack(spacing: 0) {
                 if visibleTeams.isEmpty {
                     EmptyState(
-                        icon: "star",
+                        icon: "calendar-check",
                         title: "Not following any teams",
                         message: "Go to Discover to find and follow your first team."
                     )

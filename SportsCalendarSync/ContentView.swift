@@ -1,6 +1,16 @@
 import SwiftUI
 import SwiftData
 
+private var launchArgOpenTeamDetail: String? {
+    #if DEBUG
+    guard let i = CommandLine.arguments.firstIndex(of: "-open-team"),
+          i + 1 < CommandLine.arguments.count else { return nil }
+    return CommandLine.arguments[i + 1]
+    #else
+    return nil
+    #endif
+}
+
 enum AppTab: Int, CaseIterable {
     case following
     case discover
@@ -26,16 +36,30 @@ enum AppTab: Int, CaseIterable {
 
 struct ContentView: View {
     @EnvironmentObject private var calendarService: CalendarService
-    @State private var selectedTab: AppTab = .following
+    @State private var selectedTab: AppTab = {
+        #if DEBUG
+        if let i = CommandLine.arguments.firstIndex(of: "-initial-tab"),
+           i + 1 < CommandLine.arguments.count {
+            switch CommandLine.arguments[i + 1] {
+            case "discover": return .discover
+            case "profile": return .profile
+            default: return .following
+            }
+        }
+        #endif
+        return .following
+    }()
     @State private var leagueFilter: League? = nil
     @State private var isSearching = false
+    @State private var navPath: [TrackedTeam] = []
+    @Query private var allTeams: [TrackedTeam]
 
     private var showsFilter: Bool {
         selectedTab != .profile
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navPath) {
             ZStack {
                 tabContent
                     .id(selectedTab)
@@ -58,10 +82,24 @@ struct ContentView: View {
             }
             .background(Color.background)
             .toolbar(selectedTab == .profile ? .visible : .hidden, for: .navigationBar)
+            .navigationDestination(for: TrackedTeam.self) { team in
+                TeamDetailView(team: team)
+            }
             .task {
                 if !calendarService.isAuthorized {
                     _ = await calendarService.requestAccess()
                 }
+            }
+            .task(id: allTeams.count) {
+                #if DEBUG
+                if let match = launchArgOpenTeamDetail,
+                   navPath.isEmpty,
+                   let team = allTeams.first(where: {
+                       $0.name.localizedCaseInsensitiveContains(match)
+                   }) {
+                    navPath = [team]
+                }
+                #endif
             }
         }
     }

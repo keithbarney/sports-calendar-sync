@@ -25,6 +25,9 @@ SportsCalendarSync/Secrets.swift
 *.xcarchive
 ExportOptions.plist
 
+# App Store Connect API creds
+.env.appstore
+
 # Node
 node_modules/
 
