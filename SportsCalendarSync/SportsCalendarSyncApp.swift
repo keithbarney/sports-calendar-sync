@@ -35,12 +35,11 @@ struct SportsCalendarSyncApp: App {
                 .environmentObject(teamManager)
                 .environmentObject(espnService)
                 .toast(toastManager)
-                .onChange(of: appSettings.appearanceMode) { _, _ in appSettings.applyAppearance() }
                 #if DEBUG
                 .task {
                     if CommandLine.arguments.contains("-seed-data") {
                         let context = sharedModelContainer.mainContext
-                        await SeedData.populate(modelContext: context)
+                        await SeedData.populate(modelContext: context, espn: espnService)
                     }
                 }
                 #endif

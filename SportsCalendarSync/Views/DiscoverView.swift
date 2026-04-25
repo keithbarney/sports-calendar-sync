@@ -3,6 +3,7 @@ import SwiftData
 
 struct DiscoverView: View {
     @Binding var leagueFilter: League?
+    @Binding var isSearching: Bool
 
     @EnvironmentObject var espn: ESPNService
     @EnvironmentObject var teamManager: TeamManager
@@ -13,53 +14,77 @@ struct DiscoverView: View {
     @State private var teamsByLeague: [League: [ESPNTeam]] = [:]
     @State private var isLoading = false
     @State private var query = ""
+    @State private var addingIds: Set<String> = []
+    @FocusState private var searchFocused: Bool
 
-    var leaguesToShow: [League] {
+    private var leaguesToShow: [League] {
         if let l = leagueFilter { return [l] }
         return League.allCases
     }
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                SegmentedFilter(selected: $leagueFilter)
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 0, pinnedViews: []) {
+                SearchBar(text: $query, placeholder: "Search teams…", isFocused: $searchFocused)
                     .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
+                    .padding(.top, 4)
 
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 20) {
-                        SearchBarStub(text: $query)
-                            .padding(.horizontal, 16)
-
-                    ForEach(leaguesToShow) { league in
+                if isLoading && teamsByLeague.isEmpty {
+                    DiscoverSkeleton()
+                        .padding(.top, 8)
+                } else if visibleLeagues.isEmpty {
+                    EmptyState(
+                        icon: "search",
+                        title: "No teams found",
+                        message: query.isEmpty
+                            ? "Pick a league above to browse teams."
+                            : "Try a different search term."
+                    )
+                    .padding(.top, 80)
+                } else {
+                    ForEach(visibleLeagues) { league in
                         let teams = filteredTeams(for: league)
                         if !teams.isEmpty {
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Text(league.displayName)
-                                        .font(.system(size: 17, weight: .semibold))
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 16)
-
+                            FeedSection(title: league.displayName) {
                                 ForEach(teams, id: \.id) { t in
-                                    TeamRow(team: t, league: league, isFollowed: isFollowed(t, league: league)) {
-                                        await toggleFollow(t, league: league)
+                                    HiddenChevronNavigationLink {
+                                        TeamDetailView(espnTeam: t, league: league)
+                                    } label: {
+                                        FeedRow(
+                                            logoURL: t.logos?.first?.href,
+                                            fallbackIcon: "sparkles",
+                                            title: t.displayName ?? t.name ?? "Unknown"
+                                        ) {
+                                            Text(league.shortName)
+                                                .font(.system(size: 13))
+                                                .foregroundStyle(.textSecondary)
+                                        } trailing: {
+                                            FeedRowActionButton(
+                                                isTracked: isFollowed(t, league: league),
+                                                isAdding: addingIds.contains(t.id),
+                                                onAdd: { Task { await follow(t, league: league) } },
+                                                onRemove: { unfollow(t, league: league) }
+                                            )
+                                        }
                                     }
-                                    .padding(.horizontal, 16)
                                 }
                             }
                         }
                     }
-                    }
-                    .padding(.top, 4)
-                    .padding(.bottom, 100)
                 }
             }
-            .navigationTitle("Discover")
-            .toolbar(.hidden, for: .navigationBar)
-            .task(id: leagueFilter) { await load() }
+            .padding(.bottom, 24)
         }
+        .task(id: leagueFilter) { await load() }
+        .onChange(of: searchFocused) { _, focused in
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isSearching = focused
+            }
+        }
+    }
+
+    private var visibleLeagues: [League] {
+        leaguesToShow.filter { !filteredTeams(for: $0).isEmpty }
     }
 
     private func load() async {
@@ -86,61 +111,14 @@ struct DiscoverView: View {
         followed.contains(where: { $0.espnId == team.id && $0.leagueSlug == league.slug })
     }
 
-    private func toggleFollow(_ team: ESPNTeam, league: League) async {
-        if let existing = followed.first(where: { $0.espnId == team.id && $0.leagueSlug == league.slug }) {
-            teamManager.unfollow(team: existing, context: context, calendar: calendar)
-        } else {
-            await teamManager.follow(espnTeam: team, league: league, context: context, espn: espn, calendar: calendar)
-        }
+    private func follow(_ team: ESPNTeam, league: League) async {
+        addingIds.insert(team.id)
+        await teamManager.follow(espnTeam: team, league: league, context: context, espn: espn, calendar: calendar)
+        addingIds.remove(team.id)
     }
-}
 
-struct TeamRow: View {
-    let team: ESPNTeam
-    let league: League
-    let isFollowed: Bool
-    let onToggle: () async -> Void
-
-    var body: some View {
-        HStack(spacing: 12) {
-            AsyncImage(url: team.logos?.first.map { URL(string: $0.href) } ?? nil) { img in
-                img.resizable().scaledToFit()
-            } placeholder: {
-                Circle().fill(.quaternary)
-            }
-            .frame(width: 36, height: 36)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(team.displayName ?? team.name ?? "Unknown")
-                    .font(.system(size: 15, weight: .semibold))
-                Text(league.shortName)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
-            }
-            Spacer()
-            Button {
-                Task { await onToggle() }
-            } label: {
-                Image(systemName: isFollowed ? "checkmark.circle.fill" : "plus.circle")
-                    .font(.system(size: 22))
-                    .foregroundStyle(isFollowed ? Color.green : Color.accentColor)
-            }
-            .buttonStyle(.plain)
-        }
-        .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16))
-    }
-}
-
-struct SearchBarStub: View {
-    @Binding var text: String
-    var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
-            TextField("Search teams", text: $text)
-                .textInputAutocapitalization(.words)
-        }
-        .padding(10)
-        .background(.thinMaterial, in: Capsule())
+    private func unfollow(_ team: ESPNTeam, league: League) {
+        guard let existing = followed.first(where: { $0.espnId == team.id && $0.leagueSlug == league.slug }) else { return }
+        teamManager.unfollow(team: existing, context: context, calendar: calendar)
     }
 }
