@@ -35,7 +35,7 @@ Post-launch candidates: UEFA Champions League (`uefa.champions`), Europa League,
 - **Project generation:** xcodegen (`project.yml` → `.xcodeproj`)
 - **Bundle ID:** `com.keithbarney.sportssync`
 - **Widget Bundle ID:** `com.keithbarney.sportssync.widget`
-- **Team ID:** `BXKNJTU253`
+- **Team ID:** see `project.yml` `DEVELOPMENT_TEAM`
 - **Secrets:** None required (ESPN API is unauthenticated). `Secrets.swift` stub retained for future paid-tier API swap.
 
 ## ESPN API — Base Endpoints
