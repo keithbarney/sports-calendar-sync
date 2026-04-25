@@ -22,6 +22,7 @@
 		4CCB4C8D7B1F6E9B356BCE88 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE45D9116E55EBF01000F7 /* ProfileView.swift */; };
 		509D86E7D84DE80BB1A40B22 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C990849E8919E1FD396D357 /* ToastView.swift */; };
 		587F3742280C71F30439E00C /* LucideIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B62E636FF07C167E4BB038 /* LucideIcon.swift */; };
+		5EF30AB23EF6CD0D511E3E43 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA6EBA5CAA2B6E3467FE7B3 /* StoreService.swift */; };
 		637BCDC37F9BFD772087FCED /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73F4AF01F71077A055F67FA /* CalendarService.swift */; };
 		6433510B4171F8EA27F463D0 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B67D81E8B99E526174A28 /* APIError.swift */; };
 		6AA0F498B55122A8D111C073 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9647F047BAB48A7247B72CD /* SkeletonView.swift */; };
@@ -37,6 +38,7 @@
 		BED065424FAE7F5726942075 /* HiddenChevron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D08DFE8E549027D41A22BD /* HiddenChevron.swift */; };
 		D35B03471A83B7DECB9308FD /* TrackedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEEB4EB681472A64382863E /* TrackedGame.swift */; };
 		D6728AB17B69917CFB617D65 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB8A81C3D9405DBEA2F6E21 /* SearchBar.swift */; };
+		DA11C62CA642354A2F03886D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8209202B6D8DB6596AB61F7B /* PrivacyInfo.xcprivacy */; };
 		E7467DDAF593A56104B95AF2 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDAEC5315CEA125C926117A5 /* DiscoverView.swift */; };
 		E9F472A5A9522D977F1247D2 /* APIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388A48991EE1B171CFD94E7 /* APIModels.swift */; };
 		F25DF16965492C693AE4F583 /* FeedRowActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD8B2792478B50B724C3A63 /* FeedRowActionButton.swift */; };
@@ -48,6 +50,7 @@
 		04169247BB8E3D86EC60AED4 /* FeedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSection.swift; sourceTree = "<group>"; };
 		049061A9986F02A2C5177493 /* FeedRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedRow.swift; sourceTree = "<group>"; };
 		0643D2BDE60237DACCA371FC /* DetailChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChip.swift; sourceTree = "<group>"; };
+		0FA6EBA5CAA2B6E3467FE7B3 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		17AD6B7CFABED4A2B0D60916 /* ESPNService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESPNService.swift; sourceTree = "<group>"; };
 		19D08DFE8E549027D41A22BD /* HiddenChevron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenChevron.swift; sourceTree = "<group>"; };
 		1C990849E8919E1FD396D357 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
@@ -64,6 +67,7 @@
 		51599D9D567D8382C99D9FD4 /* SportsCalendarSync.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SportsCalendarSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CEEB4EB681472A64382863E /* TrackedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedGame.swift; sourceTree = "<group>"; };
 		6EEE45D9116E55EBF01000F7 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		8209202B6D8DB6596AB61F7B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8E1ABE18234D1190ABB285E5 /* UpcomingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingView.swift; sourceTree = "<group>"; };
 		939B517B8DE0CDB668F920C9 /* TrackedTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedTeam.swift; sourceTree = "<group>"; };
 		A73F4AF01F71077A055F67FA /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
@@ -100,6 +104,7 @@
 				37771417A91815F8C868FAF3 /* Assets.xcassets */,
 				4AF01D45EB9EE870252B5D04 /* ContentView.swift */,
 				AFF14711D65B0F0371FEBE4D /* Info.plist */,
+				8209202B6D8DB6596AB61F7B /* PrivacyInfo.xcprivacy */,
 				27C697FD2DB0AE984D11C102 /* Secrets.swift */,
 				307B52401C12FCC1519A1803 /* SportsCalendarSync.entitlements */,
 				F6FFC01B01E76CCA54F34CCC /* SportsCalendarSyncApp.swift */,
@@ -181,6 +186,7 @@
 				A73F4AF01F71077A055F67FA /* CalendarService.swift */,
 				17AD6B7CFABED4A2B0D60916 /* ESPNService.swift */,
 				C5C36619B3503A73AE3DEFD0 /* SeedData.swift */,
+				0FA6EBA5CAA2B6E3467FE7B3 /* StoreService.swift */,
 				DD088C9A685E87EDE85329A5 /* TeamManager.swift */,
 			);
 			path = Services;
@@ -255,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				779D2ADE899227CA8A596032 /* Assets.xcassets in Resources */,
+				DA11C62CA642354A2F03886D /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +300,7 @@
 				6AA0F498B55122A8D111C073 /* SkeletonView.swift in Sources */,
 				8E75D63BE4A80E5566122528 /* SportsCalendarSyncApp.swift in Sources */,
 				3C04A998C4A068E734E50493 /* StatBox.swift in Sources */,
+				5EF30AB23EF6CD0D511E3E43 /* StoreService.swift in Sources */,
 				85316BC76F3CF71CD7248B82 /* TeamDetailView.swift in Sources */,
 				B161FB9B42E7B2C15292AF39 /* TeamManager.swift in Sources */,
 				509D86E7D84DE80BB1A40B22 /* ToastView.swift in Sources */,
