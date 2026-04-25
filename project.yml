@@ -37,5 +37,24 @@ targets:
         INFOPLIST_FILE: SportsCalendarSync/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.keithbarney.sportssync
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    dependencies:
+      - target: SportsCalendarSyncWidget
     entitlements:
       path: SportsCalendarSync/SportsCalendarSync.entitlements
+
+  SportsCalendarSyncWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - SportsCalendarSyncWidget
+      - path: SportsCalendarSync/Models/TrackedGame.swift
+      - path: SportsCalendarSync/Models/TrackedTeam.swift
+      - path: SportsCalendarSync/Models/League.swift
+    settings:
+      base:
+        INFOPLIST_FILE: SportsCalendarSyncWidget/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.keithbarney.sportssync.widget
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: BXKNJTU253
+    entitlements:
+      path: SportsCalendarSyncWidget/SportsCalendarSyncWidget.entitlements

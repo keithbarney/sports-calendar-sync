@@ -8,6 +8,7 @@ struct DiscoverView: View {
     @EnvironmentObject var espn: ESPNService
     @EnvironmentObject var teamManager: TeamManager
     @EnvironmentObject var calendar: CalendarService
+    @EnvironmentObject var notifications: NotificationService
     @Environment(\.modelContext) private var context
     @Query private var followed: [TrackedTeam]
 
@@ -113,12 +114,19 @@ struct DiscoverView: View {
 
     private func follow(_ team: ESPNTeam, league: League) async {
         addingIds.insert(team.id)
-        await teamManager.follow(espnTeam: team, league: league, context: context, espn: espn, calendar: calendar)
+        await teamManager.follow(
+            espnTeam: team,
+            league: league,
+            context: context,
+            espn: espn,
+            calendar: calendar,
+            notifications: notifications
+        )
         addingIds.remove(team.id)
     }
 
     private func unfollow(_ team: ESPNTeam, league: League) {
         guard let existing = followed.first(where: { $0.espnId == team.id && $0.leagueSlug == league.slug }) else { return }
-        teamManager.unfollow(team: existing, context: context, calendar: calendar)
+        teamManager.unfollow(team: existing, context: context, calendar: calendar, notifications: notifications)
     }
 }

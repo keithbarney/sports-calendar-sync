@@ -4,6 +4,7 @@ import SwiftData
 @main
 struct SportsCalendarSyncApp: App {
     @StateObject private var calendarService = CalendarService()
+    @StateObject private var notificationService = NotificationService()
     @StateObject private var toastManager = ToastManager()
     @StateObject private var appSettings = AppSettings()
     @StateObject private var teamManager = TeamManager()
@@ -30,6 +31,7 @@ struct SportsCalendarSyncApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(calendarService)
+                .environmentObject(notificationService)
                 .environmentObject(toastManager)
                 .environmentObject(appSettings)
                 .environmentObject(teamManager)

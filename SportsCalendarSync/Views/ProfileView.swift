@@ -4,6 +4,7 @@ import SwiftData
 struct ProfileView: View {
     @EnvironmentObject private var appSettings: AppSettings
     @EnvironmentObject private var calendarService: CalendarService
+    @EnvironmentObject private var notifications: NotificationService
     @EnvironmentObject private var toastManager: ToastManager
     @EnvironmentObject private var teamManager: TeamManager
     @EnvironmentObject private var espn: ESPNService
@@ -65,7 +66,8 @@ struct ProfileView: View {
                         await teamManager.syncAllFollowed(
                             context: context,
                             espn: espn,
-                            calendar: calendarService
+                            calendar: calendarService,
+                            notifications: notifications
                         )
                         isSyncing = false
                         toastManager.show("Synced \(teams.count) team\(teams.count == 1 ? "" : "s")")

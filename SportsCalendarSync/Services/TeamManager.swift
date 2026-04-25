@@ -15,9 +15,13 @@ final class TeamManager: ObservableObject {
 
     /// Resolve the user's current kickoff-reminder preference from UserDefaults
     /// (shared storage with `@AppStorage("kickoffReminder")` in AppSettings).
-    private var currentReminderOffset: TimeInterval? {
+    private var currentReminder: KickoffReminder {
         let raw = UserDefaults.standard.string(forKey: "kickoffReminder") ?? KickoffReminder.thirtyMin.rawValue
-        return KickoffReminder(rawValue: raw)?.offsetSeconds ?? -1800
+        return KickoffReminder(rawValue: raw) ?? .thirtyMin
+    }
+
+    private var currentReminderOffset: TimeInterval? {
+        currentReminder.offsetSeconds
     }
 
     /// Follow a team: persist + immediately fetch & mirror schedule to Calendar.
@@ -26,7 +30,8 @@ final class TeamManager: ObservableObject {
         league: League,
         context: ModelContext,
         espn: ESPNService,
-        calendar: CalendarService
+        calendar: CalendarService,
+        notifications: NotificationService? = nil
     ) async {
         // Dedupe
         let id = espnTeam.id
@@ -54,10 +59,27 @@ final class TeamManager: ObservableObject {
             _ = await calendar.requestAccess()
         }
 
-        await syncSchedule(for: team, context: context, espn: espn, calendar: calendar, league: league)
+        // Push notifications are additive to the calendar alarm — request once on follow.
+        if let notifications, !notifications.isAuthorized {
+            _ = await notifications.requestAccess()
+        }
+
+        await syncSchedule(
+            for: team,
+            context: context,
+            espn: espn,
+            calendar: calendar,
+            league: league,
+            notifications: notifications
+        )
     }
 
-    func unfollow(team: TrackedTeam, context: ModelContext, calendar: CalendarService) {
+    func unfollow(
+        team: TrackedTeam,
+        context: ModelContext,
+        calendar: CalendarService,
+        notifications: NotificationService? = nil
+    ) {
         // Remove mirrored calendar events for this team
         let id = team.espnId
         let descriptor = FetchDescriptor<TrackedGame>(
@@ -68,6 +90,7 @@ final class TeamManager: ObservableObject {
             calendar.removeEvents(identifiers: ids)
             games.forEach { context.delete($0) }
         }
+        notifications?.removeAllNotifications(followedTeamId: id)
         context.delete(team)
         try? context.save()
     }
@@ -77,7 +100,8 @@ final class TeamManager: ObservableObject {
     func syncAllFollowed(
         context: ModelContext,
         espn: ESPNService,
-        calendar: CalendarService
+        calendar: CalendarService,
+        notifications: NotificationService? = nil
     ) async {
         if !calendar.isAuthorized {
             _ = await calendar.requestAccess()
@@ -85,7 +109,14 @@ final class TeamManager: ObservableObject {
         guard let teams = try? context.fetch(FetchDescriptor<TrackedTeam>()) else { return }
         for team in teams {
             guard let league = team.league else { continue }
-            await syncSchedule(for: team, context: context, espn: espn, calendar: calendar, league: league)
+            await syncSchedule(
+                for: team,
+                context: context,
+                espn: espn,
+                calendar: calendar,
+                league: league,
+                notifications: notifications
+            )
         }
     }
 
@@ -95,7 +126,8 @@ final class TeamManager: ObservableObject {
         context: ModelContext,
         espn: ESPNService,
         calendar: CalendarService,
-        league: League
+        league: League,
+        notifications: NotificationService? = nil
     ) async {
         isSyncing = true
         defer { isSyncing = false }
@@ -155,6 +187,15 @@ final class TeamManager: ObservableObject {
                             newTitle: "\(homeName) vs. \(awayName)"
                         )
                     }
+                    notifications?.rescheduleGameNotification(
+                        homeTeam: homeName,
+                        awayTeam: awayName,
+                        leagueName: league.displayName,
+                        kickoff: kickoff,
+                        followedTeamId: team.espnId,
+                        espnEventId: event.id,
+                        reminder: currentReminder
+                    )
                 }
                 existingByEspnId.removeValue(forKey: event.id)
             } else {
@@ -184,12 +225,25 @@ final class TeamManager: ObservableObject {
                 )
                 tracked.calendarEventId = calId
                 context.insert(tracked)
+                notifications?.scheduleGameNotification(
+                    homeTeam: homeName,
+                    awayTeam: awayName,
+                    leagueName: league.displayName,
+                    kickoff: kickoff,
+                    followedTeamId: team.espnId,
+                    espnEventId: event.id,
+                    reminder: currentReminder
+                )
             }
         }
 
         // Anything left in `existingByEspnId` was removed from ESPN — clean it up.
         for (_, stale) in existingByEspnId {
             if let id = stale.calendarEventId { calendar.removeEvent(identifier: id) }
+            notifications?.removeGameNotification(
+                followedTeamId: team.espnId,
+                espnEventId: stale.espnEventId
+            )
             context.delete(stale)
         }
 
