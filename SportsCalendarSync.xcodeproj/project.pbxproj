@@ -408,6 +408,7 @@
 		20D5DB13860B19A43B543C0F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_DISPLAY_NAME = "Sports Calendar Sync (L)";
 				CODE_SIGN_ENTITLEMENTS = SportsCalendarSyncWidget/SportsCalendarSyncWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BXKNJTU253;
@@ -427,6 +428,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_DISPLAY_NAME = "Sports Sync";
 				CODE_SIGN_ENTITLEMENTS = SportsCalendarSync/SportsCalendarSync.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SportsCalendarSync/Info.plist;
@@ -511,6 +513,7 @@
 		94AD92F15EC0B7D0ECCB86C9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_DISPLAY_NAME = "Sports Calendar Sync";
 				CODE_SIGN_ENTITLEMENTS = SportsCalendarSyncWidget/SportsCalendarSyncWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BXKNJTU253;
@@ -530,6 +533,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_DISPLAY_NAME = "Sports Sync (L)";
 				CODE_SIGN_ENTITLEMENTS = SportsCalendarSync/SportsCalendarSync.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SportsCalendarSync/Info.plist;

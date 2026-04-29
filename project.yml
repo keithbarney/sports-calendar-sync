@@ -37,6 +37,11 @@ targets:
         INFOPLIST_FILE: SportsCalendarSync/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.keithbarney.sportssync
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        Debug:
+          BUNDLE_DISPLAY_NAME: Sports Sync (L)
+        Release:
+          BUNDLE_DISPLAY_NAME: Sports Sync
     dependencies:
       - target: SportsCalendarSyncWidget
     entitlements:
@@ -56,5 +61,10 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.keithbarney.sportssync.widget
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: BXKNJTU253
+      configs:
+        Debug:
+          BUNDLE_DISPLAY_NAME: Sports Calendar Sync (L)
+        Release:
+          BUNDLE_DISPLAY_NAME: Sports Calendar Sync
     entitlements:
       path: SportsCalendarSyncWidget/SportsCalendarSyncWidget.entitlements

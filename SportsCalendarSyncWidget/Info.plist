@@ -7,7 +7,7 @@
 	<key>CFBundleName</key>
 	<string>SportsCalendarSyncWidget</string>
 	<key>CFBundleDisplayName</key>
-	<string>Sports Calendar Sync</string>
+	<string>$(BUNDLE_DISPLAY_NAME)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>CFBundleShortVersionString</key>
