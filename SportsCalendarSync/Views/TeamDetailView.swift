@@ -140,12 +140,12 @@ struct TeamDetailView: View {
             )
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
-
-            titleBar
         }
         .background(Color.background)
         .ignoresSafeArea(edges: .top)
-        .toolbar(.hidden, for: .navigationBar)
+        .toolbar(.visible, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             guard !didInitialLoad else { return }
             didInitialLoad = true
@@ -243,25 +243,6 @@ struct TeamDetailView: View {
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
-        }
-    }
-
-    // MARK: - Title Bar (back button — matches TV & Movie Calendar Sync)
-
-    private var titleBar: some View {
-        VStack(spacing: 0) {
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .overlay(alignment: .topLeading) {
-            Button { dismiss() } label: {
-                LucideIcon(name: "chevron-left", size: 20)
-                    .foregroundStyle(.white)
-                    .frame(width: 48, height: 48)
-                    .modifier(CircleGlassBackButton())
-            }
-            .padding(.leading, 16)
-            .padding(.top, 54)
         }
     }
 
@@ -422,20 +403,5 @@ private struct PreviewFixtureRow: View {
         fmt.dateStyle = .medium
         fmt.timeStyle = .short
         return fmt.string(from: date)
-    }
-}
-
-// MARK: - Circle Glass Back Button
-
-struct CircleGlassBackButton: ViewModifier {
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if #available(iOS 26, *) {
-            content.glassEffect(.regular.interactive(), in: .circle)
-        } else {
-            content
-                .background(.black.opacity(0.5))
-                .clipShape(Circle())
-        }
     }
 }
