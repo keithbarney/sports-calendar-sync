@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unsigned-build:
+    name: Unsigned iOS device build
+    runs-on: macos-26
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install pinned XcodeGen
+        run: |
+          brew install mint
+          mint install yonaskolb/xcodegen@2.45.3
+          echo "$HOME/.mint/bin" >> "$GITHUB_PATH"
+
+      - name: Verify
+        run: ./scripts/release.sh verify
+
+      - name: Check generated project is committed
+        run: git diff --exit-code -- SportsCalendarSync.xcodeproj

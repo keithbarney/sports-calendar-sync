@@ -24,9 +24,11 @@ SportsCalendarSync/Secrets.swift
 # Archives
 *.xcarchive
 ExportOptions.plist
+!config/ExportOptions.plist
 
 # App Store Connect API creds
 .env.appstore
+*.p8
 
 # Claude Code session state
 .claude/
@@ -38,4 +40,3 @@ node_modules/
 _*.sh
 _*.txt
 /tmp/
-
