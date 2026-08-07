@@ -19,7 +19,6 @@
 		3D1C5C86CC9D3F7663008FB0 /* SettingsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EA3AB6D351BC65EDC861CA /* SettingsRow.swift */; };
 		3EAC25C23252EBFF24716EB5 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B0DDCD390A0B80C9A00B70 /* ActionButton.swift */; };
 		412B18B740BE2ED1EDC08694 /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD233FFCC07FFEABE9A6CD /* League.swift */; };
-		418C1F0E20FEF5708891D0FD /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C697FD2DB0AE984D11C102 /* Secrets.swift */; };
 		4CCB4C8D7B1F6E9B356BCE88 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE45D9116E55EBF01000F7 /* ProfileView.swift */; };
 		509D86E7D84DE80BB1A40B22 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C990849E8919E1FD396D357 /* ToastView.swift */; };
 		54B0E8ADF7853E5E167B5C7C /* TrackedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEEB4EB681472A64382863E /* TrackedGame.swift */; };
@@ -88,7 +87,6 @@
 		1C990849E8919E1FD396D357 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		1CE928E3AA3ADF6C94E2C266 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		25B701D87D75ECCEA25A8667 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
-		27C697FD2DB0AE984D11C102 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		2DCD233FFCC07FFEABE9A6CD /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
 		2F91F4289E243060BFAB36E1 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		307B52401C12FCC1519A1803 /* SportsCalendarSync.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SportsCalendarSync.entitlements; sourceTree = "<group>"; };
@@ -141,7 +139,6 @@
 				4AF01D45EB9EE870252B5D04 /* ContentView.swift */,
 				AFF14711D65B0F0371FEBE4D /* Info.plist */,
 				8209202B6D8DB6596AB61F7B /* PrivacyInfo.xcprivacy */,
-				27C697FD2DB0AE984D11C102 /* Secrets.swift */,
 				307B52401C12FCC1519A1803 /* SportsCalendarSync.entitlements */,
 				F6FFC01B01E76CCA54F34CCC /* SportsCalendarSyncApp.swift */,
 				CD3AD79C85086388C3D04C09 /* Extensions */,
@@ -377,7 +374,6 @@
 				F7DDD52C2882178E0736D6B7 /* NotificationService.swift in Sources */,
 				4CCB4C8D7B1F6E9B356BCE88 /* ProfileView.swift in Sources */,
 				D6728AB17B69917CFB617D65 /* SearchBar.swift in Sources */,
-				418C1F0E20FEF5708891D0FD /* Secrets.swift in Sources */,
 				257890E7CAA22D10A80F539A /* SectionHeader.swift in Sources */,
 				B005534288A691EC33A49CF7 /* SeedData.swift in Sources */,
 				3D1C5C86CC9D3F7663008FB0 /* SettingsRow.swift in Sources */,

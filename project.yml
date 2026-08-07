@@ -31,7 +31,9 @@ targets:
     type: application
     platform: iOS
     sources:
-      - SportsCalendarSync
+      - path: SportsCalendarSync
+        excludes:
+          - Secrets.swift
     settings:
       base:
         INFOPLIST_FILE: SportsCalendarSync/Info.plist
