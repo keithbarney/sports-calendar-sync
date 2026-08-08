@@ -23,6 +23,10 @@ final class ESPNDecodingTests: XCTestCase {
                 "displayValue": "1",
                 "value": 1
               }
+            }],
+            "broadcasts": [{
+              "market": {"id": "home"},
+              "names": ["ESPN"]
             }]
           }]
         }

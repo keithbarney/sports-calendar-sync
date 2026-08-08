@@ -89,6 +89,5 @@ struct ESPNCompetitor: Decodable {
 }
 
 struct ESPNBroadcast: Decodable {
-    let market: String?
     let names: [String]?
 }
