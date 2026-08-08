@@ -24,12 +24,12 @@ struct ProfileView: View {
                         }
                     } label: {
                         HStack {
-                            Label(reminder.rawValue, systemImage: reminder.sfSymbol)
+                            SettingsRowLabel(title: reminder.rawValue, systemImage: reminder.sfSymbol)
                                 .foregroundStyle(Color.textPrimary)
                             Spacer()
                             if appSettings.kickoffReminder == reminder {
                                 Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.accentColor)
+                                    .foregroundStyle(Color.textPrimary)
                                     .fontWeight(.semibold)
                             }
                         }
@@ -105,10 +105,11 @@ struct ProfileView: View {
                         }
                     }
                 } label: {
-                    HStack {
-                        Image(systemName: "arrow.triangle.2.circlepath")
-                            .imageScale(.large)
-                            .accessibilityHidden(true)
+                    HStack(spacing: SettingsRowLayout.iconTextSpacing) {
+                        SettingsRowIcon(
+                            systemImage: "arrow.triangle.2.circlepath",
+                            tint: Color.accentColor
+                        )
                         VStack(alignment: .leading, spacing: 3) {
                             Text(automaticRefresh.isRefreshing ? "Syncing Calendar" : "Sync Calendar Now")
                             Text("Refresh fixtures and repair calendar events")
@@ -135,12 +136,12 @@ struct ProfileView: View {
                         }
                     } label: {
                         HStack {
-                            Label(mode.rawValue, systemImage: mode.sfSymbol)
+                            SettingsRowLabel(title: mode.rawValue, systemImage: mode.sfSymbol)
                                 .foregroundStyle(Color.textPrimary)
                             Spacer()
                             if appSettings.appearanceMode == mode {
                                 Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.accentColor)
+                                    .foregroundStyle(Color.textPrimary)
                                     .fontWeight(.semibold)
                             }
                         }
@@ -275,7 +276,11 @@ private struct SyncRefreshSummary: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label {
+            HStack(spacing: SettingsRowLayout.iconTextSpacing) {
+                SettingsRowIcon(
+                    systemImage: "clock.arrow.circlepath",
+                    tint: Color.textSecondary
+                )
                 VStack(alignment: .leading, spacing: 3) {
                     Text("Last successful refresh")
                         .font(.caption)
@@ -284,15 +289,15 @@ private struct SyncRefreshSummary: View {
                         .font(.body.weight(.semibold))
                         .foregroundStyle(Color.textPrimary)
                 }
-            } icon: {
-                Image(systemName: "clock.arrow.circlepath")
-                    .foregroundStyle(Color.accentColor)
             }
 
             if let nextRefresh {
-                Label("Automatic refresh requested after \(nextRefresh). iOS chooses the exact time.", systemImage: "clock")
-                    .font(.footnote)
-                    .foregroundStyle(Color.textSecondary)
+                HStack(alignment: .top, spacing: SettingsRowLayout.iconTextSpacing) {
+                    SettingsRowIcon(systemImage: "clock", tint: Color.textSecondary)
+                    Text("Automatic refresh requested after \(nextRefresh). iOS chooses the exact time.")
+                        .font(.footnote)
+                        .foregroundStyle(Color.textSecondary)
+                }
             }
         }
         .accessibilityElement(children: .combine)
@@ -313,7 +318,7 @@ private struct SyncFeedbackBanner: View {
 
         var tint: Color {
             switch self {
-            case .success: return .accentColor
+            case .success: return .green
             case .warning: return .orange
             }
         }
@@ -366,6 +371,36 @@ private struct SyncFeedbackBanner: View {
 
 // MARK: - Permission Row
 
+private enum SettingsRowLayout {
+    static let iconSize: CGFloat = 24
+    static let iconTextSpacing: CGFloat = 23
+}
+
+private struct SettingsRowIcon: View {
+    let systemImage: String
+    var tint: Color? = nil
+
+    var body: some View {
+        Image(systemName: systemImage)
+            .font(.system(size: 20))
+            .frame(width: SettingsRowLayout.iconSize, height: SettingsRowLayout.iconSize)
+            .foregroundStyle(tint ?? .primary)
+            .accessibilityHidden(true)
+    }
+}
+
+private struct SettingsRowLabel: View {
+    let title: String
+    let systemImage: String
+
+    var body: some View {
+        HStack(spacing: SettingsRowLayout.iconTextSpacing) {
+            SettingsRowIcon(systemImage: systemImage)
+            Text(title)
+        }
+    }
+}
+
 enum PermissionState {
     case granted, notDetermined, denied
 }
@@ -385,7 +420,7 @@ private struct PermissionRow: View {
 
     var body: some View {
         Toggle(isOn: binding) {
-            Label(title, systemImage: sfSymbol)
+            SettingsRowLabel(title: title, systemImage: sfSymbol)
                 .foregroundStyle(Color.textPrimary)
         }
     }
