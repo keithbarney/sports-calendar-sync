@@ -40,8 +40,7 @@ struct ProfileView: View {
             // MARK: - Calendar Sync
             Section("Calendar Sync") {
                 SyncRefreshSummary(
-                    lastRefresh: syncHealth.lastSuccessfulSync.map { formatted($0, fallback: "") },
-                    nextRefresh: syncHealth.nextPlannedRefresh.map { formatted($0, fallback: "") }
+                    lastRefresh: syncHealth.lastSuccessfulSync.map { formatted($0, fallback: "") }
                 )
 
                 if let repairs = syncHealth.calendarRepairBannerCount {
@@ -272,32 +271,20 @@ struct ProfileView: View {
 
 private struct SyncRefreshSummary: View {
     let lastRefresh: String?
-    let nextRefresh: String?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: SettingsRowLayout.iconTextSpacing) {
-                SettingsRowIcon(
-                    systemImage: "clock.arrow.circlepath",
-                    tint: Color.textSecondary
-                )
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("Last successful refresh")
-                        .font(.caption)
-                        .foregroundStyle(Color.textSecondary)
-                    Text(lastRefresh ?? "No completed sync yet")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(Color.textPrimary)
-                }
-            }
-
-            if let nextRefresh {
-                HStack(alignment: .top, spacing: SettingsRowLayout.iconTextSpacing) {
-                    SettingsRowIcon(systemImage: "clock", tint: Color.textSecondary)
-                    Text("Automatic refresh requested after \(nextRefresh). iOS chooses the exact time.")
-                        .font(.footnote)
-                        .foregroundStyle(Color.textSecondary)
-                }
+        HStack(spacing: SettingsRowLayout.iconTextSpacing) {
+            SettingsRowIcon(
+                systemImage: "clock.arrow.circlepath",
+                tint: Color.textSecondary
+            )
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Last successful refresh")
+                    .font(.caption)
+                    .foregroundStyle(Color.textSecondary)
+                Text(lastRefresh ?? "No completed sync yet")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(Color.textPrimary)
             }
         }
         .accessibilityElement(children: .combine)
