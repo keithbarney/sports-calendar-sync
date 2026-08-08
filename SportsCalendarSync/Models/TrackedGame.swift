@@ -21,8 +21,13 @@ final class TrackedGame {
 
     /// EventKit identifier for the mirrored calendar event.
     var calendarEventId: String?
+    /// True when local fixture data is newer than the mirrored EventKit event.
+    var calendarSyncPending: Bool = false
     var addedAt: Date
     var lastUpdated: Date
+    /// First complete refresh where ESPN no longer returned this fixture.
+    /// A grace period prevents transient API omissions from deleting valid events.
+    var missingSince: Date?
 
     init(
         espnEventId: String,
@@ -50,6 +55,8 @@ final class TrackedGame {
         self.status = status
         self.addedAt = Date()
         self.lastUpdated = Date()
+        self.missingSince = nil
+        self.calendarSyncPending = false
     }
 
     var title: String { "\(homeTeamName) vs. \(awayTeamName)" }

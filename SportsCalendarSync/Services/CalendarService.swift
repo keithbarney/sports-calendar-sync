@@ -4,6 +4,14 @@ import SwiftUI
 
 private let logger = Logger(subsystem: "com.keithbarney.sportssync", category: "CalendarService")
 
+struct CalendarEventWriteResult {
+    let identifier: String?
+    let created: Bool
+    let errorMessage: String?
+
+    var succeeded: Bool { identifier != nil && errorMessage == nil }
+}
+
 @MainActor
 class CalendarService: ObservableObject {
     private let store = EKEventStore()
@@ -79,32 +87,83 @@ class CalendarService: ObservableObject {
         leagueName: String,
         reminderOffset: TimeInterval? = -1800
     ) -> String? {
-        guard isAuthorized, let calendar = appCalendar else { return nil }
+        upsertGame(
+            identifier: nil,
+            homeTeam: homeTeam,
+            awayTeam: awayTeam,
+            kickoff: kickoff,
+            venue: venue,
+            broadcasts: broadcasts,
+            leagueName: leagueName,
+            status: nil,
+            reminderOffset: reminderOffset
+        ).identifier
+    }
 
-        let event = EKEvent(eventStore: store)
-        event.title = "\(homeTeam) vs. \(awayTeam)"
+    /// Creates or fully refreshes the EventKit event. A stale identifier is repaired by
+    /// creating a replacement, which covers user-deleted events and calendar recreation.
+    func upsertGame(
+        identifier: String?,
+        homeTeam: String,
+        awayTeam: String,
+        kickoff: Date,
+        venue: String?,
+        broadcasts: [String],
+        leagueName: String,
+        status: String?,
+        reminderOffset: TimeInterval?
+    ) -> CalendarEventWriteResult {
+        guard isAuthorized, let calendar = appCalendar else {
+            return CalendarEventWriteResult(
+                identifier: nil,
+                created: false,
+                errorMessage: "Calendar access is unavailable. Enable Calendar in Settings to repair fixture events."
+            )
+        }
+
+        let existing = identifier.flatMap { store.event(withIdentifier: $0) }
+        let event = existing ?? EKEvent(eventStore: store)
+        let statusText = displayStatus(status)
+        event.title = statusText.map { "\(homeTeam) vs. \(awayTeam) — \($0)" }
+            ?? "\(homeTeam) vs. \(awayTeam)"
         event.startDate = kickoff
         event.endDate = kickoff.addingTimeInterval(defaultMatchDurationSeconds)
         event.calendar = calendar
         event.location = venue
 
         var notes = leagueName
+        if let statusText {
+            notes += "\n\nStatus: \(statusText)"
+        }
         if !broadcasts.isEmpty {
             notes += "\n\nBroadcast: \(broadcasts.joined(separator: ", "))"
         }
         event.notes = notes
-
-        if let reminderOffset {
+        event.alarms?.forEach { event.removeAlarm($0) }
+        if let reminderOffset, statusText == nil {
             event.addAlarm(EKAlarm(relativeOffset: reminderOffset))
         }
 
         do {
             try store.save(event, span: .thisEvent)
-            return event.eventIdentifier
+            return CalendarEventWriteResult(
+                identifier: event.eventIdentifier,
+                created: existing == nil,
+                errorMessage: nil
+            )
         } catch {
             logger.error("Failed to save event: \(error.localizedDescription)")
-            return nil
+            return CalendarEventWriteResult(
+                identifier: identifier,
+                created: false,
+                errorMessage: "Calendar could not save a fixture. Open the app and tap Resync Calendar."
+            )
         }
+    }
+
+    func containsEvent(identifier: String?) -> Bool {
+        guard let identifier else { return false }
+        return store.event(withIdentifier: identifier) != nil
     }
 
     /// Update an existing event in place — used when ESPN reschedules / postpones a match.
@@ -120,17 +179,27 @@ class CalendarService: ObservableObject {
         }
     }
 
-    func removeEvent(identifier: String) {
-        guard let event = store.event(withIdentifier: identifier) else { return }
+    @discardableResult
+    func removeEvent(identifier: String) -> Bool {
+        guard let event = store.event(withIdentifier: identifier) else { return true }
         do {
             try store.remove(event, span: .thisEvent)
+            return true
         } catch {
             logger.error("Failed to remove event: \(error.localizedDescription)")
+            return false
         }
     }
 
     func removeEvents(identifiers: [String]) {
         identifiers.forEach { removeEvent(identifier: $0) }
+    }
+
+    private func displayStatus(_ status: String?) -> String? {
+        guard let status = status?.uppercased() else { return nil }
+        if status.contains("POSTPONED") { return "Postponed" }
+        if status.contains("CANCELED") || status.contains("CANCELLED") { return "Cancelled" }
+        return nil
     }
 
     func removeAllEvents() -> Int {

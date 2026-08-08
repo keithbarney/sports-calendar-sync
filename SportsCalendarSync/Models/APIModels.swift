@@ -86,10 +86,8 @@ struct ESPNCompetitor: Decodable {
     let id: String
     let homeAway: String // "home" | "away"
     let team: ESPNTeam
-    let score: String?
 }
 
 struct ESPNBroadcast: Decodable {
-    let market: String?
     let names: [String]?
 }

@@ -25,6 +25,9 @@ schemes:
         "-seed-data": true
     archive:
       config: Release
+    test:
+      targets:
+        - SportsCalendarSyncTests
 
 targets:
   SportsCalendarSync:
@@ -70,3 +73,15 @@ targets:
           BUNDLE_DISPLAY_NAME: Sports Calendar Sync
     entitlements:
       path: SportsCalendarSyncWidget/SportsCalendarSyncWidget.entitlements
+
+  SportsCalendarSyncTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - SportsCalendarSyncTests
+    dependencies:
+      - target: SportsCalendarSync
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.keithbarney.sportssync.tests
+        GENERATE_INFOPLIST_FILE: YES

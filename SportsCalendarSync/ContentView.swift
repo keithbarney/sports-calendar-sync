@@ -35,7 +35,6 @@ enum AppTab: Int, CaseIterable {
 }
 
 struct ContentView: View {
-    @EnvironmentObject private var calendarService: CalendarService
     @State private var selectedTab: AppTab = {
         #if DEBUG
         if let i = CommandLine.arguments.firstIndex(of: "-initial-tab"),
@@ -84,11 +83,6 @@ struct ContentView: View {
             .toolbar(selectedTab == .profile ? .visible : .hidden, for: .navigationBar)
             .navigationDestination(for: TrackedTeam.self) { team in
                 TeamDetailView(team: team)
-            }
-            .task {
-                if !calendarService.isAuthorized {
-                    _ = await calendarService.requestAccess()
-                }
             }
             .task(id: allTeams.count) {
                 #if DEBUG

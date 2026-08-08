@@ -254,7 +254,7 @@ struct TeamDetailView: View {
         defer { isRefreshing = false }
 
         if let tracked {
-            await teamManager.syncSchedule(
+            _ = await teamManager.syncSchedule(
                 for: tracked,
                 context: context,
                 espn: espn,
