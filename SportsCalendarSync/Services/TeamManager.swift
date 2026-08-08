@@ -437,7 +437,10 @@ final class TeamManager: ObservableObject {
         for stored in plan.removals {
             guard let row = rowsById[stored.fixture.espnEventId] else { continue }
             if let eventId = row.calendarEventId {
-                guard calendar.isAuthorized else { continue }
+                guard calendar.isAuthorized else {
+                    result.calendarWritesPending += 1
+                    continue
+                }
                 guard calendar.removeEvent(identifier: eventId) else {
                     result.failures.append(
                         "Calendar could not remove an outdated fixture. Open the app and tap Resync Calendar."

@@ -115,6 +115,8 @@ final class AutomaticRefreshService: ObservableObject {
             health.recordRegistrationFailure(
                 "iOS did not accept background refresh registration. Foreground and manual refresh still work."
             )
+        } else {
+            health.recordRegistrationSuccess()
         }
     }
 

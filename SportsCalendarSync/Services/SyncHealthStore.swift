@@ -96,6 +96,11 @@ final class SyncHealthStore: ObservableObject {
         defaults.set(message, forKey: Key.backgroundRegistrationError)
     }
 
+    func recordRegistrationSuccess() {
+        backgroundRegistrationError = nil
+        defaults.removeObject(forKey: Key.backgroundRegistrationError)
+    }
+
     func recordSchedulingFailure(_ message: String) {
         nextPlannedRefresh = nil
         backgroundSchedulingError = message
