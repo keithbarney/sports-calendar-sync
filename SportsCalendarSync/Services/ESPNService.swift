@@ -3,6 +3,12 @@ import os
 
 private let logger = Logger(subsystem: "com.keithbarney.sportssync", category: "ESPNService")
 
+struct UpcomingFixturesFetchResult {
+    let eventsByTeamId: [String: [ESPNEvent]]
+    let isComplete: Bool
+    let failures: [String]
+}
+
 /// Client for ESPN's public (hidden) soccer API.
 ///
 /// Base: `https://site.api.espn.com/apis/site/v2/sports/soccer/{league}/...`
@@ -78,16 +84,39 @@ final class ESPNService: ObservableObject {
     /// and filtering events where the team appears. Works around the fact that
     /// `/teams/{id}/schedule` only exposes past matches for some leagues (notably MLS).
     func getUpcomingFixtures(league: League, teamId: String, weeksAhead: Int = 16) async throws -> [ESPNEvent] {
+        let result = try await getUpcomingFixturesResult(
+            league: league,
+            teamIds: [teamId],
+            weeksAhead: weeksAhead
+        )
+        guard result.isComplete else {
+            throw APIError.incompleteFixtureCoverage(result.failures)
+        }
+        return result.eventsByTeamId[teamId] ?? []
+    }
+
+    /// Fetches each league window once and partitions matching events across followed teams.
+    /// Partial results remain useful for inserts/updates, but `isComplete` must be true before
+    /// a caller treats an absent event as removed.
+    func getUpcomingFixturesResult(
+        league: League,
+        teamIds: Set<String>,
+        weeksAhead: Int = 16
+    ) async throws -> UpcomingFixturesFetchResult {
         let fmt = DateFormatter()
         fmt.dateFormat = "yyyyMMdd"
         fmt.timeZone = TimeZone(identifier: "UTC")
 
         let cal = Calendar(identifier: .gregorian)
         let now = Date()
-        var byId: [String: ESPNEvent] = [:]
+        var byTeam: [String: [String: ESPNEvent]] = Dictionary(
+            uniqueKeysWithValues: teamIds.map { ($0, [:]) }
+        )
+        var failures: [String] = []
 
         // 14-day windows. 16 weeks ahead = 8 API calls.
         for offset in stride(from: 0, to: weeksAhead * 7, by: 14) {
+            try Task.checkCancellation()
             guard let start = cal.date(byAdding: .day, value: offset, to: now),
                   let end   = cal.date(byAdding: .day, value: 13, to: start) else { continue }
             let range = "\(fmt.string(from: start))-\(fmt.string(from: end))"
@@ -103,17 +132,31 @@ final class ESPNService: ObservableObject {
                 let response: ESPNScoreboardResponse = try await fetch(url)
                 var matches = 0
                 for event in response.events {
-                    let plays = event.competitions.first?.competitors.contains(where: { $0.team.id == teamId }) ?? false
-                    if plays { byId[event.id] = event; matches += 1 }
+                    let eventTeamIds = Set(
+                        event.competitions.first?.competitors.map { $0.team.id } ?? []
+                    )
+                    for teamId in teamIds.intersection(eventTeamIds) {
+                        byTeam[teamId, default: [:]][event.id] = event
+                        matches += 1
+                    }
                 }
                 print("[ESPN] \(range) events=\(response.events.count) matches=\(matches)")
+            } catch is CancellationError {
+                throw CancellationError()
             } catch {
                 print("[ESPN] chunk \(range) FAILED: \(error)")
-                continue
+                failures.append("\(range): \(error.localizedDescription)")
             }
         }
 
-        return byId.values.sorted { $0.date < $1.date }
+        let eventsByTeamId = byTeam.mapValues { events in
+            events.values.sorted { $0.date < $1.date }
+        }
+        return UpcomingFixturesFetchResult(
+            eventsByTeamId: eventsByTeamId,
+            isComplete: failures.isEmpty,
+            failures: failures
+        )
     }
 
     // MARK: - Helpers
@@ -149,6 +192,8 @@ final class ESPNService: ObservableObject {
             }
         } catch let err as APIError {
             throw err
+        } catch is CancellationError {
+            throw CancellationError()
         } catch {
             throw APIError.network(error)
         }

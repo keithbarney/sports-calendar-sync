@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftData
 import EventKit
 import UserNotifications
 import UIKit
@@ -9,12 +8,9 @@ struct ProfileView: View {
     @EnvironmentObject private var calendarService: CalendarService
     @EnvironmentObject private var notifications: NotificationService
     @EnvironmentObject private var toastManager: ToastManager
-    @EnvironmentObject private var teamManager: TeamManager
-    @EnvironmentObject private var espn: ESPNService
-    @Environment(\.modelContext) private var context
-    @Query(sort: \TrackedTeam.name) private var teams: [TrackedTeam]
+    @EnvironmentObject private var syncHealth: SyncHealthStore
+    @EnvironmentObject private var automaticRefresh: AutomaticRefreshService
     @Environment(\.scenePhase) private var scenePhase
-    @State private var isSyncing = false
     @State private var notificationStatus: UNAuthorizationStatus = .notDetermined
 
     var body: some View {
@@ -41,32 +37,84 @@ struct ProfileView: View {
                 }
             }
 
-            // MARK: - Actions
-            if calendarService.isAuthorized {
-                Section {
-                    Button {
-                        isSyncing = true
-                        Task {
-                            await teamManager.syncAllFollowed(
-                                context: context,
-                                espn: espn,
-                                calendar: calendarService,
-                                notifications: notifications
-                            )
-                            isSyncing = false
-                            toastManager.show("Synced \(teams.count) team\(teams.count == 1 ? "" : "s")")
-                        }
-                    } label: {
-                        HStack {
-                            Label("Resync Calendar", systemImage: "arrow.triangle.2.circlepath")
-                            if isSyncing {
-                                Spacer()
-                                ProgressView()
+            // MARK: - Calendar Sync
+            Section("Calendar Sync") {
+                SyncHealthRow(
+                    label: "Last successful sync",
+                    value: formatted(syncHealth.lastSuccessfulSync, fallback: "Not yet")
+                )
+                if syncHealth.lastSuccessfulSync != nil {
+                    SyncHealthRow(
+                        label: "Games changed",
+                        value: "\(syncHealth.lastGamesUpdated)"
+                    )
+                    Text(
+                        "\(syncHealth.lastAdded) added · \(syncHealth.lastChanged) changed · "
+                        + "\(syncHealth.lastRemoved) removed"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(Color.textSecondary)
+                }
+                if let next = syncHealth.nextPlannedRefresh {
+                    SyncHealthRow(
+                        label: "Refresh requested after",
+                        value: formatted(next, fallback: "Unknown")
+                    )
+                    Text("iOS chooses whether and when background refresh runs.")
+                        .font(.caption)
+                        .foregroundStyle(Color.textSecondary)
+                }
+                if syncHealth.lastCalendarRepairs > 0 {
+                    Label(
+                        "Repaired \(syncHealth.lastCalendarRepairs) calendar event\(syncHealth.lastCalendarRepairs == 1 ? "" : "s").",
+                        systemImage: "wrench.and.screwdriver"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(Color.textSecondary)
+                }
+                if let guidance = capabilityRepairGuidance {
+                    SyncWarning(message: guidance)
+                    if showsSystemSettingsRepairAction {
+                        Button("Open iOS Settings", action: openSettings)
+                    }
+                }
+                if let lastError = syncHealth.lastError {
+                    SyncWarning(message: lastError)
+                }
+                if let schedulingError = syncHealth.backgroundSchedulingError {
+                    SyncWarning(message: schedulingError)
+                }
+                if let registrationError = syncHealth.backgroundRegistrationError {
+                    SyncWarning(message: registrationError)
+                }
+
+                Button {
+                    Task {
+                        let result = await automaticRefresh.manualRefresh()
+                        if let result, result.isSuccessful {
+                            if result.gamesChanged == 0 {
+                                toastManager.show("Calendar is up to date")
+                            } else {
+                                toastManager.show(
+                                    "Changed \(result.gamesChanged) game\(result.gamesChanged == 1 ? "" : "s")"
+                                )
                             }
+                        } else if let result, result.calendarWritesPending > 0 {
+                            toastManager.show("Fixtures downloaded — Calendar needs repair")
+                        } else {
+                            toastManager.show("Refresh incomplete — existing games were kept")
                         }
                     }
-                    .disabled(isSyncing)
+                } label: {
+                    HStack {
+                        Label("Resync Calendar", systemImage: "arrow.triangle.2.circlepath")
+                        if automaticRefresh.isRefreshing {
+                            Spacer()
+                            ProgressView()
+                        }
+                    }
                 }
+                .disabled(automaticRefresh.isRefreshing)
             }
 
             // MARK: - Appearance
@@ -151,7 +199,11 @@ struct ProfileView: View {
         case .granted, .denied:
             openSettings()
         case .notDetermined:
-            Task { _ = await calendarService.requestAccess() }
+            Task {
+                if await calendarService.requestAccess() {
+                    await automaticRefresh.refreshIfNeeded(trigger: .permissionGranted)
+                }
+            }
         }
     }
 
@@ -175,6 +227,83 @@ struct ProfileView: View {
     private func openSettings() {
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         UIApplication.shared.open(url)
+    }
+
+    private var capabilityRepairGuidance: String? {
+        if !calendarService.isAuthorized {
+            return "Calendar access is off. Enable it in Settings, then tap Resync Calendar."
+        }
+        switch UIApplication.shared.backgroundRefreshStatus {
+        case .denied:
+            return "Background App Refresh is off. Enable it in Settings for automatic updates."
+        case .restricted:
+            return "Background refresh is restricted on this device. Launch and manual refresh will still work."
+        case .available:
+            break
+        @unknown default:
+            break
+        }
+        return nil
+    }
+
+    private var showsSystemSettingsRepairAction: Bool {
+        !calendarService.isAuthorized || UIApplication.shared.backgroundRefreshStatus == .denied
+    }
+
+    private func formatted(_ date: Date?, fallback: String) -> String {
+        guard let date else { return fallback }
+        return date.formatted(date: .abbreviated, time: .shortened)
+    }
+}
+
+private struct SyncWarning: View {
+    let message: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+            Text(message)
+                .foregroundStyle(Color.textPrimary)
+        }
+        .font(.subheadline)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+private struct SyncHealthRow: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    let label: String
+    let value: String
+
+    var body: some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 4) {
+                    labelText
+                    valueText
+                }
+            } else {
+                HStack(alignment: .firstTextBaseline) {
+                    labelText
+                    Spacer()
+                    valueText
+                        .multilineTextAlignment(.trailing)
+                }
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label), \(value)")
+    }
+
+    private var labelText: some View {
+        Text(label)
+            .foregroundStyle(Color.textPrimary)
+    }
+
+    private var valueText: some View {
+        Text(value)
+            .foregroundStyle(Color.textSecondary)
     }
 }
 

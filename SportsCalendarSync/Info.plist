@@ -16,6 +16,14 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.keithbarney.sportssync.fixture-refresh</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Sports Calendar Sync needs calendar access to add upcoming match fixtures to your calendar.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
