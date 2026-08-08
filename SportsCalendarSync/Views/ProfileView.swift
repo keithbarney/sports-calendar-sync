@@ -39,53 +39,52 @@ struct ProfileView: View {
 
             // MARK: - Calendar Sync
             Section("Calendar Sync") {
-                SyncHealthRow(
-                    label: "Last successful sync",
-                    value: formatted(syncHealth.lastSuccessfulSync, fallback: "Not yet")
+                SyncRefreshSummary(
+                    lastRefresh: syncHealth.lastSuccessfulSync.map { formatted($0, fallback: "") },
+                    nextRefresh: syncHealth.nextPlannedRefresh.map { formatted($0, fallback: "") }
                 )
-                if syncHealth.lastSuccessfulSync != nil {
-                    SyncHealthRow(
-                        label: "Games changed",
-                        value: "\(syncHealth.lastGamesUpdated)"
+
+                if let repairs = syncHealth.calendarRepairBannerCount {
+                    SyncFeedbackBanner(
+                        tone: .success,
+                        title: "Calendar repaired",
+                        message: "Repaired \(repairs) event\(repairs == 1 ? "" : "s") during the latest sync.",
+                        dismiss: syncHealth.dismissCalendarRepairBanner
                     )
-                    Text(
-                        "\(syncHealth.lastAdded) added · \(syncHealth.lastChanged) changed · "
-                        + "\(syncHealth.lastRemoved) removed"
-                    )
-                    .font(.caption)
-                    .foregroundStyle(Color.textSecondary)
-                }
-                if let next = syncHealth.nextPlannedRefresh {
-                    SyncHealthRow(
-                        label: "Refresh requested after",
-                        value: formatted(next, fallback: "Unknown")
-                    )
-                    Text("iOS chooses whether and when background refresh runs.")
-                        .font(.caption)
-                        .foregroundStyle(Color.textSecondary)
-                }
-                if syncHealth.lastCalendarRepairs > 0 {
-                    Label(
-                        "Repaired \(syncHealth.lastCalendarRepairs) calendar event\(syncHealth.lastCalendarRepairs == 1 ? "" : "s").",
-                        systemImage: "wrench.and.screwdriver"
-                    )
-                    .font(.caption)
-                    .foregroundStyle(Color.textSecondary)
                 }
                 if let guidance = capabilityRepairGuidance {
-                    SyncWarning(message: guidance)
+                    SyncFeedbackBanner(
+                        tone: .warning,
+                        title: capabilityRepairTitle,
+                        message: guidance
+                    )
                     if showsSystemSettingsRepairAction {
                         Button("Open iOS Settings", action: openSettings)
                     }
                 }
                 if let lastError = syncHealth.lastError {
-                    SyncWarning(message: lastError)
+                    SyncFeedbackBanner(
+                        tone: .warning,
+                        title: "Sync needs attention",
+                        message: lastError,
+                        dismiss: syncHealth.dismissLastError
+                    )
                 }
                 if let schedulingError = syncHealth.backgroundSchedulingError {
-                    SyncWarning(message: schedulingError)
+                    SyncFeedbackBanner(
+                        tone: .warning,
+                        title: "Automatic refresh unavailable",
+                        message: schedulingError,
+                        dismiss: syncHealth.dismissBackgroundSchedulingError
+                    )
                 }
                 if let registrationError = syncHealth.backgroundRegistrationError {
-                    SyncWarning(message: registrationError)
+                    SyncFeedbackBanner(
+                        tone: .warning,
+                        title: "Automatic refresh unavailable",
+                        message: registrationError,
+                        dismiss: syncHealth.dismissBackgroundRegistrationError
+                    )
                 }
 
                 Button {
@@ -96,7 +95,7 @@ struct ProfileView: View {
                                 toastManager.show("Calendar is up to date")
                             } else {
                                 toastManager.show(
-                                    "Changed \(result.gamesChanged) game\(result.gamesChanged == 1 ? "" : "s")"
+                                    "Sync complete — \(result.gamesChanged) game\(result.gamesChanged == 1 ? "" : "s") changed"
                                 )
                             }
                         } else if let result, result.calendarWritesPending > 0 {
@@ -107,7 +106,15 @@ struct ProfileView: View {
                     }
                 } label: {
                     HStack {
-                        Label("Resync Calendar", systemImage: "arrow.triangle.2.circlepath")
+                        VStack(alignment: .leading, spacing: 3) {
+                            Label(
+                                automaticRefresh.isRefreshing ? "Syncing Calendar" : "Sync Calendar Now",
+                                systemImage: "arrow.triangle.2.circlepath"
+                            )
+                            Text("Refresh fixtures and repair calendar events")
+                                .font(.caption)
+                                .foregroundStyle(Color.textSecondary)
+                        }
                         if automaticRefresh.isRefreshing {
                             Spacer()
                             ProgressView()
@@ -231,7 +238,7 @@ struct ProfileView: View {
 
     private var capabilityRepairGuidance: String? {
         if !calendarService.isAuthorized {
-            return "Calendar access is off. Enable it in Settings, then tap Resync Calendar."
+            return "Calendar access is off. Enable it in Settings, then choose Sync Calendar Now."
         }
         switch UIApplication.shared.backgroundRefreshStatus {
         case .denied:
@@ -246,6 +253,10 @@ struct ProfileView: View {
         return nil
     }
 
+    private var capabilityRepairTitle: String {
+        calendarService.isAuthorized ? "Background refresh unavailable" : "Calendar access needed"
+    }
+
     private var showsSystemSettingsRepairAction: Bool {
         !calendarService.isAuthorized || UIApplication.shared.backgroundRefreshStatus == .denied
     }
@@ -256,54 +267,98 @@ struct ProfileView: View {
     }
 }
 
-private struct SyncWarning: View {
-    let message: String
+private struct SyncRefreshSummary: View {
+    let lastRefresh: String?
+    let nextRefresh: String?
 
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(.orange)
-            Text(message)
-                .foregroundStyle(Color.textPrimary)
+        VStack(alignment: .leading, spacing: 12) {
+            Label {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Last successful refresh")
+                        .font(.caption)
+                        .foregroundStyle(Color.textSecondary)
+                    Text(lastRefresh ?? "No completed sync yet")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(Color.textPrimary)
+                }
+            } icon: {
+                Image(systemName: "clock.arrow.circlepath")
+                    .foregroundStyle(Color.accentColor)
+            }
+
+            if let nextRefresh {
+                Label("Automatic refresh requested after \(nextRefresh). iOS chooses the exact time.", systemImage: "clock")
+                    .font(.footnote)
+                    .foregroundStyle(Color.textSecondary)
+            }
         }
-        .font(.subheadline)
         .accessibilityElement(children: .combine)
     }
 }
 
-private struct SyncHealthRow: View {
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    let label: String
-    let value: String
+private struct SyncFeedbackBanner: View {
+    enum Tone {
+        case success
+        case warning
 
-    var body: some View {
-        Group {
-            if dynamicTypeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: 4) {
-                    labelText
-                    valueText
-                }
-            } else {
-                HStack(alignment: .firstTextBaseline) {
-                    labelText
-                    Spacer()
-                    valueText
-                        .multilineTextAlignment(.trailing)
-                }
+        var icon: String {
+            switch self {
+            case .success: return "wrench.and.screwdriver"
+            case .warning: return "exclamationmark.triangle.fill"
             }
         }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(label), \(value)")
+
+        var tint: Color {
+            switch self {
+            case .success: return .accentColor
+            case .warning: return .orange
+            }
+        }
     }
 
-    private var labelText: some View {
-        Text(label)
-            .foregroundStyle(Color.textPrimary)
+    let tone: Tone
+    let title: String
+    let message: String
+    let dismiss: (() -> Void)?
+
+    init(tone: Tone, title: String, message: String, dismiss: (() -> Void)? = nil) {
+        self.tone = tone
+        self.title = title
+        self.message = message
+        self.dismiss = dismiss
     }
 
-    private var valueText: some View {
-        Text(value)
-            .foregroundStyle(Color.textSecondary)
+    var body: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: tone.icon)
+                .foregroundStyle(tone.tint)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.textPrimary)
+                Text(message)
+                    .font(.subheadline)
+                    .foregroundStyle(Color.textSecondary)
+            }
+            .accessibilityElement(children: .combine)
+
+            Spacer(minLength: 0)
+
+            if let dismiss {
+                Button(action: dismiss) {
+                    Image(systemName: "xmark")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(Color.textSecondary)
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Dismiss \(title)")
+            }
+        }
+        .accessibilityElement(children: dismiss == nil ? .combine : .contain)
     }
 }
 

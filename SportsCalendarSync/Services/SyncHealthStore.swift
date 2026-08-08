@@ -11,6 +11,7 @@ final class SyncHealthStore: ObservableObject {
     @Published private(set) var lastChanged = 0
     @Published private(set) var lastRemoved = 0
     @Published private(set) var lastCalendarRepairs = 0
+    @Published private(set) var calendarRepairBannerCount: Int?
     @Published private(set) var lastError: String?
     @Published private(set) var backgroundSchedulingError: String?
     @Published private(set) var backgroundRegistrationError: String?
@@ -24,9 +25,6 @@ final class SyncHealthStore: ObservableObject {
         static let lastChanged = "syncHealth.lastChanged"
         static let lastRemoved = "syncHealth.lastRemoved"
         static let lastCalendarRepairs = "syncHealth.lastCalendarRepairs"
-        static let lastError = "syncHealth.lastError"
-        static let backgroundSchedulingError = "syncHealth.backgroundSchedulingError"
-        static let backgroundRegistrationError = "syncHealth.backgroundRegistrationError"
     }
 
     private let defaults: UserDefaults
@@ -41,9 +39,11 @@ final class SyncHealthStore: ObservableObject {
         lastChanged = defaults.integer(forKey: Key.lastChanged)
         lastRemoved = defaults.integer(forKey: Key.lastRemoved)
         lastCalendarRepairs = defaults.integer(forKey: Key.lastCalendarRepairs)
-        lastError = defaults.string(forKey: Key.lastError)
-        backgroundSchedulingError = defaults.string(forKey: Key.backgroundSchedulingError)
-        backgroundRegistrationError = defaults.string(forKey: Key.backgroundRegistrationError)
+        // Troubleshooting is intentionally session-only. A stale failure should not
+        // become permanent Settings content after the underlying issue is gone.
+        defaults.removeObject(forKey: "syncHealth.lastError")
+        defaults.removeObject(forKey: "syncHealth.backgroundSchedulingError")
+        defaults.removeObject(forKey: "syncHealth.backgroundRegistrationError")
     }
 
     func recordAttempt(at date: Date) {
@@ -59,6 +59,7 @@ final class SyncHealthStore: ObservableObject {
             lastChanged = result.updated
             lastRemoved = result.removed
             lastCalendarRepairs = result.calendarRepairs
+            calendarRepairBannerCount = result.calendarRepairs > 0 ? result.calendarRepairs : nil
             lastError = nil
 
             defaults.set(date, forKey: Key.lastSuccessfulSync)
@@ -67,20 +68,21 @@ final class SyncHealthStore: ObservableObject {
             defaults.set(result.updated, forKey: Key.lastChanged)
             defaults.set(result.removed, forKey: Key.lastRemoved)
             defaults.set(result.calendarRepairs, forKey: Key.lastCalendarRepairs)
-            defaults.removeObject(forKey: Key.lastError)
         } else {
+            calendarRepairBannerCount = nil
             let message: String
             if result.wasCancelled {
                 message = "The refresh did not finish before iOS stopped it. Your existing fixtures were kept."
             } else if result.calendarWritesPending > 0 {
-                message = "\(result.calendarWritesPending) calendar event(s) still need repair. Enable Calendar access and tap Resync Calendar."
+                let eventLabel = result.calendarWritesPending == 1 ? "event" : "events"
+                let verb = result.calendarWritesPending == 1 ? "needs" : "need"
+                message = "\(result.calendarWritesPending) calendar \(eventLabel) still \(verb) repair. Enable Calendar access, then choose Sync Calendar Now."
             } else if let first = result.failures.first {
                 message = first
             } else {
                 message = "The refresh could not be completed. Your existing fixtures were kept."
             }
             lastError = message
-            defaults.set(message, forKey: Key.lastError)
         }
     }
 
@@ -88,23 +90,35 @@ final class SyncHealthStore: ObservableObject {
         nextPlannedRefresh = date
         backgroundSchedulingError = nil
         defaults.set(date, forKey: Key.nextPlannedRefresh)
-        defaults.removeObject(forKey: Key.backgroundSchedulingError)
     }
 
     func recordRegistrationFailure(_ message: String) {
         backgroundRegistrationError = message
-        defaults.set(message, forKey: Key.backgroundRegistrationError)
     }
 
     func recordRegistrationSuccess() {
         backgroundRegistrationError = nil
-        defaults.removeObject(forKey: Key.backgroundRegistrationError)
     }
 
     func recordSchedulingFailure(_ message: String) {
         nextPlannedRefresh = nil
         backgroundSchedulingError = message
         defaults.removeObject(forKey: Key.nextPlannedRefresh)
-        defaults.set(message, forKey: Key.backgroundSchedulingError)
+    }
+
+    func dismissCalendarRepairBanner() {
+        calendarRepairBannerCount = nil
+    }
+
+    func dismissLastError() {
+        lastError = nil
+    }
+
+    func dismissBackgroundSchedulingError() {
+        backgroundSchedulingError = nil
+    }
+
+    func dismissBackgroundRegistrationError() {
+        backgroundRegistrationError = nil
     }
 }
