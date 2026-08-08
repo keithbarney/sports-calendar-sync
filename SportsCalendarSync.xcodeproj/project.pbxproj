@@ -39,6 +39,7 @@
 		90E06E2A2D12E7E6C1102224 /* SportsCalendarSyncWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 028FEB61A0C27F238DC38AC3 /* SportsCalendarSyncWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		91AF57C27EFA67B5A0D97403 /* CrestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7BDC77720F36E07A562806 /* CrestView.swift */; };
 		98B96DD793D67A1A57F693B5 /* SyncModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7CA509D2EA80758F3A81D0 /* SyncModels.swift */; };
+		AA8E7E95B36DED88670675EB /* ESPNDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B9B23A25F3494EAA5D0C5 /* ESPNDecodingTests.swift */; };
 		AED1178312D734A443568843 /* SportsCalendarSyncWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0D0FCDE8417F49CCB9CFD0 /* SportsCalendarSyncWidget.swift */; };
 		B005534288A691EC33A49CF7 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C36619B3503A73AE3DEFD0 /* SeedData.swift */; };
 		B161FB9B42E7B2C15292AF39 /* TeamManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD088C9A685E87EDE85329A5 /* TeamManager.swift */; };
@@ -112,6 +113,7 @@
 		4388A48991EE1B171CFD94E7 /* APIModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModels.swift; sourceTree = "<group>"; };
 		4AF01D45EB9EE870252B5D04 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		51599D9D567D8382C99D9FD4 /* SportsCalendarSync.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SportsCalendarSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A2B9B23A25F3494EAA5D0C5 /* ESPNDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESPNDecodingTests.swift; sourceTree = "<group>"; };
 		621568F819E4BC9071400FFE /* BackgroundRefreshSchedulingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshSchedulingTests.swift; sourceTree = "<group>"; };
 		6CEEB4EB681472A64382863E /* TrackedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedGame.swift; sourceTree = "<group>"; };
 		6EEE45D9116E55EBF01000F7 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				621568F819E4BC9071400FFE /* BackgroundRefreshSchedulingTests.swift */,
+				5A2B9B23A25F3494EAA5D0C5 /* ESPNDecodingTests.swift */,
 				224D454EAC9823857511D758 /* FixtureReconcilerTests.swift */,
 				E3F4F52E93CC471A6AB99432 /* RefreshPolicyTests.swift */,
 			);
@@ -456,6 +459,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A82FD242A71ACC6882D972B /* BackgroundRefreshSchedulingTests.swift in Sources */,
+				AA8E7E95B36DED88670675EB /* ESPNDecodingTests.swift in Sources */,
 				FE48E1B2DA36AC3E2965FEEC /* FixtureReconcilerTests.swift in Sources */,
 				25B5C7790EA23DF82E2D0108 /* RefreshPolicyTests.swift in Sources */,
 			);
