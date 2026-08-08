@@ -106,11 +106,11 @@ struct ProfileView: View {
                     }
                 } label: {
                     HStack {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                            .imageScale(.large)
+                            .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 3) {
-                            Label(
-                                automaticRefresh.isRefreshing ? "Syncing Calendar" : "Sync Calendar Now",
-                                systemImage: "arrow.triangle.2.circlepath"
-                            )
+                            Text(automaticRefresh.isRefreshing ? "Syncing Calendar" : "Sync Calendar Now")
                             Text("Refresh fixtures and repair calendar events")
                                 .font(.caption)
                                 .foregroundStyle(Color.textSecondary)
@@ -122,6 +122,8 @@ struct ProfileView: View {
                     }
                 }
                 .disabled(automaticRefresh.isRefreshing)
+                .accessibilityLabel(automaticRefresh.isRefreshing ? "Syncing Calendar" : "Sync Calendar Now")
+                .accessibilityHint("Refresh fixtures and repair calendar events")
             }
 
             // MARK: - Appearance
