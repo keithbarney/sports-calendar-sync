@@ -36,6 +36,16 @@ struct SyncResult: Equatable {
         !wasCancelled && failures.isEmpty && teamsAttempted == teamsSucceeded && calendarWritesPending == 0
     }
 
+    var manualRefreshMessage: String {
+        if calendarRepairs > 0 {
+            return "Calendar repaired — \(calendarRepairs) event\(calendarRepairs == 1 ? "" : "s")"
+        }
+        if gamesChanged == 0 {
+            return "Calendar is up to date"
+        }
+        return "Sync complete — \(gamesChanged) game\(gamesChanged == 1 ? "" : "s") changed"
+    }
+
     mutating func merge(_ other: SyncResult) {
         teamsAttempted += other.teamsAttempted
         teamsSucceeded += other.teamsSucceeded

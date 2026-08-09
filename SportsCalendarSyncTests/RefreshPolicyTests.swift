@@ -46,4 +46,19 @@ final class RefreshPolicyTests: XCTestCase {
 
         XCTAssertFalse(result.isSuccessful)
     }
+
+    func testManualRefreshMessageReportsRepairsBeforeFixtureChanges() {
+        var result = SyncResult()
+        result.calendarRepairs = 1
+
+        XCTAssertEqual(result.manualRefreshMessage, "Calendar repaired — 1 event")
+
+        result.calendarRepairs = 2
+        result.added = 3
+        XCTAssertEqual(result.manualRefreshMessage, "Calendar repaired — 2 events")
+    }
+
+    func testManualRefreshMessageReportsNoOpSync() {
+        XCTAssertEqual(SyncResult().manualRefreshMessage, "Calendar is up to date")
+    }
 }

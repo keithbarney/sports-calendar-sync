@@ -89,6 +89,7 @@ class CalendarService: ObservableObject {
     ) -> String? {
         upsertGame(
             identifier: nil,
+            fixtureIdentity: nil,
             homeTeam: homeTeam,
             awayTeam: awayTeam,
             kickoff: kickoff,
@@ -104,6 +105,7 @@ class CalendarService: ObservableObject {
     /// creating a replacement, which covers user-deleted events and calendar recreation.
     func upsertGame(
         identifier: String?,
+        fixtureIdentity: String?,
         homeTeam: String,
         awayTeam: String,
         kickoff: Date,
@@ -121,7 +123,7 @@ class CalendarService: ObservableObject {
             )
         }
 
-        let existing = identifier.flatMap { store.event(withIdentifier: $0) }
+        let existing = event(for: identifier)
         let event = existing ?? EKEvent(eventStore: store)
         let statusText = displayStatus(status)
         event.title = statusText.map { "\(homeTeam) vs. \(awayTeam) — \($0)" }
@@ -139,6 +141,9 @@ class CalendarService: ObservableObject {
             notes += "\n\nBroadcast: \(broadcasts.joined(separator: ", "))"
         }
         event.notes = notes
+        if let fixtureIdentity {
+            event.url = fixtureURL(for: fixtureIdentity)
+        }
         event.alarms?.forEach { event.removeAlarm($0) }
         if let reminderOffset, statusText == nil {
             event.addAlarm(EKAlarm(relativeOffset: reminderOffset))
@@ -147,7 +152,7 @@ class CalendarService: ObservableObject {
         do {
             try store.save(event, span: .thisEvent)
             return CalendarEventWriteResult(
-                identifier: event.eventIdentifier,
+                identifier: event.calendarItemIdentifier,
                 created: existing == nil,
                 errorMessage: nil
             )
@@ -161,9 +166,37 @@ class CalendarService: ObservableObject {
         }
     }
 
-    func containsEvent(identifier: String?) -> Bool {
-        guard let identifier else { return false }
-        return store.event(withIdentifier: identifier) != nil
+    /// Resolves a persisted EventKit identifier, then falls back to the app's unique fixture marker.
+    /// Never infer ownership from a title or kickoff time: a user may have their own look-alike
+    /// event in a calendar named Sports, and the app must not adopt or delete it.
+    func resolveEventIdentifier(
+        identifier: String?,
+        fixtureIdentity: String,
+        kickoff: Date,
+        previousKickoff: Date? = nil
+    ) -> String? {
+        if let event = event(for: identifier) {
+            tag(event, with: fixtureIdentity)
+            return event.calendarItemIdentifier
+        }
+        guard let calendar = appCalendar else { return nil }
+
+        let expectedURL = fixtureURL(for: fixtureIdentity)
+        let window: TimeInterval = 5 * 60
+        let dates = [kickoff, previousKickoff].compactMap { $0 }
+        for date in dates {
+            let predicate = store.predicateForEvents(
+                withStart: date.addingTimeInterval(-window),
+                end: date.addingTimeInterval(window),
+                calendars: [calendar]
+            )
+            if let event = store.events(matching: predicate).first(where: { $0.url == expectedURL }) {
+                tag(event, with: fixtureIdentity)
+                return event.calendarItemIdentifier
+            }
+        }
+
+        return nil
     }
 
     /// Update an existing event in place — used when ESPN reschedules / postpones a match.
@@ -181,7 +214,7 @@ class CalendarService: ObservableObject {
 
     @discardableResult
     func removeEvent(identifier: String) -> Bool {
-        guard let event = store.event(withIdentifier: identifier) else { return true }
+        guard let event = event(for: identifier) else { return true }
         do {
             try store.remove(event, span: .thisEvent)
             return true
@@ -200,6 +233,30 @@ class CalendarService: ObservableObject {
         if status.contains("POSTPONED") { return "Postponed" }
         if status.contains("CANCELED") || status.contains("CANCELLED") { return "Cancelled" }
         return nil
+    }
+
+    private func event(for identifier: String?) -> EKEvent? {
+        guard let identifier else { return nil }
+        if let item = store.calendarItem(withIdentifier: identifier) as? EKEvent {
+            return item
+        }
+        // Older app versions persisted `eventIdentifier`; retain it as a migration fallback.
+        return store.event(withIdentifier: identifier)
+    }
+
+    private func fixtureURL(for identity: String) -> URL? {
+        var components = URLComponents()
+        components.scheme = "sportscalendarsync"
+        components.host = "fixture"
+        components.queryItems = [URLQueryItem(name: "id", value: identity)]
+        return components.url
+    }
+
+    private func tag(_ event: EKEvent, with fixtureIdentity: String) {
+        let marker = fixtureURL(for: fixtureIdentity)
+        guard event.url != marker else { return }
+        event.url = marker
+        try? store.save(event, span: .thisEvent)
     }
 
     func removeAllEvents() -> Int {

@@ -335,6 +335,7 @@ final class TeamManager: ObservableObject {
 
         var rowsById = Dictionary(uniqueKeysWithValues: existing.map { ($0.espnEventId, $0) })
         let originalIds = Set(rowsById.keys)
+        let originalKickoffs = Dictionary(uniqueKeysWithValues: existing.map { ($0.espnEventId, $0.kickoff) })
         let stored = existing.map { row in
             StoredFixtureSnapshot(
                 fixture: snapshot(from: row),
@@ -408,10 +409,18 @@ final class TeamManager: ObservableObject {
         if calendar.isAuthorized {
             for fixture in fetched where originalIds.contains(fixture.espnEventId) {
                 guard let row = rowsById[fixture.espnEventId] else { continue }
-                let eventExists = calendar.containsEvent(identifier: row.calendarEventId)
+                let resolvedIdentifier = calendar.resolveEventIdentifier(
+                    identifier: row.calendarEventId,
+                    fixtureIdentity: calendarFixtureIdentity(for: fixture),
+                    kickoff: fixture.kickoff,
+                    previousKickoff: originalKickoffs[fixture.espnEventId]
+                )
+                if let resolvedIdentifier {
+                    row.calendarEventId = resolvedIdentifier
+                }
                 guard CalendarRepairPolicy().needsRepair(
                     syncPending: row.calendarSyncPending,
-                    eventExists: eventExists
+                    eventExists: resolvedIdentifier != nil
                 ) else { continue }
                 let write = writeCalendarEvent(
                     fixture,
@@ -501,6 +510,7 @@ final class TeamManager: ObservableObject {
     ) -> CalendarEventWriteResult {
         calendar.upsertGame(
             identifier: identifier,
+            fixtureIdentity: calendarFixtureIdentity(for: fixture),
             homeTeam: fixture.homeTeamName,
             awayTeam: fixture.awayTeamName,
             kickoff: fixture.kickoff,
@@ -510,6 +520,10 @@ final class TeamManager: ObservableObject {
             status: fixture.status,
             reminderOffset: currentReminderOffset
         )
+    }
+
+    private func calendarFixtureIdentity(for fixture: FixtureSnapshot) -> String {
+        "\(fixture.leagueSlug)|\(fixture.followedTeamId)|\(fixture.espnEventId)"
     }
 
     private func updateNotification(

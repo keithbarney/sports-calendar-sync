@@ -90,13 +90,7 @@ struct ProfileView: View {
                     Task {
                         let result = await automaticRefresh.manualRefresh()
                         if let result, result.isSuccessful {
-                            if result.gamesChanged == 0 {
-                                toastManager.show("Calendar is up to date")
-                            } else {
-                                toastManager.show(
-                                    "Sync complete — \(result.gamesChanged) game\(result.gamesChanged == 1 ? "" : "s") changed"
-                                )
-                            }
+                            toastManager.show(result.manualRefreshMessage)
                         } else if let result, result.calendarWritesPending > 0 {
                             toastManager.show("Fixtures downloaded — Calendar needs repair")
                         } else {
