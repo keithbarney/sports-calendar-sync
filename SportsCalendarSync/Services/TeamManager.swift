@@ -25,7 +25,29 @@ final class TeamManager: ObservableObject {
         currentReminder.offsetSeconds
     }
 
+    private static func matchesClub(_ lhs: ESPNTeam, _ rhs: ESPNTeam) -> Bool {
+        if lhs.id == rhs.id { return true }
+
+        let lhsNames = Set([lhs.name, lhs.displayName, lhs.shortDisplayName].compactMap(normalizeClubName))
+        let rhsNames = Set([rhs.name, rhs.displayName, rhs.shortDisplayName].compactMap(normalizeClubName))
+
+        if !lhsNames.isDisjoint(with: rhsNames) { return true }
+        if lhsNames.contains("lafc") && rhsNames.contains("losangelesfc") { return true }
+        if lhsNames.contains("losangelesfc") && rhsNames.contains("lafc") { return true }
+        return false
+    }
+
+    private static func normalizeClubName(_ name: String?) -> String? {
+        guard let name, !name.isEmpty else { return nil }
+        return name
+            .lowercased()
+            .replacingOccurrences(of: " ", with: "")
+            .replacingOccurrences(of: "-", with: "")
+            .replacingOccurrences(of: ".", with: "")
+    }
+
     /// Follow a team: persist + immediately fetch & mirror schedule to Calendar.
+    @discardableResult
     func follow(
         espnTeam: ESPNTeam,
         league: League,
@@ -33,14 +55,14 @@ final class TeamManager: ObservableObject {
         espn: ESPNService,
         calendar: CalendarService,
         notifications: NotificationService? = nil
-    ) async {
+    ) async -> Bool {
         // Dedupe
         let id = espnTeam.id
         let slug = league.slug
         let descriptor = FetchDescriptor<TrackedTeam>(
             predicate: #Predicate { $0.espnId == id && $0.leagueSlug == slug }
         )
-        if let existing = try? context.fetch(descriptor), !existing.isEmpty { return }
+        if let existing = try? context.fetch(descriptor), !existing.isEmpty { return false }
 
         let team = TrackedTeam(
             espnId: espnTeam.id,
@@ -73,6 +95,47 @@ final class TeamManager: ObservableObject {
             league: league,
             notifications: notifications
         )
+        return true
+    }
+
+    /// Follow one club in several competition feeds. ESPN may use a different team
+    /// record for a cup, so resolve each competition by the club's name before syncing.
+    @discardableResult
+    func followAcrossCompetitions(
+        espnTeam: ESPNTeam,
+        sourceCompetition: Competition,
+        competitions: [Competition],
+        context: ModelContext,
+        espn: ESPNService,
+        calendar: CalendarService,
+        notifications: NotificationService? = nil
+    ) async -> Int {
+        var added = 0
+
+        for competition in competitions {
+            let candidate: ESPNTeam?
+            if competition == sourceCompetition {
+                candidate = espnTeam
+            } else if let teams = try? await espn.getTeams(league: competition) {
+                candidate = teams.first(where: { Self.matchesClub($0, espnTeam) })
+            } else {
+                candidate = nil
+            }
+
+            guard let candidate else { continue }
+            if await follow(
+                espnTeam: candidate,
+                league: competition,
+                context: context,
+                espn: espn,
+                calendar: calendar,
+                notifications: notifications
+            ) {
+                added += 1
+            }
+        }
+
+        return added
     }
 
     func unfollow(
@@ -83,8 +146,9 @@ final class TeamManager: ObservableObject {
     ) {
         // Remove mirrored calendar events for this team
         let id = team.espnId
+        let slug = team.leagueSlug
         let descriptor = FetchDescriptor<TrackedGame>(
-            predicate: #Predicate { $0.followedTeamId == id }
+            predicate: #Predicate { $0.followedTeamId == id && $0.leagueSlug == slug }
         )
         if let games = try? context.fetch(descriptor) {
             let ids = games.compactMap { $0.calendarEventId }
@@ -96,8 +160,33 @@ final class TeamManager: ObservableObject {
         try? context.save()
     }
 
-    /// Sync every followed team's schedule. Useful after granting calendar access the first time,
-    /// or after the user manually taps "Sync fixtures" in Profile.
+    /// Stop syncing one competition while retaining its existing calendar events and
+    /// stored fixture history. The user can still remove those events by unfollowing
+    /// the entire club.
+    func stopFollowingCompetition(
+        team: TrackedTeam,
+        context: ModelContext,
+        notifications: NotificationService? = nil
+    ) {
+        let id = team.espnId
+        let slug = team.leagueSlug
+        let descriptor = FetchDescriptor<TrackedGame>(
+            predicate: #Predicate { $0.followedTeamId == id && $0.leagueSlug == slug }
+        )
+        if let games = try? context.fetch(descriptor) {
+            for game in games {
+                notifications?.removeGameNotification(
+                    followedTeamId: game.followedTeamId,
+                    espnEventId: game.espnEventId
+                )
+            }
+        }
+        context.delete(team)
+        try? context.save()
+    }
+
+    /// Sync every followed team's schedule. Sync adds new fixtures and updates existing ones;
+    /// it never removes fixtures. Explicit unfollow actions still remove that team's events.
     @discardableResult
     func syncAllFollowed(
         context: ModelContext,
@@ -106,7 +195,7 @@ final class TeamManager: ObservableObject {
         notifications: NotificationService? = nil,
         requestCalendarAccess: Bool = true,
         weeksAhead: Int = 16,
-        allowsFixtureRemoval: Bool = true
+        allowsFixtureRemoval: Bool = false
     ) async -> SyncResult {
         isSyncing = true
         defer { isSyncing = false }
@@ -178,7 +267,8 @@ final class TeamManager: ObservableObject {
         return aggregate
     }
 
-    /// Pull team schedule from ESPN, diff against stored games, write/update/remove calendar events.
+    /// Pull team schedule from ESPN, diff against stored games, and write/update calendar events.
+    /// Existing fixtures are retained even when ESPN omits them from a response.
     @discardableResult
     func syncSchedule(
         for team: TrackedTeam,
@@ -190,7 +280,7 @@ final class TeamManager: ObservableObject {
         prefetchedFuture: [ESPNEvent]? = nil,
         futureIsComplete: Bool = true,
         futureFailures: [String] = [],
-        allowsFixtureRemoval: Bool = true,
+        allowsFixtureRemoval: Bool = false,
         managesSyncState: Bool = true
     ) async -> SyncResult {
         let syncKey = "\(league.slug):\(team.espnId)"
@@ -322,8 +412,9 @@ final class TeamManager: ObservableObject {
     ) -> SyncResult {
         var result = SyncResult()
         let teamId = team.espnId
+        let competitionSlug = league.slug
         let descriptor = FetchDescriptor<TrackedGame>(
-            predicate: #Predicate { $0.followedTeamId == teamId }
+            predicate: #Predicate { $0.followedTeamId == teamId && $0.leagueSlug == competitionSlug }
         )
         let existing: [TrackedGame]
         do {

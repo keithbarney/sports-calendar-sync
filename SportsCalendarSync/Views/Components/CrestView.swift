@@ -16,7 +16,8 @@ struct CrestView: View {
             Rectangle()
                 .fill(Color.surfaceElevated)
                 .overlay {
-                    LucideIcon(name: fallbackIcon, size: size * 0.4)
+                    Image(systemName: fallbackIcon)
+                        .font(.system(size: size * 0.4))
                         .foregroundStyle(.textTertiary)
                 }
         }
