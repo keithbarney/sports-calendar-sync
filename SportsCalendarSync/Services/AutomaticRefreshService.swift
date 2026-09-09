@@ -57,6 +57,7 @@ enum BackgroundRefreshRequestCoordinator {
 @MainActor
 final class AutomaticRefreshService: ObservableObject {
     static let backgroundTaskIdentifier = "com.keithbarney.sportssync.fixture-refresh"
+    static let backgroundRefreshEnabled = false
 
     @Published private(set) var isRefreshing = false
 
@@ -92,6 +93,8 @@ final class AutomaticRefreshService: ObservableObject {
         self.scheduler = scheduler
         self.now = now
 
+        guard Self.backgroundRefreshEnabled else { return }
+
         let registered = scheduler.register(identifier: Self.backgroundTaskIdentifier) { [weak self] task in
             guard let refreshTask = task as? BGAppRefreshTask else {
                 task.setTaskCompleted(success: false)
@@ -121,6 +124,8 @@ final class AutomaticRefreshService: ObservableObject {
     }
 
     func scheduleNextRefresh() {
+        guard Self.backgroundRefreshEnabled else { return }
+
         BackgroundRefreshRequestCoordinator.scheduleNext(
             identifier: Self.backgroundTaskIdentifier,
             policy: policy,
@@ -160,7 +165,7 @@ final class AutomaticRefreshService: ObservableObject {
                 notifications: notifications,
                 requestCalendarAccess: false,
                 weeksAhead: isBackground ? 4 : 16,
-                allowsFixtureRemoval: !isBackground
+                allowsFixtureRemoval: false
             )
         }
         currentRefresh = operation
@@ -185,6 +190,11 @@ final class AutomaticRefreshService: ObservableObject {
     }
 
     private func handleBackgroundRefresh(_ task: BGAppRefreshTask) async {
+        guard Self.backgroundRefreshEnabled else {
+            task.setTaskCompleted(success: true)
+            return
+        }
+
         scheduleNextRefresh()
         let result = await refreshIfNeeded(trigger: .background)
         task.expirationHandler = nil

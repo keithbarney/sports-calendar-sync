@@ -1,8 +1,44 @@
 import XCTest
 @testable import SportsCalendarSync
 
+@MainActor
 final class RefreshPolicyTests: XCTestCase {
     private let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+    func testDefaultAutomaticIntervalWaitsSixHours() {
+        let policy = RefreshPolicy()
+
+        XCTAssertFalse(
+            policy.shouldRefresh(
+                trigger: .foreground,
+                lastAttempt: now.addingTimeInterval(-(6 * 60 * 60 - 1)),
+                now: now
+            )
+        )
+        XCTAssertTrue(
+            policy.shouldRefresh(
+                trigger: .foreground,
+                lastAttempt: now.addingTimeInterval(-6 * 60 * 60),
+                now: now
+            )
+        )
+    }
+
+    func testManualRefreshIsAlwaysAllowedAfterRecentAutomaticRefresh() {
+        let policy = RefreshPolicy()
+
+        XCTAssertTrue(
+            policy.shouldRefresh(
+                trigger: .manual,
+                lastAttempt: now.addingTimeInterval(-1),
+                now: now
+            )
+        )
+    }
+
+    func testAutomaticRefreshRunsOnlyFromAppActivation() {
+        XCTAssertFalse(AutomaticRefreshService.backgroundRefreshEnabled)
+    }
 
     func testFirstAutomaticRefreshRuns() {
         let policy = RefreshPolicy(minimumAutomaticInterval: 900, backgroundRefreshInterval: 21_600)

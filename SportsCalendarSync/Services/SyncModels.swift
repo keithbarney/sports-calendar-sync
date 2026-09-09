@@ -60,7 +60,9 @@ struct SyncResult: Equatable {
 }
 
 struct RefreshPolicy: Equatable {
-    var minimumAutomaticInterval: TimeInterval = 15 * 60
+    /// Automatic refreshes run at most once every six hours across app launches
+    /// and foreground activations. Manual refreshes are always allowed.
+    var minimumAutomaticInterval: TimeInterval = 6 * 60 * 60
     var backgroundRefreshInterval: TimeInterval = 6 * 60 * 60
 
     func shouldRefresh(trigger: SyncTrigger, lastAttempt: Date?, now: Date) -> Bool {

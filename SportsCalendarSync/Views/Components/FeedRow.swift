@@ -11,12 +11,12 @@ struct FeedRow<Subtitle: View, Trailing: View>: View {
     var body: some View {
         HStack(spacing: 12) {
             CrestView(url: logoURL, size: 44, fallbackIcon: fallbackIcon)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.textPrimary)
-                    .lineLimit(1)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
 
                 subtitle()
             }
@@ -25,8 +25,6 @@ struct FeedRow<Subtitle: View, Trailing: View>: View {
 
             trailing()
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
     }
 }
 

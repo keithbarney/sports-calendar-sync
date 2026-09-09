@@ -15,23 +15,6 @@ enum AppTab: Int, CaseIterable {
     case following
     case discover
     case profile
-
-    var label: String {
-        switch self {
-        case .following: return "Following"
-        case .discover:  return "Discover"
-        case .profile:   return "Settings"
-        }
-    }
-
-    /// Lucide icon name (matches Assets.xcassets/Icons). Same set as TV & Movie Calendar Sync.
-    var icon: String {
-        switch self {
-        case .following: return "calendar-check"
-        case .discover:  return "search"
-        case .profile:   return "user-round"
-        }
-    }
 }
 
 struct ContentView: View {
@@ -48,149 +31,65 @@ struct ContentView: View {
         #endif
         return .following
     }()
-    @State private var leagueFilter: League? = nil
-    @State private var isSearching = false
-    @State private var navPath: [TrackedTeam] = []
+    @State private var leagueFilter: League?
+    @State private var followingPath: [TrackedTeam] = []
+    @State private var didOpenRequestedTeam = false
     @Query private var allTeams: [TrackedTeam]
 
-    private var showsFilter: Bool {
-        selectedTab != .profile
-    }
-
     var body: some View {
-        NavigationStack(path: $navPath) {
-            ZStack {
-                tabContent
-                    .id(selectedTab)
-                    .transition(.opacity.animation(.easeInOut(duration: 0.2)))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .safeAreaPadding(.top, showsFilter ? 52 : 0)
-                    .safeAreaPadding(.bottom, 80)
+        TabView(selection: $selectedTab) {
+            NavigationStack(path: $followingPath) {
+                FollowingView(leagueFilter: $leagueFilter)
+                    .navigationDestination(for: TrackedTeam.self) { team in
+                        TeamDetailView(team: team)
+                    }
+            }
+            .tabItem { Label("Following", systemImage: "calendar.badge.checkmark") }
+            .tag(AppTab.following)
 
-                VStack {
-                    if showsFilter {
-                        SegmentedFilter(selection: $leagueFilter)
-                    }
-                    Spacer()
-                    if !isSearching {
-                        FloatingTabBar(selection: $selectedTab)
-                            .transition(.opacity)
-                    }
-                }
-                .modifier(GlassContainerWrapper())
+            NavigationStack {
+                DiscoverView(leagueFilter: $leagueFilter)
             }
-            .background(Color.background)
-            .toolbar(selectedTab == .profile ? .visible : .hidden, for: .navigationBar)
-            .navigationDestination(for: TrackedTeam.self) { team in
-                TeamDetailView(team: team)
+            .tabItem { Label("Discover", systemImage: "magnifyingglass") }
+            .tag(AppTab.discover)
+
+            NavigationStack {
+                ProfileView()
             }
-            .task(id: allTeams.count) {
-                #if DEBUG
-                if let match = launchArgOpenTeamDetail,
-                   navPath.isEmpty,
-                   let team = allTeams.first(where: {
-                       $0.name.localizedCaseInsensitiveContains(match)
-                   }) {
-                    navPath = [team]
-                }
-                #endif
-            }
+            .tabItem { Label("Settings", systemImage: "gearshape") }
+            .tag(AppTab.profile)
         }
-    }
-
-    @ViewBuilder
-    private var tabContent: some View {
-        switch selectedTab {
-        case .following:
-            FollowingView(leagueFilter: $leagueFilter)
-        case .discover:
-            DiscoverView(leagueFilter: $leagueFilter, isSearching: $isSearching)
-        case .profile:
-            ProfileView()
+        .task(id: allTeams.count) {
+            #if DEBUG
+            if let match = launchArgOpenTeamDetail,
+               !didOpenRequestedTeam,
+               let team = allTeams.first(where: {
+                   $0.name.localizedCaseInsensitiveContains(match)
+               }) {
+                didOpenRequestedTeam = true
+                selectedTab = .following
+                followingPath = [team]
+            }
+            #endif
         }
     }
 }
 
-// MARK: - Floating Tab Bar
-
-struct FloatingTabBar: View {
-    @Binding var selection: AppTab
-
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(AppTab.allCases, id: \.self) { tab in
-                Button {
-                    withAnimation(.easeInOut(duration: 0.15)) {
-                        selection = tab
-                    }
-                } label: {
-                    LucideIcon(name: tab.icon, size: 24)
-                        .foregroundStyle(selection == tab ? Color.accent : Color.textTertiary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .contentShape(Rectangle())
-                }
-            }
-        }
-        .frame(width: 170, height: 56)
-        .capsuleGlass(shadow: true, interactive: true)
-        .padding(.bottom, 12)
-    }
-}
-
-// MARK: - Segmented Filter (top tabs)
-
-struct SegmentedFilter: View {
+struct CompetitionFilterMenu: View {
     @Binding var selection: League?
 
-    private var chips: [(League?, String)] {
-        [(nil, "All")] + League.allCases.map { ($0 as League?, $0.shortName) }
-    }
-
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 2) {
-                ForEach(Array(chips.enumerated()), id: \.offset) { _, chip in
-                    let (value, label) = chip
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            selection = value
-                        }
-                    } label: {
-                        Text(label)
-                            .font(.system(size: 14, weight: .semibold))
-                            .padding(.horizontal, 14)
-                            .frame(minHeight: 36)
-                            .contentShape(Capsule())
-                            .background(
-                                Capsule()
-                                    .fill(selection == value ? Color.glassHighlight : .clear)
-                            )
-                            .foregroundStyle(selection == value ? Color.accent : Color.textTertiary)
-                    }
-                    .buttonStyle(.plain)
+        Menu {
+            Picker("Competition", selection: $selection) {
+                Text("All competitions").tag(nil as League?)
+                ForEach(League.allCases) { league in
+                    Text(league.displayName).tag(league as League?)
                 }
             }
-            .padding(.horizontal, 3)
+        } label: {
+            Text(selection?.shortName ?? "All competitions")
         }
-        .padding(3)
-        .capsuleGlass(interactive: true)
-        .padding(.horizontal, 16)
-        .padding(.top, 4)
-        .padding(.bottom, 8)
-    }
-}
-
-// MARK: - Glass Effect Container Wrapper
-
-private struct GlassContainerWrapper: ViewModifier {
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if #available(iOS 26, *) {
-            GlassEffectContainer {
-                content
-            }
-        } else {
-            content
-        }
+        .accessibilityLabel("Competition filter")
+        .accessibilityValue(selection?.displayName ?? "All competitions")
     }
 }

@@ -3,7 +3,6 @@ import SwiftData
 
 struct DiscoverView: View {
     @Binding var leagueFilter: League?
-    @Binding var isSearching: Bool
 
     @EnvironmentObject var espn: ESPNService
     @EnvironmentObject var teamManager: TeamManager
@@ -16,7 +15,7 @@ struct DiscoverView: View {
     @State private var isLoading = false
     @State private var query = ""
     @State private var addingIds: Set<String> = []
-    @FocusState private var searchFocused: Bool
+    @State private var pendingRemoval: TrackedTeam?
 
     private var leaguesToShow: [League] {
         if let l = leagueFilter { return [l] }
@@ -24,64 +23,90 @@ struct DiscoverView: View {
     }
 
     var body: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: 0, pinnedViews: []) {
-                SearchBar(text: $query, placeholder: "Search teams…", isFocused: $searchFocused)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 4)
-
-                if isLoading && teamsByLeague.isEmpty {
-                    DiscoverSkeleton()
-                        .padding(.top, 8)
-                } else if visibleLeagues.isEmpty {
-                    EmptyState(
-                        icon: "search",
-                        title: "No teams found",
-                        message: query.isEmpty
-                            ? "Pick a league above to browse teams."
-                            : "Try a different search term."
-                    )
-                    .padding(.top, 80)
-                } else {
-                    ForEach(visibleLeagues) { league in
-                        let teams = filteredTeams(for: league)
-                        if !teams.isEmpty {
-                            FeedSection(title: league.displayName) {
-                                ForEach(teams, id: \.id) { t in
-                                    HiddenChevronNavigationLink {
-                                        TeamDetailView(espnTeam: t, league: league)
-                                    } label: {
-                                        FeedRow(
-                                            logoURL: t.logos?.first?.href,
-                                            fallbackIcon: "sparkles",
-                                            title: t.displayName ?? t.name ?? "Unknown"
-                                        ) {
-                                            Text(league.shortName)
-                                                .font(.system(size: 13))
-                                                .foregroundStyle(.textSecondary)
-                                        } trailing: {
-                                            FeedRowActionButton(
-                                                isTracked: isFollowed(t, league: league),
-                                                isAdding: addingIds.contains(t.id),
-                                                onAdd: { Task { await follow(t, league: league) } },
-                                                onRemove: { unfollow(t, league: league) }
-                                            )
-                                        }
-                                    }
+        List {
+            ForEach(visibleLeagues) { league in
+                Section(league.displayName) {
+                    ForEach(filteredTeams(for: league), id: \.id) { team in
+                        NavigationLink {
+                            TeamDetailView(espnTeam: team, league: league)
+                        } label: {
+                            FeedRow(
+                                logoURL: team.logos?.first?.href,
+                                fallbackIcon: "sportscourt",
+                                title: team.displayName ?? team.name ?? "Unknown"
+                            ) {
+                                Text(league.shortName)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            } trailing: {
+                                if addingIds.contains(team.id) {
+                                    ProgressView()
+                                } else if isFollowed(team, league: league) {
+                                    Image(systemName: "checkmark")
+                                        .foregroundStyle(.secondary)
+                                        .accessibilityLabel("Following")
                                 }
+                            }
+                        }
+                        .swipeActions(allowsFullSwipe: false) {
+                            if isFollowed(team, league: league) {
+                                Button(role: .destructive) {
+                                    pendingRemoval = followed.first {
+                                        $0.espnId == team.id && $0.leagueSlug == league.slug
+                                    }
+                                } label: {
+                                    Label("Unfollow", systemImage: "minus.circle")
+                                }
+                            } else {
+                                Button {
+                                    Task { await follow(team, league: league) }
+                                } label: {
+                                    Label("Follow", systemImage: "plus.circle")
+                                }
+                                .tint(.accentColor)
+                                .disabled(addingIds.contains(team.id))
                             }
                         }
                     }
                 }
             }
-            .padding(.bottom, 24)
         }
-        .task(id: leagueFilter) { await load() }
-        .onChange(of: searchFocused) { _, focused in
-            withAnimation(.easeInOut(duration: 0.2)) {
-                isSearching = focused
+        .overlay {
+            if isLoading && teamsByLeague.isEmpty {
+                ProgressView("Loading teams…")
+            } else if visibleLeagues.isEmpty {
+                if query.isEmpty {
+                    ContentUnavailableView("No teams available", systemImage: "sportscourt", description: Text("Choose another competition or try again later."))
+                } else {
+                    ContentUnavailableView.search(text: query)
+                }
             }
         }
+        .navigationTitle("Discover")
+        .searchable(text: $query, prompt: "Search teams")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                CompetitionFilterMenu(selection: $leagueFilter)
+            }
+        }
+        .confirmationDialog(
+            "Unfollow \(pendingRemoval?.name ?? "team")?",
+            isPresented: Binding(
+                get: { pendingRemoval != nil },
+                set: { if !$0 { pendingRemoval = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("Unfollow", role: .destructive) {
+                if let team = pendingRemoval {
+                    teamManager.unfollow(team: team, context: context, calendar: calendar, notifications: notifications)
+                }
+                pendingRemoval = nil
+            }
+        } message: {
+            Text("This removes the team's fixtures for this competition from your calendar.")
+        }
+        .task(id: leagueFilter) { await load() }
     }
 
     private var visibleLeagues: [League] {
@@ -125,8 +150,4 @@ struct DiscoverView: View {
         addingIds.remove(team.id)
     }
 
-    private func unfollow(_ team: ESPNTeam, league: League) {
-        guard let existing = followed.first(where: { $0.espnId == team.id && $0.leagueSlug == league.slug }) else { return }
-        teamManager.unfollow(team: existing, context: context, calendar: calendar, notifications: notifications)
-    }
 }

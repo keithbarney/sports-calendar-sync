@@ -17,24 +17,12 @@ struct ProfileView: View {
         Form {
             // MARK: - Kickoff Reminders
             Section("Kickoff Reminders") {
-                ForEach(KickoffReminder.allCases, id: \.self) { reminder in
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            appSettings.kickoffReminder = reminder
-                        }
-                    } label: {
-                        HStack {
-                            SettingsRowLabel(title: reminder.rawValue, systemImage: reminder.sfSymbol)
-                                .foregroundStyle(Color.textPrimary)
-                            Spacer()
-                            if appSettings.kickoffReminder == reminder {
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.textPrimary)
-                                    .fontWeight(.semibold)
-                            }
-                        }
+                Picker("Reminder", selection: $appSettings.kickoffReminder) {
+                    ForEach(KickoffReminder.allCases, id: \.self) { reminder in
+                        Label(reminder.rawValue, systemImage: reminder.sfSymbol).tag(reminder)
                     }
                 }
+                .pickerStyle(.navigationLink)
             }
 
             // MARK: - Calendar Sync
@@ -107,7 +95,7 @@ struct ProfileView: View {
                             Text(automaticRefresh.isRefreshing ? "Syncing Calendar" : "Sync Calendar Now")
                             Text("Refresh fixtures and repair calendar events")
                                 .font(.caption)
-                                .foregroundStyle(Color.textSecondary)
+                                .foregroundStyle(.secondary)
                         }
                         if automaticRefresh.isRefreshing {
                             Spacer()
@@ -122,51 +110,33 @@ struct ProfileView: View {
 
             // MARK: - Appearance
             Section("Appearance") {
-                ForEach(AppearanceMode.allCases, id: \.self) { mode in
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            appSettings.appearanceMode = mode
-                        }
-                    } label: {
-                        HStack {
-                            SettingsRowLabel(title: mode.rawValue, systemImage: mode.sfSymbol)
-                                .foregroundStyle(Color.textPrimary)
-                            Spacer()
-                            if appSettings.appearanceMode == mode {
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.textPrimary)
-                                    .fontWeight(.semibold)
-                            }
-                        }
+                Picker("Appearance", selection: $appSettings.appearanceMode) {
+                    ForEach(AppearanceMode.allCases, id: \.self) { mode in
+                        Label(mode.rawValue, systemImage: mode.sfSymbol).tag(mode)
                     }
                 }
+                .pickerStyle(.navigationLink)
             }
 
             // MARK: - Permissions
-            Section("Permissions") {
-                PermissionRow(
-                    title: "Calendar",
-                    sfSymbol: "calendar",
-                    state: calendarPermissionState,
-                    action: handleCalendarTap
-                )
-                PermissionRow(
-                    title: "Notifications",
-                    sfSymbol: "bell",
-                    state: notificationPermissionState,
-                    action: handleNotificationTap
-                )
+            Section {
+                LabeledContent("Calendar", value: calendarPermissionState.label)
+                LabeledContent("Notifications", value: notificationPermissionState.label)
+                if calendarPermissionState == .notDetermined {
+                    Button("Enable Calendar Access", action: handleCalendarTap)
+                }
+                if notificationPermissionState == .notDetermined {
+                    Button("Enable Notifications", action: handleNotificationTap)
+                }
+                Button("Open iOS Settings", action: openSettings)
+            } header: {
+                Text("Permissions")
+            } footer: {
+                Text("Manage calendar and notification access in iOS Settings.")
             }
 
-            // MARK: - About
-            Section {
-                HStack {
-                    Text("Version")
-                        .foregroundStyle(Color.textPrimary)
-                    Spacer()
-                    Text("\(Bundle.main.marketingVersion) (\(Bundle.main.buildNumber))")
-                        .foregroundStyle(Color.textSecondary)
-                }
+            Section("About") {
+                LabeledContent("Version", value: "\(Bundle.main.marketingVersion) (\(Bundle.main.buildNumber))")
             }
         }
         .navigationTitle("Settings")
@@ -270,15 +240,15 @@ private struct SyncRefreshSummary: View {
         HStack(spacing: SettingsRowLayout.iconTextSpacing) {
             SettingsRowIcon(
                 systemImage: "clock.arrow.circlepath",
-                tint: Color.textSecondary
+                tint: .secondary
             )
             VStack(alignment: .leading, spacing: 3) {
                 Text("Last successful refresh")
                     .font(.caption)
-                    .foregroundStyle(Color.textSecondary)
+                    .foregroundStyle(.secondary)
                 Text(lastRefresh ?? "No completed sync yet")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(Color.textPrimary)
+                    .foregroundStyle(.primary)
             }
         }
         .accessibilityElement(children: .combine)
@@ -326,10 +296,10 @@ private struct SyncFeedbackBanner: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Color.textPrimary)
+                    .foregroundStyle(.primary)
                 Text(message)
                     .font(.subheadline)
-                    .foregroundStyle(Color.textSecondary)
+                    .foregroundStyle(.secondary)
             }
             .accessibilityElement(children: .combine)
 
@@ -339,7 +309,7 @@ private struct SyncFeedbackBanner: View {
                 Button(action: dismiss) {
                     Image(systemName: "xmark")
                         .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Color.textSecondary)
+                        .foregroundStyle(.secondary)
                         .frame(width: 44, height: 44)
                 }
                 .buttonStyle(.plain)
@@ -370,39 +340,14 @@ private struct SettingsRowIcon: View {
     }
 }
 
-private struct SettingsRowLabel: View {
-    let title: String
-    let systemImage: String
-
-    var body: some View {
-        HStack(spacing: SettingsRowLayout.iconTextSpacing) {
-            SettingsRowIcon(systemImage: systemImage)
-            Text(title)
-        }
-    }
-}
-
 enum PermissionState {
     case granted, notDetermined, denied
-}
 
-private struct PermissionRow: View {
-    let title: String
-    let sfSymbol: String
-    let state: PermissionState
-    let action: () -> Void
-
-    private var binding: Binding<Bool> {
-        Binding(
-            get: { state == .granted },
-            set: { _ in action() }
-        )
-    }
-
-    var body: some View {
-        Toggle(isOn: binding) {
-            SettingsRowLabel(title: title, systemImage: sfSymbol)
-                .foregroundStyle(Color.textPrimary)
+    var label: String {
+        switch self {
+        case .granted: return "Allowed"
+        case .notDetermined: return "Not requested"
+        case .denied: return "Off"
         }
     }
 }

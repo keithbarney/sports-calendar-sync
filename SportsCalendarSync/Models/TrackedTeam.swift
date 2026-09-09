@@ -5,7 +5,7 @@ import SwiftData
 final class TrackedTeam {
     /// ESPN team id (string in some endpoints, numeric in others — normalized to string here).
     var espnId: String
-    /// League slug, e.g. `eng.1`.
+    /// Competition slug, e.g. `eng.1` or `uefa.champions`.
     var leagueSlug: String
     var name: String
     var shortDisplayName: String?
@@ -35,5 +35,8 @@ final class TrackedTeam {
         self.lastUpdated = Date()
     }
 
-    var league: League? { League(rawValue: leagueSlug) }
+    var competition: Competition? { Competition(rawValue: leagueSlug) }
+
+    /// Compatibility alias for views and persisted data that still use the old league naming.
+    var league: League? { competition }
 }
