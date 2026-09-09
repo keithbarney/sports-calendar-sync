@@ -27,7 +27,7 @@ jobs:
       - name: Install pinned XcodeGen
         run: |
           brew install mint
-          mint install yonaskolb/xcodegen@2.45.3
+          mint install yonaskolb/xcodegen@2.46.0
           echo "$HOME/.mint/bin" >> "$GITHUB_PATH"
 
       - name: Verify
