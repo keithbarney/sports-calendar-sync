@@ -83,7 +83,11 @@ struct DiscoverView: View {
             }
         }
         .navigationTitle("Discover")
-        .searchable(text: $query, prompt: "Search teams")
+        .searchable(
+            text: $query,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Search teams"
+        )
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 CompetitionFilterMenu(selection: $leagueFilter)
