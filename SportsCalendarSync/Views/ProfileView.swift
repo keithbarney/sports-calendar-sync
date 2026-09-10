@@ -31,14 +31,6 @@ struct ProfileView: View {
                     lastRefresh: syncHealth.lastSuccessfulSync.map { formatted($0, fallback: "") }
                 )
 
-                if let repairs = syncHealth.calendarRepairBannerCount {
-                    SyncFeedbackBanner(
-                        tone: .success,
-                        title: "Calendar repaired",
-                        message: "Repaired \(repairs) event\(repairs == 1 ? "" : "s") during the latest sync.",
-                        dismiss: syncHealth.dismissCalendarRepairBanner
-                    )
-                }
                 if let guidance = capabilityRepairGuidance {
                     SyncFeedbackBanner(
                         tone: .warning,
