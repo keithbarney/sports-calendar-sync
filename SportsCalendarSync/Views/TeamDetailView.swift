@@ -487,15 +487,14 @@ struct FixtureRow: View {
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.secondary)
             }
-            HStack(spacing: 8) {
-                Text(kickoffLabel)
-                if let venue = game.venue {
-                    Text("·").foregroundStyle(.tertiary)
-                    Text(venue)
-                }
+            Text(kickoffLabel)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            if let venue = game.venue, !venue.isEmpty {
+                Text(venue)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
 
             if !game.broadcasts.isEmpty {
                 Text(game.broadcasts.joined(separator: ", "))
@@ -535,15 +534,14 @@ private struct PreviewFixtureRow: View {
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.secondary)
             }
-            HStack(spacing: 8) {
-                Text(kickoffLabel)
-                if let venue = event.competitions.first?.venue?.fullName {
-                    Text("·").foregroundStyle(.tertiary)
-                    Text(venue)
-                }
+            Text(kickoffLabel)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            if let venue = event.competitions.first?.venue?.fullName, !venue.isEmpty {
+                Text(venue)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
 
             if let broadcasts = event.competitions.first?.broadcasts?.flatMap({ $0.names ?? [] }), !broadcasts.isEmpty {
                 Text(broadcasts.joined(separator: ", "))
