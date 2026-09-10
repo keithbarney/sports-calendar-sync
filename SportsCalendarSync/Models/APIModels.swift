@@ -26,6 +26,25 @@ struct ESPNTeam: Decodable {
     let abbreviation: String?
     let color: String?
     let logos: [ESPNLogo]?
+
+    /// ESPN club IDs are shared across feeds. Names cover older feed aliases without
+    /// matching abbreviations (which can belong to several unrelated clubs).
+    func matchesClub(_ other: ESPNTeam) -> Bool {
+        if id == other.id { return true }
+        let names = Set([name, displayName, shortDisplayName].compactMap { $0 }.map(Self.clubNameKey))
+        let otherNames = Set([other.name, other.displayName, other.shortDisplayName].compactMap { $0 }.map(Self.clubNameKey))
+        return !names.subtracting([""]).isDisjoint(with: otherNames.subtracting([""]))
+    }
+
+    static func clubNameKey(_ name: String) -> String {
+        let key = name.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: Locale(identifier: "en_US_POSIX"))
+            .filter { $0.isLetter || $0.isNumber }
+        switch key {
+        case "losangelesfc": return "lafc"
+        case "manutd": return "manchesterunited"
+        default: return key
+        }
+    }
 }
 
 struct ESPNLogo: Decodable {

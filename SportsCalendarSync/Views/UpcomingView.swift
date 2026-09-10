@@ -61,9 +61,6 @@ struct FollowingView: View {
     }
 
     private func clubKey(for team: TrackedTeam) -> String {
-        team.name
-            .lowercased()
-            .replacingOccurrences(of: " ", with: "")
-            .replacingOccurrences(of: "-", with: "")
+        ESPNTeam.clubNameKey(team.name)
     }
 }

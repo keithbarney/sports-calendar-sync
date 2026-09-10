@@ -25,27 +25,6 @@ final class TeamManager: ObservableObject {
         currentReminder.offsetSeconds
     }
 
-    private static func matchesClub(_ lhs: ESPNTeam, _ rhs: ESPNTeam) -> Bool {
-        if lhs.id == rhs.id { return true }
-
-        let lhsNames = Set([lhs.name, lhs.displayName, lhs.shortDisplayName].compactMap(normalizeClubName))
-        let rhsNames = Set([rhs.name, rhs.displayName, rhs.shortDisplayName].compactMap(normalizeClubName))
-
-        if !lhsNames.isDisjoint(with: rhsNames) { return true }
-        if lhsNames.contains("lafc") && rhsNames.contains("losangelesfc") { return true }
-        if lhsNames.contains("losangelesfc") && rhsNames.contains("lafc") { return true }
-        return false
-    }
-
-    private static func normalizeClubName(_ name: String?) -> String? {
-        guard let name, !name.isEmpty else { return nil }
-        return name
-            .lowercased()
-            .replacingOccurrences(of: " ", with: "")
-            .replacingOccurrences(of: "-", with: "")
-            .replacingOccurrences(of: ".", with: "")
-    }
-
     /// Follow a team: persist + immediately fetch & mirror schedule to Calendar.
     @discardableResult
     func follow(
@@ -109,20 +88,24 @@ final class TeamManager: ObservableObject {
         espn: ESPNService,
         calendar: CalendarService,
         notifications: NotificationService? = nil
-    ) async -> Int {
+    ) async -> (added: Int, failed: [Competition]) {
         var added = 0
+        var failed: [Competition] = []
 
         for competition in competitions {
             let candidate: ESPNTeam?
             if competition == sourceCompetition {
                 candidate = espnTeam
             } else if let teams = try? await espn.getTeams(league: competition) {
-                candidate = teams.first(where: { Self.matchesClub($0, espnTeam) })
+                candidate = teams.first(where: { $0.matchesClub(espnTeam) })
             } else {
                 candidate = nil
             }
 
-            guard let candidate else { continue }
+            guard let candidate else {
+                failed.append(competition)
+                continue
+            }
             if await follow(
                 espnTeam: candidate,
                 league: competition,
@@ -135,7 +118,7 @@ final class TeamManager: ObservableObject {
             }
         }
 
-        return added
+        return (added, failed)
     }
 
     func unfollow(

@@ -9,6 +9,11 @@ struct UpcomingFixturesFetchResult {
     let failures: [String]
 }
 
+struct ClubCompetitionsResult {
+    let competitions: [Competition]
+    let unavailable: [Competition]
+}
+
 /// Client for ESPN's public (hidden) soccer API.
 ///
 /// Base: `https://site.api.espn.com/apis/site/v2/sports/soccer/{league}/...`
@@ -16,6 +21,11 @@ struct UpcomingFixturesFetchResult {
 @MainActor
 final class ESPNService: ObservableObject {
     private let base = "https://site.api.espn.com/apis/site/v2/sports/soccer"
+    private let session: URLSession
+
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
 
     // MARK: caches
     private var teamsCache: [String: [ESPNTeam]] = [:]           // keyed by league slug
@@ -42,7 +52,8 @@ final class ESPNService: ObservableObject {
     func getTeams(league: League, useCache: Bool = true) async throws -> [ESPNTeam] {
         if useCache, let cached = teamsCache[league.slug] { return cached }
 
-        let url = try buildURL("\(base)/\(league.slug)/teams")
+        // Cup fields exceed ESPN's default page size (Copa del Rey has 126 teams).
+        let url = try buildURL("\(base)/\(league.slug)/teams?limit=1000")
         let response: ESPNTeamsResponse = try await fetch(url)
         let teams = response.sports
             .flatMap { $0.leagues }
@@ -50,6 +61,27 @@ final class ESPNService: ObservableObject {
             .map { $0.team }
         teamsCache[league.slug] = teams
         return teams
+    }
+
+    /// Resolve membership from the provider, including clubs opened from a cup feed.
+    /// Failed requests are not cached as empty fields and can be retried on reopening.
+    func getCompetitions(for team: ESPNTeam, source: Competition) async throws -> ClubCompetitionsResult {
+        var matches: [Competition] = [source]
+        var unavailable: [Competition] = []
+        for competition in Competition.allCases where competition != source {
+            try Task.checkCancellation()
+            do {
+                let teams = try await getTeams(league: competition)
+                if teams.contains(where: { $0.matchesClub(team) }) {
+                    matches.append(competition)
+                }
+            } catch is CancellationError {
+                throw CancellationError()
+            } catch {
+                unavailable.append(competition)
+            }
+        }
+        return ClubCompetitionsResult(competitions: matches, unavailable: unavailable)
     }
 
     // MARK: - Schedule
@@ -180,7 +212,7 @@ final class ESPNService: ObservableObject {
 
     private func fetch<T: Decodable>(_ url: URL) async throws -> T {
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await session.data(from: url)
             if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
                 throw APIError.badResponse(status: http.statusCode)
             }

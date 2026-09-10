@@ -29,6 +29,9 @@ struct TeamDetailView: View {
     @State private var didInitialLoad = false
     @State private var showingUnfollowConfirmation = false
     @State private var showingCompetitionSheet = false
+    @State private var isLoadingCompetitions = false
+    @State private var discoveredCompetitions: [Competition] = []
+    @State private var unavailableCompetitions: [Competition] = []
 
     /// Convenience init for a team we already persisted.
     init(team: TrackedTeam) {
@@ -60,16 +63,12 @@ struct TeamDetailView: View {
 
     private var sourceCompetition: Competition? { Competition(rawValue: leagueSlug) }
 
-    private var recommendedCompetitions: [Competition] {
-        Competition.recommendedCompetitions(forTeamNamed: displayName)
-    }
-
     private var availableCompetitions: [Competition] {
-        var competitions = recommendedCompetitions
-        if let sourceCompetition, !competitions.contains(sourceCompetition) {
-            competitions.insert(sourceCompetition, at: 0)
-        }
-        return competitions
+        Competition.selectionOptions(
+            source: sourceCompetition,
+            discovered: discoveredCompetitions,
+            followed: followedCompetitionTeams.compactMap(\.competition)
+        )
     }
 
     private var followedCompetitions: [Competition] {
@@ -86,12 +85,7 @@ struct TeamDetailView: View {
     private var recentCount: Int { isFollowed ? storedRecent.count : previewRecent.count }
 
     private var followedCompetitionTeams: [TrackedTeam] {
-        let matchingCompetitions = Set(recommendedCompetitions.map(\.slug))
-        let matchingTeams = followedTeams.filter { team in
-            guard matchingCompetitions.contains(team.leagueSlug) else { return false }
-            return isSameClubName(team.name, displayName)
-        }
-        return matchingTeams.isEmpty ? (tracked.map { [$0] } ?? []) : matchingTeams
+        followedTeams.filter(isSameClub)
     }
 
     private var followedTeamIDs: Set<String> {
@@ -120,20 +114,8 @@ struct TeamDetailView: View {
             .map { $0 }
     }
 
-    private func isSameClubName(_ lhs: String, _ rhs: String) -> Bool {
-        let normalizedLHS = normalizeClubName(lhs)
-        let normalizedRHS = normalizeClubName(rhs)
-        if normalizedLHS == normalizedRHS { return true }
-
-        let aliases: Set<Set<String>> = [
-            ["lafc", "losangelesfc"],
-            ["manchesterunited", "manutd"]
-        ]
-        return aliases.contains { $0.contains(normalizedLHS) && $0.contains(normalizedRHS) }
-    }
-
-    private func normalizeClubName(_ name: String) -> String {
-        name.lowercased().filter { $0.isLetter || $0.isNumber }
+    private func isSameClub(_ team: TrackedTeam) -> Bool {
+        team.espnId == espnId || ESPNTeam.clubNameKey(team.name) == ESPNTeam.clubNameKey(displayName)
     }
 
     var body: some View {
@@ -157,7 +139,7 @@ struct TeamDetailView: View {
             .listRowBackground(Color.clear)
 
             Section {
-                if isFollowed && availableCompetitions.count > 1 {
+                if isFollowed {
                     competitionControls
                 } else if let league {
                     LabeledContent("Competition", value: league.displayName)
@@ -176,8 +158,8 @@ struct TeamDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                if isAdding {
-                    ProgressView().accessibilityLabel("Saving competitions")
+                if isAdding || isLoadingCompetitions {
+                    ProgressView().accessibilityLabel(isLoadingCompetitions ? "Loading competitions" : "Saving competitions")
                 } else if isFollowed {
                     Menu {
                         Button(role: .destructive) {
@@ -192,7 +174,7 @@ struct TeamDetailView: View {
                         }
                     }
                 } else {
-                    Button("Follow") { showingCompetitionSheet = true }
+                    Button("Follow") { Task { await openCompetitionSheet() } }
                 }
             }
         }
@@ -206,7 +188,8 @@ struct TeamDetailView: View {
                 teamName: displayName,
                 competitions: availableCompetitions,
                 initialSelection: Set(followedCompetitions),
-                isInitialFollow: !isFollowed
+                isInitialFollow: !isFollowed,
+                unavailableCompetitions: unavailableCompetitions
             ) { selection in
                 Task { await saveCompetitionSelection(selection) }
             }
@@ -261,9 +244,26 @@ struct TeamDetailView: View {
 
     private var competitionControls: some View {
         Button {
-            showingCompetitionSheet = true
+            Task { await openCompetitionSheet() }
         } label: {
-            LabeledContent("Manage competitions", value: "\(followedCompetitions.count) of \(availableCompetitions.count)")
+            LabeledContent("Manage competitions", value: isLoadingCompetitions ? "Loading…" : "\(followedCompetitions.count) followed")
+        }
+        .disabled(isAdding || isLoadingCompetitions)
+    }
+
+    private func openCompetitionSheet() async {
+        guard let sourceCompetition, !isLoadingCompetitions else { return }
+        isLoadingCompetitions = true
+        defer { isLoadingCompetitions = false }
+        do {
+            let result = try await espn.getCompetitions(for: makeESPNTeam(), source: sourceCompetition)
+            discoveredCompetitions = result.competitions
+            unavailableCompetitions = result.unavailable
+            showingCompetitionSheet = true
+        } catch {
+            if !Task.isCancelled {
+                toast.show("Could not load competitions. Please try again.", icon: "exclamationmark.triangle", isDestructive: true)
+            }
         }
     }
 
@@ -272,13 +272,13 @@ struct TeamDetailView: View {
     private func isFollowing(_ competition: Competition) -> Bool {
         followedTeams.contains { team in
             guard team.leagueSlug == competition.slug else { return false }
-            return isSameClubName(team.name, displayName)
+            return isSameClub(team)
         }
     }
 
     private func trackedTeam(for competition: Competition) -> TrackedTeam? {
         followedTeams.first {
-            $0.leagueSlug == competition.slug && isSameClubName($0.name, displayName)
+            $0.leagueSlug == competition.slug && isSameClub($0)
         }
     }
 
@@ -336,8 +336,9 @@ struct TeamDetailView: View {
         isAdding = true
         defer { isAdding = false }
 
-        let selected = availableCompetitions.filter(selection.contains)
-        let added = await teamManager.followAcrossCompetitions(
+        // Existing follows remain valid even if the provider no longer lists the club.
+        let selected = availableCompetitions.filter { selection.contains($0) && !isFollowing($0) }
+        let result = await teamManager.followAcrossCompetitions(
             espnTeam: makeESPNTeam(),
             sourceCompetition: sourceCompetition,
             competitions: selected,
@@ -357,10 +358,14 @@ struct TeamDetailView: View {
             }
         }
 
-        let message = added > 0
-            ? "Following \(selection.count) competition\(selection.count == 1 ? "" : "s")"
-            : "Competition preferences saved"
-        toast.show(message, icon: "checkmark.circle.fill", isDestructive: false)
+        if result.failed.isEmpty {
+            let message = result.added > 0
+                ? "Following \(selection.count) competition\(selection.count == 1 ? "" : "s")"
+                : "Competition preferences saved"
+            toast.show(message, icon: "checkmark.circle.fill", isDestructive: false)
+        } else {
+            toast.show("Could not follow: \(result.failed.map(\.displayName).joined(separator: ", ")). Please try again.", icon: "exclamationmark.triangle", isDestructive: true)
+        }
     }
 
     private func unfollow() {
@@ -380,6 +385,7 @@ private struct CompetitionSelectionSheet: View {
     let teamName: String
     let competitions: [Competition]
     let isInitialFollow: Bool
+    let unavailableCompetitions: [Competition]
     let onSave: (Set<Competition>) -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -390,11 +396,13 @@ private struct CompetitionSelectionSheet: View {
         competitions: [Competition],
         initialSelection: Set<Competition>,
         isInitialFollow: Bool,
+        unavailableCompetitions: [Competition],
         onSave: @escaping (Set<Competition>) -> Void
     ) {
         self.teamName = teamName
         self.competitions = competitions
         self.isInitialFollow = isInitialFollow
+        self.unavailableCompetitions = unavailableCompetitions
         self.onSave = onSave
         _selected = State(initialValue: initialSelection.isEmpty ? Set(competitions) : initialSelection)
     }
@@ -409,6 +417,15 @@ private struct CompetitionSelectionSheet: View {
                 Section {
                     Text(isInitialFollow ? "Choose which competitions to follow." : "Choose which competitions sync to your calendar.")
                         .foregroundStyle(.secondary)
+                }
+
+                if !unavailableCompetitions.isEmpty {
+                    Section {
+                        Label("Some competitions could not be checked", systemImage: "exclamationmark.triangle")
+                        Text("Close and reopen this sheet to try again. Your existing follows are still available.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
                 Section("Competitions") {
