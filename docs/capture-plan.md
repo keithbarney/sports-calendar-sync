@@ -13,7 +13,7 @@ All final cards use the white/SF marketing template. Canonical output is `screen
 | iPhone | Sports Sync Screenshot 1.1.0, iPhone 17 Pro Max, iOS 26.5 | B8CD88B2-D876-49ED-8CB8-303A0C59FEC5 | 1320 × 2868 |
 | iPad | Sports Sync — iPad, iPad Air 13-inch (M4), iOS 26.5 | 017B5198-4197-412E-8FAD-66E1B817324C | 2048 × 2732 |
 
-Reuse these devices without erasing/uninstalling. Native universal support is enabled. Specifications were checked September 12 for this release. Current Debug capture app: `com.keithbarney.sportssync`, version 1.1.0 (3); record actual installed artifact and source fingerprint for each run. No TestFlight.
+Reuse these devices without erasing/uninstalling. Native universal support is enabled. Specifications were checked September 30, 2026 for 1.1.4. Current Debug capture app: `com.keithbarney.sportssync.local`, version 1.1.4 (1790809115); record actual installed artifact and source fingerprint for each run. No TestFlight.
 
 ## Native app capture
 
@@ -25,7 +25,7 @@ For all variants omit `--variants`. For a correction select exact combinations a
 
 The helper builds once through `SportsCalendarSyncScreenshots`, uses the exact saved simulators sequentially, runs `CaptureTests.testCaptureCoreScreens`, exports selected attachments, validates native dimensions and writes exact result-bundle/attachment/timestamp provenance. It stores native sources and test evidence in temporary directories, never over canonical marketing cards. It clears status-bar overrides when finished.
 
-Tests navigate actual Following → Team details, scroll Broadcasts, and Settings → Reminder → Back. They assert representative mock content and hidden review controls. Returning through Simulator Home before launch clears cross-app breadcrumbs. The broadcast route uses the first fixture's actual position and a slow controlled drag to frame a complete row below navigation on both device categories; avoid an uncontrolled swipe that overscrolls long schedules.
+Tests navigate actual Following → Team details, scroll Broadcasts, and a separate Settings launch → Reminder. They assert representative mock content and hidden review controls. Returning through Simulator Home before launch clears cross-app breadcrumbs. The broadcast route uses the first fixture's actual position and a slow controlled drag to frame a complete row below navigation on both device categories; avoid an uncontrolled swipe that overscrolls long schedules.
 
 ## App-owned mock fixtures
 
@@ -55,8 +55,14 @@ Use Python with Pillow, such as Codex's bundled Python at `/Users/keithbarney/.c
 python3 scripts/compose-benefits.py --source-root /tmp/sports-native --variants iphone/dark,ipad/light,ipad/dark --stage /tmp/sports-review
 ```
 
-`--variants` and `--screens` narrow composition. Native input hashes, provenance, device/appearance and dimensions must match. Composed cards cannot be reused as native captures. The iPhone Dark appearance card intentionally reuses the approved mixed Light/Dark composition unchanged and retains its original source records. Every other comparison is composed from the matching device's real Light/Dark Following captures.
+`--variants` and `--screens` narrow composition. Native input hashes, provenance, device/appearance and dimensions must match. Composed cards cannot be reused as native captures. All appearance cards are composed from the matching device's fresh Light/Dark Following captures.
 
 Geometry: iPhone 1320×2868, SF Semibold 124, title top 210/line 136, screen top 700/width 1100, frame 14/radius 108. iPad 2048×2732, SF 163, title top 159/line 179, screen top 645/width 1707, frame 22/radius 64. The iPad appearance pair uses screen width 1230, Light (165,724), Dark (653,1012), frame 16/radius 48, with matching outer margins. Dark is in front; no labels.
 
 Inspect the contact sheets and originals for benefit content, headline fit, legibility, appearance, debug chrome and framing. Save `visual-review.json` in the stage with `passed: true` and a `hashes` dictionary keyed by every output path relative to the stage. Repeat the compose command with `--publish`. Publication requires those exact reviewed hashes and complete validated selected sets before mutation; it replaces matching cards, retires superseded selected-variant files/records, and preserves all untouched images/provenance. Current `compose-marketing.sh` is the legacy five-card composer; do not use it for the six-benefit selection.
+
+## 1.1.4 capture refresh
+
+All four device/appearance sets were refreshed September 30, 2026. The Calendar demo depicts October 1, 2026. `CaptureTests.testInspectSystemCalendarDemo` opens Calendar through its native Home icon, selects tomorrow, frames the four games on iPhone, and keeps the selected event details on iPad. A selected event toggles off when tapped again, so the route checks Edit before selecting it. Final settled system images use simctl captures after that route and visual inspection; their exact result bundles are in the manifest.
+
+Successful captures were retained across a tab-navigation correction and an XCTest screenshot transport timeout. The iPhone Dark Broadcasts source uses a simctl capture after the native content assertions passed; its exact test run and native filename are recorded. The helper disables verbose failure diagnostics and touches only devices in the selected variant list. Canonical App Store upload selects the six Light cards for each device; Dark candidates remain maintained locally.

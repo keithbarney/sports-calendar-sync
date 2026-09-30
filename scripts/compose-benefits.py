@@ -126,13 +126,13 @@ def main():
         assert {file.name for file in folder.glob('*.png')} == expected_names, 'Unexpected files in staging'
         report = validation.validate(folder, 'iphone-6.9' if device == 'iphone' else 'ipad-13')
         assert report['valid'] and len(report['images']) == 6, report
-        report.update(validatedAt=now, specifications_checked='2026-09-12', requestedCombination=variant,
+        report.update(validatedAt=now, specifications_checked='2026-09-30', requestedCombination=variant,
                       visualReview=dict(passed=False, status='awaiting visual inspection'))
         reports[variant] = report
         base.contact_sheet(folder, device, appearance, stage / f'contact-sheet-{device}-{appearance}.jpg')
         metadata[f'store_selection_{device}_{appearance}'] = variant_outputs
-        metadata.setdefault('marketingRevisions', {})[variant] = dict(date=now, scope='selected', screens=selected,
-            status='ready-for-user-review', data='Fictional broadcast listings and manually seeded local Apple Calendar demo; not a live sync test.', uploadPerformed=False)
+        metadata.setdefault('marketingRevisions', {})[variant] = dict(date=now, scope='full' if len(selected) == len(SCREENS) else 'selected', screens=selected,
+            status='validated' if args.publish else 'ready-for-visual-review', data='Fictional broadcast listings and manually seeded local Apple Calendar demo; not a live sync test.', uploadPerformed=False)
         for key in list(metadata['images']):
             if key.startswith(variant + '/') and key not in variant_outputs:
                 metadata.setdefault('retiredImageRecords', {})[key] = metadata['images'].pop(key)

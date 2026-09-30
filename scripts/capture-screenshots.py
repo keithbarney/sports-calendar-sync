@@ -10,6 +10,7 @@ def select(value,valid):
  return values
 selected=select(a.devices,devices);appearances=select(a.appearances,['light','dark']);select(a.screens,['following','team-detail','manage-competitions','discover','settings','reminder','broadcasts'])
 variants=select(a.variants,[f'{d}/{v}' for d in selected for v in appearances]) if a.variants else [f'{d}/{v}' for d in selected for v in appearances]
+selected=[device for device in selected if any(variant.startswith(device+'/') for variant in variants)]
 work=Path(tempfile.mkdtemp(prefix='sports-native-capture-'));output=a.output_root or work/'native'
 if output.resolve()==(repo/'screenshots').resolve():p.error('Native sources must not overwrite canonical marketing cards')
 output.mkdir(parents=True,exist_ok=True);derived=repo/'build/screenshot-capture';log=work/'capture.log';python=os.environ.get('SCREENSHOT_PYTHON','/Users/keithbarney/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3')
@@ -28,7 +29,7 @@ try:
    target=data['SportsCalendarSyncScreenshotTests']
    for env in ['EnvironmentVariables','TestingEnvironmentVariables']:target.setdefault(env,{}).update(SCREENSHOT_SCREENS=a.screens,SCREENSHOT_APPEARANCE=appearance.title())
    config.write_bytes(plistlib.dumps(data))
-   run(['xcodebuild','test-without-building','-xctestrun',str(config),'-destination',f'platform=iOS Simulator,id={udid}','-parallel-testing-enabled','NO','-only-testing:SportsCalendarSyncScreenshotTests/CaptureTests/testCaptureCoreScreens','-resultBundlePath',str(variant/'capture.xcresult')])
+   run(['xcodebuild','test-without-building','-xctestrun',str(config),'-destination',f'platform=iOS Simulator,id={udid}','-parallel-testing-enabled','NO','-collect-test-diagnostics','never','-only-testing:SportsCalendarSyncScreenshotTests/CaptureTests/testCaptureCoreScreens','-resultBundlePath',str(variant/'capture.xcresult')])
    run(['xcrun','xcresulttool','export','attachments','--path',str(variant/'capture.xcresult'),'--output-path',str(variant/'attachments')])
    run([python,str(repo/'scripts/export_screenshots.py'),str(variant),'--app',str(products/'Debug-iphonesimulator/SportsCalendarSync.app'),'--udid',udid,'--device',device,'--appearance',appearance,'--display','iphone-6.9' if device=='iphone' else 'ipad-13','--output-root',str(output),'--screens',a.screens])
    print(f'Captured {device}/{appearance}: {a.screens}',flush=True)

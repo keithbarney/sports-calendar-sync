@@ -230,7 +230,10 @@ final class CaptureTests: XCTestCase {
             capture("04-discover")
         }
         if !selected.isDisjoint(with: ["settings", "reminder"]) {
-            tapTab("Settings", in: app)
+            // Use a deterministic launch for this independent Settings capture.
+            app.terminate()
+            app.launchArguments = launchArguments(["-initial-tab", "profile"])
+            app.launch()
             XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 10))
             let permission = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@ AND (label CONTAINS %@ OR value CONTAINS %@)", "Calendar", "Allowed", "Allowed")).firstMatch
             XCTAssertTrue(permission.exists, app.debugDescription)
@@ -241,10 +244,49 @@ final class CaptureTests: XCTestCase {
                 XCTAssertTrue(app.navigationBars["Reminder"].waitForExistence(timeout: 5))
                 XCTAssertTrue(app.staticTexts["30 min before"].exists)
                 capture("07-reminder")
-                app.navigationBars.buttons.firstMatch.tap()
-                XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
             }
         }
+    }
+
+    @MainActor
+    func testInspectSystemCalendarDemo() {
+        let app = XCUIApplication(bundleIdentifier: "com.apple.mobilecal")
+        app.terminate()
+        XCUIDevice.shared.press(.home)
+        XCUIDevice.shared.press(.home)
+        let calendarIcon = XCUIApplication(bundleIdentifier: "com.apple.springboard").icons["Calendar"].firstMatch
+        XCTAssertTrue(calendarIcon.waitForExistence(timeout: 5))
+        calendarIcon.tap()
+        for title in ["Continue", "OK", "Allow Full Access"] {
+            let button = app.buttons[title].firstMatch
+            if button.exists { button.tap() }
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateFormat = "EEEE, MMMM d"
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+        let day = app.buttons[dateFormatter.string(from: tomorrow)].firstMatch
+        if day.waitForExistence(timeout: 3) { day.tap() }
+        let game = app.buttons.containing(NSPredicate(format: "label CONTAINS %@", "Manchester United vs. Arsenal")).firstMatch
+        XCTAssertTrue(game.waitForExistence(timeout: 5))
+        if app.frame.width > 700 {
+            // Calendar may restore the first event when selecting its day;
+            // tapping an already selected event toggles the detail pane off.
+            if !app.buttons["Edit"].exists { game.tap() }
+            XCTAssertTrue(app.buttons["Edit"].waitForExistence(timeout: 5))
+        } else {
+            let distance = max(0, game.frame.minY - 300)
+            if distance > 0 {
+                let origin = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+                origin.press(forDuration: 0.1, thenDragTo: origin.withOffset(CGVector(dx: 0, dy: -distance)), withVelocity: .slow, thenHoldForDuration: 0.5)
+            }
+        }
+        for name in ["Manchester United vs. Arsenal", "Real Madrid vs. Barcelona", "Bayern Munich vs. Dortmund", "LAFC vs. LA Galaxy"] {
+            XCTAssertTrue(app.buttons.containing(NSPredicate(format: "label CONTAINS %@", name)).firstMatch.exists)
+        }
+        print("CALENDAR HIERARCHY: \(app.debugDescription)")
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = "11-calendar"; attachment.lifetime = .keepAlways; add(attachment)
     }
 
     @MainActor
