@@ -29,21 +29,29 @@ final class SyncHealthStore: ObservableObject {
 
     private let defaults: UserDefaults
 
-    init(defaults: UserDefaults = .standard) {
-        self.defaults = defaults
-        lastAttempt = defaults.object(forKey: Key.lastAttempt) as? Date
-        lastSuccessfulSync = defaults.object(forKey: Key.lastSuccessfulSync) as? Date
-        nextPlannedRefresh = defaults.object(forKey: Key.nextPlannedRefresh) as? Date
-        lastGamesUpdated = defaults.integer(forKey: Key.lastGamesUpdated)
-        lastAdded = defaults.integer(forKey: Key.lastAdded)
-        lastChanged = defaults.integer(forKey: Key.lastChanged)
-        lastRemoved = defaults.integer(forKey: Key.lastRemoved)
-        lastCalendarRepairs = defaults.integer(forKey: Key.lastCalendarRepairs)
+    init(defaults: UserDefaults? = nil) {
+        let store = defaults ?? AppSettings.preferenceDefaults()
+        self.defaults = store
+        lastAttempt = store.object(forKey: Key.lastAttempt) as? Date
+        lastSuccessfulSync = store.object(forKey: Key.lastSuccessfulSync) as? Date
+        nextPlannedRefresh = store.object(forKey: Key.nextPlannedRefresh) as? Date
+        lastGamesUpdated = store.integer(forKey: Key.lastGamesUpdated)
+        lastAdded = store.integer(forKey: Key.lastAdded)
+        lastChanged = store.integer(forKey: Key.lastChanged)
+        lastRemoved = store.integer(forKey: Key.lastRemoved)
+        lastCalendarRepairs = store.integer(forKey: Key.lastCalendarRepairs)
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled {
+            lastSuccessfulSync = ScreenshotFixtures.referenceDate
+            lastGamesUpdated = 18
+            lastAdded = 18
+        }
+        #endif
         // Troubleshooting is intentionally session-only. A stale failure should not
         // become permanent Settings content after the underlying issue is gone.
-        defaults.removeObject(forKey: "syncHealth.lastError")
-        defaults.removeObject(forKey: "syncHealth.backgroundSchedulingError")
-        defaults.removeObject(forKey: "syncHealth.backgroundRegistrationError")
+        store.removeObject(forKey: "syncHealth.lastError")
+        store.removeObject(forKey: "syncHealth.backgroundSchedulingError")
+        store.removeObject(forKey: "syncHealth.backgroundRegistrationError")
     }
 
     func recordAttempt(at date: Date) {

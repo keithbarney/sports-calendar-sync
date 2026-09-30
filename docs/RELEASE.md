@@ -103,6 +103,14 @@ for production approval:
 Submission remains manual in App Store Connect so an upload cannot
 accidentally publish or enter App Review.
 
+## Submitted release
+
+Sports Calendar Sync 1.1.1 was submitted to App Review on September 13, 2026
+with build `1789354465`. App Store Connect accepted the build as `VALID` and
+reports review submission `47bcf7fc-4250-4a4b-bcfc-3b51e6157cef` in
+`WAITING_FOR_REVIEW`. This records submission only; Apple approval and public
+release are still pending.
+
 ## Toolchain requirement
 
 As of April 28, 2026, Apple requires iOS uploads to be built with Xcode 26 or

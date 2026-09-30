@@ -48,7 +48,7 @@ struct ContentView: View {
             .tag(AppTab.following)
 
             NavigationStack {
-                DiscoverView(leagueFilter: $leagueFilter)
+                DiscoverView()
             }
             .tabItem { Label("Discover", systemImage: "magnifyingglass") }
             .tag(AppTab.discover)
@@ -58,6 +58,13 @@ struct ContentView: View {
             }
             .tabItem { Label("Settings", systemImage: "gearshape") }
             .tag(AppTab.profile)
+        }
+        .modifier(AdaptiveAppTabs())
+        .onOpenURL { url in
+            guard url.scheme == "sportssync", url.host == "following" else { return }
+            selectedTab = .following
+            leagueFilter = nil
+            followingPath = []
         }
         .task(id: allTeams.count) {
             #if DEBUG
@@ -91,5 +98,17 @@ struct CompetitionFilterMenu: View {
         }
         .accessibilityLabel("Competition filter")
         .accessibilityValue(selection?.displayName ?? "All competitions")
+    }
+}
+
+/// Let iPad navigation adapt to a top tab bar or sidebar, retaining native phone tabs.
+private struct AdaptiveAppTabs: ViewModifier {
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *) {
+            content.tabViewStyle(.sidebarAdaptable)
+        } else {
+            content
+        }
     }
 }

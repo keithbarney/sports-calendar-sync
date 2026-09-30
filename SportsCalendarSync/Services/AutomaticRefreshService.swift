@@ -56,8 +56,10 @@ enum BackgroundRefreshRequestCoordinator {
 
 @MainActor
 final class AutomaticRefreshService: ObservableObject {
-    static let backgroundTaskIdentifier = "com.keithbarney.sportssync.fixture-refresh"
-    static let backgroundRefreshEnabled = false
+    static let backgroundTaskIdentifier = "\(Bundle.main.bundleIdentifier ?? "com.keithbarney.sportssync").fixture-refresh"
+    /// Background refresh is enabled when iOS permits it; the system may still
+    /// defer or suppress execution based on device policy and usage.
+    static let backgroundRefreshEnabled = true
 
     @Published private(set) var isRefreshing = false
 
@@ -70,6 +72,7 @@ final class AutomaticRefreshService: ObservableObject {
     private let policy: RefreshPolicy
     private let scheduler: BackgroundRefreshScheduling
     private let now: () -> Date
+    private let preferences: UserDefaults
     private var currentRefresh: Task<SyncResult, Never>?
 
     init(
@@ -81,7 +84,8 @@ final class AutomaticRefreshService: ObservableObject {
         health: SyncHealthStore,
         policy: RefreshPolicy = RefreshPolicy(),
         scheduler: BackgroundRefreshScheduling = SystemBackgroundRefreshScheduler(),
-        now: @escaping () -> Date = Date.init
+        now: @escaping () -> Date = Date.init,
+        preferences: UserDefaults? = nil
     ) {
         self.teamManager = teamManager
         self.espn = espn
@@ -92,7 +96,12 @@ final class AutomaticRefreshService: ObservableObject {
         self.policy = policy
         self.scheduler = scheduler
         self.now = now
+        self.preferences = preferences ?? AppSettings.preferenceDefaults()
 
+        #if DEBUG
+        // Review/capture runs must remain fully isolated from BGTaskScheduler.
+        if ScreenshotFixtures.isEnabled { return }
+        #endif
         guard Self.backgroundRefreshEnabled else { return }
 
         let registered = scheduler.register(identifier: Self.backgroundTaskIdentifier) { [weak self] task in
@@ -124,6 +133,9 @@ final class AutomaticRefreshService: ObservableObject {
     }
 
     func scheduleNextRefresh() {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return }
+        #endif
         guard Self.backgroundRefreshEnabled else { return }
 
         BackgroundRefreshRequestCoordinator.scheduleNext(
@@ -137,14 +149,33 @@ final class AutomaticRefreshService: ObservableObject {
 
     @discardableResult
     func refreshIfNeeded(trigger: SyncTrigger) async -> SyncResult? {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return SyncResult() }
+        #endif
         scheduleNextRefresh()
+        // Repair floating legacy alerts even inside the six-hour fetch throttle
+        // or offline. Await permissions so initialization cannot skip the repair.
+        await notifications.refreshAuthorization()
+        let reminderRepair = await teamManager.repairLegacyNotifications(
+            context: modelContainer.mainContext,
+            notifications: notifications
+        )
         let attemptDate = now()
+        // Refresh fixtures saved by the older decoder once after upgrading, so
+        // their missing crest URLs are repaired without waiting six hours.
+        let crestRepairKey = "fixtureCrestFormatV1RefreshAttempted"
+        let needsCrestRepair = !preferences.bool(forKey: crestRepairKey)
 
         guard policy.shouldRefresh(
             trigger: trigger,
             lastAttempt: health.lastAttempt,
-            now: attemptDate
+            now: attemptDate,
+            needsMetadataRepair: needsCrestRepair
         ) else {
+            if !reminderRepair.isSuccessful {
+                health.recordCompletion(reminderRepair, at: attemptDate)
+                return reminderRepair
+            }
             return nil
         }
 
@@ -153,6 +184,7 @@ final class AutomaticRefreshService: ObservableObject {
         }
 
         health.recordAttempt(at: attemptDate)
+        preferences.set(true, forKey: crestRepairKey)
         isRefreshing = true
 
         let context = modelContainer.mainContext
@@ -169,7 +201,8 @@ final class AutomaticRefreshService: ObservableObject {
             )
         }
         currentRefresh = operation
-        let result = await operation.value
+        var result = await operation.value
+        result.merge(reminderRepair)
         currentRefresh = nil
         isRefreshing = false
         health.recordCompletion(result, at: now())
@@ -179,6 +212,7 @@ final class AutomaticRefreshService: ObservableObject {
 
     @discardableResult
     func manualRefresh() async -> SyncResult? {
+        calendar.checkAuthorization()
         if !calendar.isAuthorized {
             _ = await calendar.requestAccess()
         }
@@ -192,6 +226,11 @@ final class AutomaticRefreshService: ObservableObject {
     private func handleBackgroundRefresh(_ task: BGAppRefreshTask) async {
         guard Self.backgroundRefreshEnabled else {
             task.setTaskCompleted(success: true)
+            return
+        }
+
+        guard !Task.isCancelled else {
+            task.setTaskCompleted(success: false)
             return
         }
 

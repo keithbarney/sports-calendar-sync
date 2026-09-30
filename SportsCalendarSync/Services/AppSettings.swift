@@ -68,13 +68,73 @@ enum KickoffReminder: String, CaseIterable {
     }
 }
 
-final class AppSettings: ObservableObject {
-    @AppStorage("appearanceMode") var appearanceMode: AppearanceMode = .system {
-        didSet { applyAppearance() }
-    }
-    @AppStorage("kickoffReminder") var kickoffReminder: KickoffReminder = .thirtyMin
+/// Debug review scenarios are named in one shared type so the app's model
+/// factory can keep its production signature compilable in Release builds.
+enum MockReviewScenario: String, CaseIterable, Identifiable {
+    case typical = "Typical library"
+    case empty = "Empty library"
+    case datesPending = "Dates pending"
+    case syncFailure = "Sync failure"
+    case longTitles = "Long titles"
 
-    init() { applyAppearance() }
+    var id: String { rawValue }
+}
+
+@MainActor
+final class AppSettings: ObservableObject {
+    static let mockSuiteName = "SportsCalendarSync.mock.preferences"
+
+    /// Mock and screenshot runs keep mutable review settings in their own suite.
+    /// This prevents a capture appearance or reminder choice from becoming the
+    /// user's setting on the next normal launch.
+    static func preferenceDefaults(isMock: Bool? = nil) -> UserDefaults {
+        #if DEBUG
+        let useMock = isMock ?? ScreenshotFixtures.isEnabled
+        if useMock {
+            return UserDefaults(suiteName: mockSuiteName)!
+        }
+        #endif
+        return .standard
+    }
+
+    private let defaults: UserDefaults
+    private var isInitializing = true
+
+    @Published var appearanceMode: AppearanceMode {
+        didSet {
+            guard !isInitializing else { return }
+            defaults.set(appearanceMode.rawValue, forKey: "appearanceMode")
+            applyAppearance()
+        }
+    }
+
+    @Published var kickoffReminder: KickoffReminder {
+        didSet {
+            guard !isInitializing else { return }
+            defaults.set(kickoffReminder.rawValue, forKey: "kickoffReminder")
+        }
+    }
+
+    init(defaults: UserDefaults? = nil) {
+        self.defaults = defaults ?? Self.preferenceDefaults()
+        let storedAppearance = self.defaults.string(forKey: "appearanceMode")
+            .flatMap(AppearanceMode.init(rawValue:)) ?? .system
+        let storedReminder = self.defaults.string(forKey: "kickoffReminder")
+            .flatMap(KickoffReminder.init(rawValue:)) ?? .thirtyMin
+        _appearanceMode = Published(initialValue: storedAppearance)
+        _kickoffReminder = Published(initialValue: storedReminder)
+
+        #if DEBUG
+        if let index = CommandLine.arguments.firstIndex(of: "-appearanceMode"),
+           index + 1 < CommandLine.arguments.count,
+           let mode = AppearanceMode(rawValue: CommandLine.arguments[index + 1]) {
+            appearanceMode = mode
+            self.defaults.set(mode.rawValue, forKey: "appearanceMode")
+        }
+        #endif
+        isInitializing = false
+        applyAppearance()
+    }
 
     func applyAppearance() {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

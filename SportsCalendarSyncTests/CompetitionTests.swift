@@ -58,6 +58,39 @@ final class CompetitionTests: XCTestCase {
     }
 
     @MainActor
+    func testSecondDivisionClubsDiscoverCupsEuropeAndSeparatePlayoffs() async throws {
+        for (id, name, source, expected) in [
+            ("3812", "SV Darmstadt 98", Competition.bundesliga2, Set<Competition>([.bundesliga2, .dfbPokal, .bundesligaPlayoff, .clubFriendlies])),
+            ("381", "Norwich City", .championship, [.championship, .faCup, .carabaoCup]),
+            ("6832", "Almería", .laLiga2, [.laLiga2, .copaDelRey]),
+            ("2923", "Palermo", .serieB, [.serieB, .coppaItalia, .europaLeague]),
+            ("178", "Saint-Étienne", .ligue2, [.ligue2, .coupeDeFrance, .ligue1Playoff, .conferenceLeague])
+        ] {
+            let result = try await makeService().getCompetitions(for: team(id, name), source: source)
+            XCTAssertEqual(Set(result.competitions), expected, name)
+            XCTAssertTrue(result.unavailable.isEmpty)
+        }
+    }
+
+    @MainActor
+    func testDarmstadtOpenedFromCupFindsSecondDivisionWithoutFirstDivision() async throws {
+        let result = try await makeService().getCompetitions(for: team("3812", "SV Darmstadt 98"), source: .dfbPokal)
+        XCTAssertTrue(result.competitions.contains(.bundesliga2))
+        XCTAssertFalse(result.competitions.contains(.bundesliga))
+    }
+
+    func testSavedSecondDivisionAndPlayoffSlugsRemainEditableWithoutEntrantData() throws {
+        let slugs = ["eng.2", "esp.2", "ger.2", "ita.2", "fra.2", "ger.playoff.relegation",
+                     "ger.2.promotion.relegation", "fra.1.promotion.relegation", "fra.2.promotion.relegation", "club.friendly"]
+        for slug in slugs {
+            let competition = try XCTUnwrap(Competition(rawValue: slug))
+            let encoded = try JSONEncoder().encode(competition)
+            XCTAssertEqual(try JSONDecoder().decode(Competition.self, from: encoded), competition)
+            XCTAssertEqual(Competition.selectionOptions(source: nil, discovered: [], followed: [competition]), [competition])
+        }
+    }
+
+    @MainActor
     private func makeService(failCopaDelRey: Bool = false) -> ESPNService {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [CompetitionFeedProtocol.self]
@@ -92,6 +125,19 @@ private final class CompetitionFeedProtocol: URLProtocol {
             if slug == "esp.copa_del_rey" {
                 teams = (0..<125).map { ["team": ["id": "other-\($0)", "displayName": "Cup club \($0)"]] }
             }
+            teams.append(["team": ["id": member.0, "displayName": member.1]])
+        }
+        // Fictional cup/European qualification is deliberately not hardcoded in production.
+        let secondTierMembers: [String: [(String, String)]] = [
+            "ger.2": [("3812", "SV Darmstadt 98")], "ger.dfb_pokal": [("3812", "SV Darmstadt 98")],
+            "ger.playoff.relegation": [("3812", "SV Darmstadt 98")], "club.friendly": [("3812", "SV Darmstadt 98")],
+            "eng.2": [("381", "Norwich City")], "eng.fa": [("381", "Norwich City")], "eng.league_cup": [("381", "Norwich City")],
+            "esp.2": [("6832", "Almería")], "esp.copa_del_rey": [("6832", "Almería")],
+            "ita.2": [("2923", "Palermo")], "ita.coppa_italia": [("2923", "Palermo")], "uefa.europa": [("2923", "Palermo")],
+            "fra.2": [("178", "Saint-Étienne")], "fra.coupe_de_france": [("178", "Saint-Étienne")],
+            "fra.1.promotion.relegation": [("178", "Saint-Étienne")], "uefa.europa.conf": [("178", "Saint-Étienne")]
+        ]
+        for member in secondTierMembers[slug] ?? [] {
             teams.append(["team": ["id": member.0, "displayName": member.1]])
         }
         let limit = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first { $0.name == "limit" }?.value.flatMap(Int.init) ?? 50

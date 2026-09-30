@@ -13,12 +13,35 @@ struct CalendarEventWriteResult {
 }
 
 @MainActor
-class CalendarService: ObservableObject {
-    private let store = EKEventStore()
+protocol CalendarFixtureScheduling: AnyObject {
+    var isAuthorized: Bool { get }
+    func upsertGame(
+        identifier: String?,
+        fixtureIdentity: String?,
+        homeTeam: String,
+        awayTeam: String,
+        kickoff: Date,
+        venue: String?,
+        broadcasts: [String],
+        leagueName: String,
+        status: String?,
+        reminderOffset: TimeInterval?
+    ) -> CalendarEventWriteResult
+}
+
+@MainActor
+class CalendarService: ObservableObject, CalendarFixtureScheduling {
+    private lazy var store = EKEventStore()
     @Published var isAuthorized = false
     @Published var appCalendar: EKCalendar?
+    var canSyncCalendar: Bool { isAuthorized }
 
+    #if DEBUG
+    private let calendarTitle = Bundle.main.bundleIdentifier == "com.keithbarney.sportssync.local"
+        ? "Sports (L)" : "Sports"
+    #else
     private let calendarTitle = "Sports"
+    #endif
 
     /// ~105 minutes of gameplay + ~15 minute halftime buffer. Overridable per-event by caller.
     private let defaultMatchDurationSeconds: TimeInterval = 120 * 60
@@ -28,6 +51,14 @@ class CalendarService: ObservableObject {
     }
 
     func checkAuthorization() {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled {
+            // Screenshot fixtures model a user who has already connected Calendar,
+            // while keeping every EventKit write simulated and isolated.
+            isAuthorized = true
+            return
+        }
+        #endif
         let status = EKEventStore.authorizationStatus(for: .event)
         isAuthorized = status == .fullAccess
         if isAuthorized {
@@ -36,6 +67,12 @@ class CalendarService: ObservableObject {
     }
 
     func requestAccess() async -> Bool {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled {
+            isAuthorized = true
+            return true
+        }
+        #endif
         do {
             let granted = try await store.requestFullAccessToEvents()
             await MainActor.run {
@@ -51,6 +88,9 @@ class CalendarService: ObservableObject {
     }
 
     private func findOrCreateCalendar() {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return }
+        #endif
         if let existing = store.calendars(for: .event).first(where: { $0.title == calendarTitle }) {
             appCalendar = existing
             return
@@ -115,7 +155,10 @@ class CalendarService: ObservableObject {
         status: String?,
         reminderOffset: TimeInterval?
     ) -> CalendarEventWriteResult {
-        guard isAuthorized, let calendar = appCalendar else {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return CalendarEventWriteResult(identifier: identifier ?? "screenshot-" + (fixtureIdentity ?? "event"), created: identifier == nil, errorMessage: nil) }
+        #endif
+        guard canSyncCalendar, let calendar = appCalendar else {
             return CalendarEventWriteResult(
                 identifier: nil,
                 created: false,
@@ -175,6 +218,10 @@ class CalendarService: ObservableObject {
         kickoff: Date,
         previousKickoff: Date? = nil
     ) -> String? {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return identifier }
+        #endif
+        guard canSyncCalendar else { return nil }
         if let event = event(for: identifier) {
             tag(event, with: fixtureIdentity)
             return event.calendarItemIdentifier
@@ -201,7 +248,10 @@ class CalendarService: ObservableObject {
 
     /// Update an existing event in place — used when ESPN reschedules / postpones a match.
     func updateGame(identifier: String, newKickoff: Date, newTitle: String) {
-        guard let event = store.event(withIdentifier: identifier) else { return }
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return }
+        #endif
+        guard canSyncCalendar, let event = store.event(withIdentifier: identifier) else { return }
         event.title = newTitle
         event.startDate = newKickoff
         event.endDate = newKickoff.addingTimeInterval(defaultMatchDurationSeconds)
@@ -236,6 +286,9 @@ class CalendarService: ObservableObject {
     }
 
     private func event(for identifier: String?) -> EKEvent? {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return nil }
+        #endif
         guard let identifier else { return nil }
         if let item = store.calendarItem(withIdentifier: identifier) as? EKEvent {
             return item
@@ -260,6 +313,9 @@ class CalendarService: ObservableObject {
     }
 
     func removeAllEvents() -> Int {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return 0 }
+        #endif
         guard let calendar = appCalendar else { return 0 }
 
         let now = Date()

@@ -7,56 +7,125 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010E990DDA08950CE09F4107 /* ReadableListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA281D136CAE876542FD7ED /* ReadableListLayout.swift */; };
+		019C4A755DD707FDB90E245E /* mock-crest-review-2923.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D58FF47BE94D419C15C22F0 /* mock-crest-review-2923.png */; };
 		0221049DF7CF8DE2B7BE19A0 /* ESPNService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AD6B7CFABED4A2B0D60916 /* ESPNService.swift */; };
+		03B830F08CEDFB86AB9D33F3 /* mock-crest-review-3243.png in Resources */ = {isa = PBXBuildFile; fileRef = 438BB701E7A96DF0BA82167C /* mock-crest-review-3243.png */; };
 		04835E00A7DAD79456C5B2FA /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD233FFCC07FFEABE9A6CD /* League.swift */; };
 		0672ACF18F5ACE9B8D4A7F1D /* CompetitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B224870577F589BDD50BCBCA /* CompetitionTests.swift */; };
+		06B2A52FA1742CE0C1B1BCED /* mock-crest-catalog-seattle.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D0A0CE41AB5470BECED07EC /* mock-crest-catalog-seattle.png */; };
+		0D7966ABBF0B8AFC89E110CF /* mock-crest-screenshot-bayern.png in Resources */ = {isa = PBXBuildFile; fileRef = 3489B4E300C772F7C3966AD8 /* mock-crest-screenshot-bayern.png */; };
+		1174DAB56AD17FD73B4C192C /* mock-crest-catalog-galaxy.png in Resources */ = {isa = PBXBuildFile; fileRef = B160A896B8F70DCA8E99D3FB /* mock-crest-catalog-galaxy.png */; };
+		11B8899645E3E2454B382053 /* mock-crest-catalog-liverpool.png in Resources */ = {isa = PBXBuildFile; fileRef = B1922CBDAAD38E8BE5E885D6 /* mock-crest-catalog-liverpool.png */; };
+		12E539E21E17963BD0FF7460 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A173D89D4564B0C51717330 /* WidgetSnapshot.swift */; };
+		16DE81EA5D1990A273FFE9F9 /* mock-crest-screenshot-psg.png in Resources */ = {isa = PBXBuildFile; fileRef = 05F4021E09FCB9CB2C6176CB /* mock-crest-screenshot-psg.png */; };
+		174345D380EC7C3624AD480C /* mock-crest-review-376.png in Resources */ = {isa = PBXBuildFile; fileRef = 410AE9DF6A0A88DE0C8DD7EC /* mock-crest-review-376.png */; };
 		19F3382A4DD13E4A11DF589C /* EmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE392C36A13924DBD087D9D /* EmptyState.swift */; };
 		19FB2208D567E8D5661A46AA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF01D45EB9EE870252B5D04 /* ContentView.swift */; };
 		1D34E1C82BD057544F237E18 /* FeedRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049061A9986F02A2C5177493 /* FeedRow.swift */; };
+		1F872E6A076290A2162D8989 /* FeedbackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3B96DF1AA243576808CA2B /* FeedbackButton.swift */; };
+		1F9F876CE3A93C5D0D6E0A18 /* CaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1431612D6A8CB8F94509DCA6 /* CaptureTests.swift */; };
+		1FB67930D8625727E1D04B22 /* DiscoverReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D498EB3DDDD46AB585EC3A3 /* DiscoverReviewTests.swift */; };
 		257890E7CAA22D10A80F539A /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91F4289E243060BFAB36E1 /* SectionHeader.swift */; };
+		25794F1E6A3824D14BBCD99F /* ScreenshotFixturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C727524BF8E34B61B0E9D7DD /* ScreenshotFixturesTests.swift */; };
 		25B5C7790EA23DF82E2D0108 /* RefreshPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F4F52E93CC471A6AB99432 /* RefreshPolicyTests.swift */; };
+		268A2BBAF6FFB9CF0FBF69EF /* WidgetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D92E6E1148C16C10FDB7A /* WidgetContentView.swift */; };
+		293AF4C8E97B862A7BA08420 /* mock-crest-catalog-marseille.png in Resources */ = {isa = PBXBuildFile; fileRef = E6CFCBEBB7F2EA9A06F59A52 /* mock-crest-catalog-marseille.png */; };
+		2A4A3AEEEA31078D03E4C694 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A173D89D4564B0C51717330 /* WidgetSnapshot.swift */; };
 		2B337BB66779C836ABC82C5B /* SyncHealthStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2ED228214661B200EBF1F1 /* SyncHealthStoreTests.swift */; };
 		2D20FA9F6BCE7FAE15F4AA62 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E1CE0A05CAC1E8E774050B /* AppSettings.swift */; };
+		31B670F69B490B40F7698C96 /* CompetitionArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D195E9C97DE1102E5A6C770 /* CompetitionArtwork.swift */; };
 		358181D453FEA918B8925E27 /* UpcomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1ABE18234D1190ABB285E5 /* UpcomingView.swift */; };
+		393CCC78BA66414E5CAA3929 /* mock-crest-catalog-barcelona.png in Resources */ = {isa = PBXBuildFile; fileRef = B47500DA1DF072DE86D2BB09 /* mock-crest-catalog-barcelona.png */; };
 		3C04A998C4A068E734E50493 /* StatBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F64E0D62EEB3F75F2DE340 /* StatBox.swift */; };
 		3D1C5C86CC9D3F7663008FB0 /* SettingsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EA3AB6D351BC65EDC861CA /* SettingsRow.swift */; };
+		3E1D359600AD4DFCD4F274EC /* MockReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAFD6F1908C11B929AB2BF1 /* MockReviewView.swift */; };
 		3EAC25C23252EBFF24716EB5 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B0DDCD390A0B80C9A00B70 /* ActionButton.swift */; };
+		40C4101CC1603899102CD6F9 /* mock-crest-catalog-monaco.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F5D85D4F31C996D1BBCBE04 /* mock-crest-catalog-monaco.png */; };
 		412B18B740BE2ED1EDC08694 /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD233FFCC07FFEABE9A6CD /* League.swift */; };
+		44FE9DEF790F69670A59B71E /* FeedbackEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC3F6E7855709F2CE647D7D /* FeedbackEnvironment.swift */; };
+		4AF341874C62EF1A1BFF8B0B /* mock-crest-catalog-chelsea.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D4FB8F229B36D32037A5FE /* mock-crest-catalog-chelsea.png */; };
+		4B80535BD1D91D9FD35B257A /* mock-crest-catalog-dortmund.png in Resources */ = {isa = PBXBuildFile; fileRef = 71F5B8B9600F367F98F2812F /* mock-crest-catalog-dortmund.png */; };
+		4C52EC8D315ECDED94BFDBD6 /* mock-crest-catalog-lyon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E7FD545525E0D7D0B16D572 /* mock-crest-catalog-lyon.png */; };
 		4CCB4C8D7B1F6E9B356BCE88 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEE45D9116E55EBF01000F7 /* ProfileView.swift */; };
 		509D86E7D84DE80BB1A40B22 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C990849E8919E1FD396D357 /* ToastView.swift */; };
+		51A09E3F9791C9C4C7AE5AE4 /* FollowingReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7827A4ABEF48CAE4F2D236F5 /* FollowingReviewTests.swift */; };
 		54B0E8ADF7853E5E167B5C7C /* TrackedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEEB4EB681472A64382863E /* TrackedGame.swift */; };
+		5505B2421697B88C3F81F3DF /* mock-crest-review-381.png in Resources */ = {isa = PBXBuildFile; fileRef = 74021EEC2CF075AC8D4DF48F /* mock-crest-review-381.png */; };
+		55D1AFE62F03EC7C713203E7 /* FeedbackLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C71A9B5DFC201A8248C8C4 /* FeedbackLifecycle.swift */; };
 		587F3742280C71F30439E00C /* LucideIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B62E636FF07C167E4BB038 /* LucideIcon.swift */; };
+		5932161D17487AF6B8EE724A /* WidgetSnapshotPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41FB7DCE8613E6895939715 /* WidgetSnapshotPublisher.swift */; };
 		5A82FD242A71ACC6882D972B /* BackgroundRefreshSchedulingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621568F819E4BC9071400FFE /* BackgroundRefreshSchedulingTests.swift */; };
 		5EF30AB23EF6CD0D511E3E43 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA6EBA5CAA2B6E3467FE7B3 /* StoreService.swift */; };
 		637BCDC37F9BFD772087FCED /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73F4AF01F71077A055F67FA /* CalendarService.swift */; };
+		63817E16F52BFB20371E1ADA /* WidgetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D92E6E1148C16C10FDB7A /* WidgetContentView.swift */; };
+		63F9037AD7E9D07083CDC5F3 /* UserSurveyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC947A1FB402A22C9592060 /* UserSurveyStore.swift */; };
 		6433510B4171F8EA27F463D0 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B67D81E8B99E526174A28 /* APIError.swift */; };
+		64D8466CB6B8BED1C648853A /* mock-crest-catalog-atletico.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ED1E4A25EE761321DF52D92 /* mock-crest-catalog-atletico.png */; };
+		67E7C8A782D8EB1CF7517D26 /* mock-crest-screenshot-united.png in Resources */ = {isa = PBXBuildFile; fileRef = 905DE08146A9BD1B8DD39F1C /* mock-crest-screenshot-united.png */; };
+		685DF62484289582D2784B47 /* mock-crest-review-6832.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A2CEFA32E6253541E347E3D /* mock-crest-review-6832.png */; };
 		6865BE3A9A9A353A0963125E /* SyncHealthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1199B5734C8877A5F881634 /* SyncHealthStore.swift */; };
+		6A9A2202ECC35FC1318BD607 /* FollowingFixtureSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B74628E60FB5C239C09B57 /* FollowingFixtureSummary.swift */; };
 		6AA0F498B55122A8D111C073 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9647F047BAB48A7247B72CD /* SkeletonView.swift */; };
+		6C3B32DE336AE422F568FA3E /* mock-crest-catalog-miami.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EA21FE10580F11451797B8 /* mock-crest-catalog-miami.png */; };
+		6CDE4E287AF1CB43DDA18B23 /* mock-crest-review-178.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A3D2CE65A155AAB74A9D578 /* mock-crest-review-178.png */; };
+		6D8960BAFE621D6A8AF751DD /* mock-crest-review-2428.png in Resources */ = {isa = PBXBuildFile; fileRef = F08CE5BB54D2C4695610DB93 /* mock-crest-review-2428.png */; };
+		709CB3950A2FF56A6D511806 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D270E82C6351DAEA3EE62E58 /* FeedbackView.swift */; };
 		714AB70003E5C87069296B06 /* CapsuleGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F37AF9BE457011AB12106B /* CapsuleGlass.swift */; };
 		779D2ADE899227CA8A596032 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37771417A91815F8C868FAF3 /* Assets.xcassets */; };
+		83292711F823AC3910F864F1 /* ScreenshotFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FD30666D7F414427614E4C /* ScreenshotFixtures.swift */; };
 		85316BC76F3CF71CD7248B82 /* TeamDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360CFAA22BCD5B0D6AFE107B /* TeamDetailView.swift */; };
+		86151EA0CDED69597879FDA2 /* UserSurvey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74095D31D496DC95AEE2DEB5 /* UserSurvey.swift */; };
+		8629FE9A1A880464B628F2E6 /* FollowingFixtureSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7261B8166D94D163B767FF90 /* FollowingFixtureSummaryTests.swift */; };
 		88F8721A294DF1851B5D7865 /* FeedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04169247BB8E3D86EC60AED4 /* FeedSection.swift */; };
 		8B04A9EB66056C8E8CDD94AE /* TrackedTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B517B8DE0CDB668F920C9 /* TrackedTeam.swift */; };
 		8E75D63BE4A80E5566122528 /* SportsCalendarSyncApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FFC01B01E76CCA54F34CCC /* SportsCalendarSyncApp.swift */; };
+		8FFA66E1C18CCF10B799F5A1 /* WidgetSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B261566168281227B2B2D2 /* WidgetSnapshotTests.swift */; };
 		90E06E2A2D12E7E6C1102224 /* SportsCalendarSyncWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 028FEB61A0C27F238DC38AC3 /* SportsCalendarSyncWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		91AF57C27EFA67B5A0D97403 /* CrestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7BDC77720F36E07A562806 /* CrestView.swift */; };
+		964E11129143CEACB0A8C480 /* mock-crest-review-3812.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ACB91118684294FF53D3D89 /* mock-crest-review-3812.png */; };
 		98B96DD793D67A1A57F693B5 /* SyncModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7CA509D2EA80758F3A81D0 /* SyncModels.swift */; };
+		9FE53B56BACBABBEAC001439 /* DiscoveryCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444EF23D4874778C78F8151 /* DiscoveryCatalog.swift */; };
+		A1936CD379B87FFCEDCD20F2 /* mock-crest-catalog-ac-milan.png in Resources */ = {isa = PBXBuildFile; fileRef = 88ACD33B61A906FFCC82106C /* mock-crest-catalog-ac-milan.png */; };
+		A2F2F02D53C8E054EB5D75DC /* mock-crest-screenshot-real-madrid.png in Resources */ = {isa = PBXBuildFile; fileRef = A71430C817B5EB17CD26887D /* mock-crest-screenshot-real-madrid.png */; };
 		AA8E7E95B36DED88670675EB /* ESPNDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B9B23A25F3494EAA5D0C5 /* ESPNDecodingTests.swift */; };
 		AED1178312D734A443568843 /* SportsCalendarSyncWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0D0FCDE8417F49CCB9CFD0 /* SportsCalendarSyncWidget.swift */; };
 		B005534288A691EC33A49CF7 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C36619B3503A73AE3DEFD0 /* SeedData.swift */; };
 		B161FB9B42E7B2C15292AF39 /* TeamManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD088C9A685E87EDE85329A5 /* TeamManager.swift */; };
+		B799346933B12F70F0AFF8F2 /* FeedbackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECD51560E24E9EAE2512DFE /* FeedbackDraft.swift */; };
+		B9581CB875D50EA6D3E77F8C /* FeedbackSupportSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA37C470A55148CB318E1A1C /* FeedbackSupportSection.swift */; };
+		BBBC901CBC1644A43DBCB58D /* mock-crest-catalog-napoli.png in Resources */ = {isa = PBXBuildFile; fileRef = C44CD33E5B77549ED75A8CEB /* mock-crest-catalog-napoli.png */; };
 		BBE30EFF2CD071FABFB0B25A /* AutomaticRefreshService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A348AC41BE1C52404CDA4B78 /* AutomaticRefreshService.swift */; };
 		BED065424FAE7F5726942075 /* HiddenChevron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D08DFE8E549027D41A22BD /* HiddenChevron.swift */; };
+		C17DA86D11683D91593BE44B /* WidgetDesignReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDBE4DD3E347E2279FC72F8 /* WidgetDesignReviewView.swift */; };
+		C4AC8107EE2849747F4DCD68 /* FixtureFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9903ED0EEDBAEB2CE55A822 /* FixtureFeedTests.swift */; };
 		C5FC2D22A39B9E28AC445A22 /* TrackedTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B517B8DE0CDB668F920C9 /* TrackedTeam.swift */; };
+		C916743DD4DDA2C7EDBEFCFF /* NotificationTimingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4574970BA97AF41E79B18EF /* NotificationTimingTests.swift */; };
+		CD06BAD24DB196477871523D /* mock-crest-catalog-inter.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DA3B73F00BDB2CCF1DBE92D /* mock-crest-catalog-inter.png */; };
 		D35B03471A83B7DECB9308FD /* TrackedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEEB4EB681472A64382863E /* TrackedGame.swift */; };
+		D5F511CC6AB0F59D49826332 /* mock-crest-catalog-juventus.png in Resources */ = {isa = PBXBuildFile; fileRef = 2656EA50A524C31D88C2A611 /* mock-crest-catalog-juventus.png */; };
 		D6728AB17B69917CFB617D65 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB8A81C3D9405DBEA2F6E21 /* SearchBar.swift */; };
+		D727DCBDF2EE76CBD8AF1729 /* mock-crest-review-2734.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB98329B38F6394160664B9 /* mock-crest-review-2734.png */; };
+		D802846D6D92D8AE22BE5C4C /* FeedbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD7EB23FFF0D41E7B44BC62 /* FeedbackTests.swift */; };
+		D92EEF52802617E0E8E1D5FB /* mock-crest-review-3747.png in Resources */ = {isa = PBXBuildFile; fileRef = 74FF61D928ED1F51A31DDCF8 /* mock-crest-review-3747.png */; };
 		DA11C62CA642354A2F03886D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8209202B6D8DB6596AB61F7B /* PrivacyInfo.xcprivacy */; };
+		DE22427B628552A825EC4DA8 /* UserSurveyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BED128940721A65224C93 /* UserSurveyView.swift */; };
+		DFAC2E99F5716898BC927B98 /* mock-crest-catalog-leverkusen.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F0B286D425F816EFEE3475 /* mock-crest-catalog-leverkusen.png */; };
+		E350B5B5A60401CEECFAD66A /* WidgetReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA03B9A9CAA7F1F98A62B0C /* WidgetReviewTests.swift */; };
+		E52659C5A9E128DED5205AA0 /* LiveReminderDeliveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE5558E331E2826A329A22F /* LiveReminderDeliveryTests.swift */; };
+		E70F32C94E6FB9C2A533D4B8 /* DiscoveryTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0587CBF4E3FF0DD6892B53DA /* DiscoveryTeamTests.swift */; };
 		E7467DDAF593A56104B95AF2 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDAEC5315CEA125C926117A5 /* DiscoverView.swift */; };
 		E9F472A5A9522D977F1247D2 /* APIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388A48991EE1B171CFD94E7 /* APIModels.swift */; };
+		EAE07DD94266D7B15CDD1729 /* FeedbackFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44981CD8FB7587F9598C239 /* FeedbackFlowTests.swift */; };
+		EBA0A24972241A0776D7066E /* mock-crest-catalog-arsenal.png in Resources */ = {isa = PBXBuildFile; fileRef = 175A5C51271FD730584F356E /* mock-crest-catalog-arsenal.png */; };
+		EBB139FF8ECF0B3B068F5602 /* mock-crest-catalog-man-city.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F895044D23BAE9E6D660553 /* mock-crest-catalog-man-city.png */; };
 		F25DF16965492C693AE4F583 /* FeedRowActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD8B2792478B50B724C3A63 /* FeedRowActionButton.swift */; };
 		F3277A065F1D8957FC48F27B /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B701D87D75ECCEA25A8667 /* Color+Theme.swift */; };
+		F4B0DEE7223928570FBAFEBF /* DiscoveryTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CF8C6A4A18F0B67E651689 /* DiscoveryTeam.swift */; };
 		F7DDD52C2882178E0736D6B7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AE0C2CB1B90C8521F140D1 /* NotificationService.swift */; };
 		F92B8513FDE83C21ABB69DB5 /* DetailChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0643D2BDE60237DACCA371FC /* DetailChip.swift */; };
+		FC9A53C851B3DD2CE4AFB019 /* mock-crest-screenshot-juventus.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB84D2B20AC4095DDFA598 /* mock-crest-screenshot-juventus.png */; };
+		FD6BA69A1AA8719FE5FE861B /* mock-crest-screenshot-lafc.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2F758D2BAAFD01883907CE /* mock-crest-screenshot-lafc.png */; };
 		FE48E1B2DA36AC3E2965FEEC /* FixtureReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224D454EAC9823857511D758 /* FixtureReconcilerTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +138,13 @@
 			remoteInfo = SportsCalendarSyncWidget;
 		};
 		8921FA3A01808F75B841FC7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 903D4B912A2C431950F0F391 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 511582DF97C8B8079096CD55;
+			remoteInfo = SportsCalendarSync;
+		};
+		D9E08A888B18F05B89587239 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 903D4B912A2C431950F0F391 /* Project object */;
 			proxyType = 1;
@@ -95,56 +171,126 @@
 		028FEB61A0C27F238DC38AC3 /* SportsCalendarSyncWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = SportsCalendarSyncWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		04169247BB8E3D86EC60AED4 /* FeedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSection.swift; sourceTree = "<group>"; };
 		049061A9986F02A2C5177493 /* FeedRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedRow.swift; sourceTree = "<group>"; };
+		0587CBF4E3FF0DD6892B53DA /* DiscoveryTeamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryTeamTests.swift; sourceTree = "<group>"; };
+		05F4021E09FCB9CB2C6176CB /* mock-crest-screenshot-psg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-screenshot-psg.png"; sourceTree = "<group>"; };
 		0643D2BDE60237DACCA371FC /* DetailChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChip.swift; sourceTree = "<group>"; };
+		0A2CEFA32E6253541E347E3D /* mock-crest-review-6832.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-6832.png"; sourceTree = "<group>"; };
+		0A3D2CE65A155AAB74A9D578 /* mock-crest-review-178.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-178.png"; sourceTree = "<group>"; };
+		0D195E9C97DE1102E5A6C770 /* CompetitionArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionArtwork.swift; sourceTree = "<group>"; };
+		0D498EB3DDDD46AB585EC3A3 /* DiscoverReviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverReviewTests.swift; sourceTree = "<group>"; };
+		0F5D85D4F31C996D1BBCBE04 /* mock-crest-catalog-monaco.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-monaco.png"; sourceTree = "<group>"; };
 		0FA6EBA5CAA2B6E3467FE7B3 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		1431612D6A8CB8F94509DCA6 /* CaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureTests.swift; sourceTree = "<group>"; };
+		175A5C51271FD730584F356E /* mock-crest-catalog-arsenal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-arsenal.png"; sourceTree = "<group>"; };
 		17AD6B7CFABED4A2B0D60916 /* ESPNService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESPNService.swift; sourceTree = "<group>"; };
 		17AE0C2CB1B90C8521F140D1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		19D08DFE8E549027D41A22BD /* HiddenChevron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenChevron.swift; sourceTree = "<group>"; };
 		1A2ED228214661B200EBF1F1 /* SyncHealthStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncHealthStoreTests.swift; sourceTree = "<group>"; };
 		1C990849E8919E1FD396D357 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		1CD7EB23FFF0D41E7B44BC62 /* FeedbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackTests.swift; sourceTree = "<group>"; };
 		1CE928E3AA3ADF6C94E2C266 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1D58FF47BE94D419C15C22F0 /* mock-crest-review-2923.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-2923.png"; sourceTree = "<group>"; };
 		224D454EAC9823857511D758 /* FixtureReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureReconcilerTests.swift; sourceTree = "<group>"; };
 		25B701D87D75ECCEA25A8667 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
+		2656EA50A524C31D88C2A611 /* mock-crest-catalog-juventus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-juventus.png"; sourceTree = "<group>"; };
+		28D4FB8F229B36D32037A5FE /* mock-crest-catalog-chelsea.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-chelsea.png"; sourceTree = "<group>"; };
+		292FE2470D53E3F99DD4B663 /* SportsCalendarSync.debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SportsCalendarSync.debug.entitlements; sourceTree = "<group>"; };
 		2DCD233FFCC07FFEABE9A6CD /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
+		2EC947A1FB402A22C9592060 /* UserSurveyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSurveyStore.swift; sourceTree = "<group>"; };
 		2F91F4289E243060BFAB36E1 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		307B52401C12FCC1519A1803 /* SportsCalendarSync.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SportsCalendarSync.entitlements; sourceTree = "<group>"; };
 		34605E4C35A3FC0CCBEF802A /* SportsCalendarSyncTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SportsCalendarSyncTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3489B4E300C772F7C3966AD8 /* mock-crest-screenshot-bayern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-screenshot-bayern.png"; sourceTree = "<group>"; };
 		34EA3AB6D351BC65EDC861CA /* SettingsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRow.swift; sourceTree = "<group>"; };
 		360CFAA22BCD5B0D6AFE107B /* TeamDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailView.swift; sourceTree = "<group>"; };
 		37771417A91815F8C868FAF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3A173D89D4564B0C51717330 /* WidgetSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshot.swift; sourceTree = "<group>"; };
 		3B7CA509D2EA80758F3A81D0 /* SyncModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncModels.swift; sourceTree = "<group>"; };
+		3D2E6C0AC37AAB499C0586AE /* SportsCalendarSyncWidget.debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SportsCalendarSyncWidget.debug.entitlements; sourceTree = "<group>"; };
+		3DA3B73F00BDB2CCF1DBE92D /* mock-crest-catalog-inter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-inter.png"; sourceTree = "<group>"; };
+		3FA03B9A9CAA7F1F98A62B0C /* WidgetReviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetReviewTests.swift; sourceTree = "<group>"; };
+		410AE9DF6A0A88DE0C8DD7EC /* mock-crest-review-376.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-376.png"; sourceTree = "<group>"; };
 		4388A48991EE1B171CFD94E7 /* APIModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModels.swift; sourceTree = "<group>"; };
+		438BB701E7A96DF0BA82167C /* mock-crest-review-3243.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-3243.png"; sourceTree = "<group>"; };
+		43FD30666D7F414427614E4C /* ScreenshotFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotFixtures.swift; sourceTree = "<group>"; };
+		48CB84D2B20AC4095DDFA598 /* mock-crest-screenshot-juventus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-screenshot-juventus.png"; sourceTree = "<group>"; };
 		4AF01D45EB9EE870252B5D04 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4D0A0CE41AB5470BECED07EC /* mock-crest-catalog-seattle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-seattle.png"; sourceTree = "<group>"; };
+		4E7FD545525E0D7D0B16D572 /* mock-crest-catalog-lyon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-lyon.png"; sourceTree = "<group>"; };
+		4F895044D23BAE9E6D660553 /* mock-crest-catalog-man-city.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-man-city.png"; sourceTree = "<group>"; };
 		51599D9D567D8382C99D9FD4 /* SportsCalendarSync.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SportsCalendarSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2B9B23A25F3494EAA5D0C5 /* ESPNDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESPNDecodingTests.swift; sourceTree = "<group>"; };
 		621568F819E4BC9071400FFE /* BackgroundRefreshSchedulingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshSchedulingTests.swift; sourceTree = "<group>"; };
 		6CEEB4EB681472A64382863E /* TrackedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedGame.swift; sourceTree = "<group>"; };
+		6ED1E4A25EE761321DF52D92 /* mock-crest-catalog-atletico.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-atletico.png"; sourceTree = "<group>"; };
 		6EEE45D9116E55EBF01000F7 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		71F5B8B9600F367F98F2812F /* mock-crest-catalog-dortmund.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-dortmund.png"; sourceTree = "<group>"; };
+		7261B8166D94D163B767FF90 /* FollowingFixtureSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingFixtureSummaryTests.swift; sourceTree = "<group>"; };
+		74021EEC2CF075AC8D4DF48F /* mock-crest-review-381.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-381.png"; sourceTree = "<group>"; };
+		74095D31D496DC95AEE2DEB5 /* UserSurvey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSurvey.swift; sourceTree = "<group>"; };
+		74FF61D928ED1F51A31DDCF8 /* mock-crest-review-3747.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-3747.png"; sourceTree = "<group>"; };
+		7827A4ABEF48CAE4F2D236F5 /* FollowingReviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingReviewTests.swift; sourceTree = "<group>"; };
+		7ACB91118684294FF53D3D89 /* mock-crest-review-3812.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-3812.png"; sourceTree = "<group>"; };
+		7B2F758D2BAAFD01883907CE /* mock-crest-screenshot-lafc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-screenshot-lafc.png"; sourceTree = "<group>"; };
+		7E2D92E6E1148C16C10FDB7A /* WidgetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetContentView.swift; sourceTree = "<group>"; };
+		7F5BED128940721A65224C93 /* UserSurveyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSurveyView.swift; sourceTree = "<group>"; };
 		8209202B6D8DB6596AB61F7B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		8444EF23D4874778C78F8151 /* DiscoveryCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryCatalog.swift; sourceTree = "<group>"; };
+		88ACD33B61A906FFCC82106C /* mock-crest-catalog-ac-milan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-ac-milan.png"; sourceTree = "<group>"; };
 		8B0D0FCDE8417F49CCB9CFD0 /* SportsCalendarSyncWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsCalendarSyncWidget.swift; sourceTree = "<group>"; };
+		8D3B96DF1AA243576808CA2B /* FeedbackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackButton.swift; sourceTree = "<group>"; };
 		8E1ABE18234D1190ABB285E5 /* UpcomingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingView.swift; sourceTree = "<group>"; };
+		905DE08146A9BD1B8DD39F1C /* mock-crest-screenshot-united.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-screenshot-united.png"; sourceTree = "<group>"; };
 		939B517B8DE0CDB668F920C9 /* TrackedTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedTeam.swift; sourceTree = "<group>"; };
 		98B6FE5E6D620EB2004C3FAE /* SportsCalendarSyncWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SportsCalendarSyncWidget.entitlements; sourceTree = "<group>"; };
+		9C93473A2D0873CD39580706 /* SportsCalendarSyncScreenshotTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SportsCalendarSyncScreenshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0F0B286D425F816EFEE3475 /* mock-crest-catalog-leverkusen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-leverkusen.png"; sourceTree = "<group>"; };
 		A348AC41BE1C52404CDA4B78 /* AutomaticRefreshService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticRefreshService.swift; sourceTree = "<group>"; };
+		A71430C817B5EB17CD26887D /* mock-crest-screenshot-real-madrid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-screenshot-real-madrid.png"; sourceTree = "<group>"; };
 		A73F4AF01F71077A055F67FA /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		ACDBE4DD3E347E2279FC72F8 /* WidgetDesignReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDesignReviewView.swift; sourceTree = "<group>"; };
+		AECD51560E24E9EAE2512DFE /* FeedbackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackDraft.swift; sourceTree = "<group>"; };
 		AFF14711D65B0F0371FEBE4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B1199B5734C8877A5F881634 /* SyncHealthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncHealthStore.swift; sourceTree = "<group>"; };
+		B160A896B8F70DCA8E99D3FB /* mock-crest-catalog-galaxy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-galaxy.png"; sourceTree = "<group>"; };
+		B1922CBDAAD38E8BE5E885D6 /* mock-crest-catalog-liverpool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-liverpool.png"; sourceTree = "<group>"; };
 		B224870577F589BDD50BCBCA /* CompetitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionTests.swift; sourceTree = "<group>"; };
+		B4574970BA97AF41E79B18EF /* NotificationTimingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTimingTests.swift; sourceTree = "<group>"; };
+		B47500DA1DF072DE86D2BB09 /* mock-crest-catalog-barcelona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-barcelona.png"; sourceTree = "<group>"; };
 		B4B0DDCD390A0B80C9A00B70 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		B9903ED0EEDBAEB2CE55A822 /* FixtureFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureFeedTests.swift; sourceTree = "<group>"; };
+		BA37C470A55148CB318E1A1C /* FeedbackSupportSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackSupportSection.swift; sourceTree = "<group>"; };
 		BBD8B2792478B50B724C3A63 /* FeedRowActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedRowActionButton.swift; sourceTree = "<group>"; };
 		BC7BDC77720F36E07A562806 /* CrestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrestView.swift; sourceTree = "<group>"; };
+		BCB98329B38F6394160664B9 /* mock-crest-review-2734.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-2734.png"; sourceTree = "<group>"; };
 		BCE392C36A13924DBD087D9D /* EmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyState.swift; sourceTree = "<group>"; };
 		BDB8A81C3D9405DBEA2F6E21 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		BE0B67D81E8B99E526174A28 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		C1F37AF9BE457011AB12106B /* CapsuleGlass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleGlass.swift; sourceTree = "<group>"; };
+		C44CD33E5B77549ED75A8CEB /* mock-crest-catalog-napoli.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-napoli.png"; sourceTree = "<group>"; };
 		C4E1CE0A05CAC1E8E774050B /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		C5C36619B3503A73AE3DEFD0 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
+		C727524BF8E34B61B0E9D7DD /* ScreenshotFixturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotFixturesTests.swift; sourceTree = "<group>"; };
+		CDAFD6F1908C11B929AB2BF1 /* MockReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReviewView.swift; sourceTree = "<group>"; };
+		D270E82C6351DAEA3EE62E58 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
+		D2B74628E60FB5C239C09B57 /* FollowingFixtureSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingFixtureSummary.swift; sourceTree = "<group>"; };
+		D6C71A9B5DFC201A8248C8C4 /* FeedbackLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackLifecycle.swift; sourceTree = "<group>"; };
+		DAC3F6E7855709F2CE647D7D /* FeedbackEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackEnvironment.swift; sourceTree = "<group>"; };
 		DD088C9A685E87EDE85329A5 /* TeamManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamManager.swift; sourceTree = "<group>"; };
+		DFE5558E331E2826A329A22F /* LiveReminderDeliveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveReminderDeliveryTests.swift; sourceTree = "<group>"; };
+		E2B261566168281227B2B2D2 /* WidgetSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotTests.swift; sourceTree = "<group>"; };
 		E3F4F52E93CC471A6AB99432 /* RefreshPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshPolicyTests.swift; sourceTree = "<group>"; };
+		E44981CD8FB7587F9598C239 /* FeedbackFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackFlowTests.swift; sourceTree = "<group>"; };
+		E6CFCBEBB7F2EA9A06F59A52 /* mock-crest-catalog-marseille.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-marseille.png"; sourceTree = "<group>"; };
+		F08CE5BB54D2C4695610DB93 /* mock-crest-review-2428.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-review-2428.png"; sourceTree = "<group>"; };
 		F2F64E0D62EEB3F75F2DE340 /* StatBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatBox.swift; sourceTree = "<group>"; };
+		F41FB7DCE8613E6895939715 /* WidgetSnapshotPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotPublisher.swift; sourceTree = "<group>"; };
+		F4CF8C6A4A18F0B67E651689 /* DiscoveryTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryTeam.swift; sourceTree = "<group>"; };
 		F6B62E636FF07C167E4BB038 /* LucideIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LucideIcon.swift; sourceTree = "<group>"; };
+		F6EA21FE10580F11451797B8 /* mock-crest-catalog-miami.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mock-crest-catalog-miami.png"; sourceTree = "<group>"; };
 		F6FFC01B01E76CCA54F34CCC /* SportsCalendarSyncApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsCalendarSyncApp.swift; sourceTree = "<group>"; };
 		F9647F047BAB48A7247B72CD /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
+		FAA281D136CAE876542FD7ED /* ReadableListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableListLayout.swift; sourceTree = "<group>"; };
 		FDAEC5315CEA125C926117A5 /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -154,18 +300,39 @@
 			children = (
 				621568F819E4BC9071400FFE /* BackgroundRefreshSchedulingTests.swift */,
 				B224870577F589BDD50BCBCA /* CompetitionTests.swift */,
+				0587CBF4E3FF0DD6892B53DA /* DiscoveryTeamTests.swift */,
 				5A2B9B23A25F3494EAA5D0C5 /* ESPNDecodingTests.swift */,
+				1CD7EB23FFF0D41E7B44BC62 /* FeedbackTests.swift */,
+				B9903ED0EEDBAEB2CE55A822 /* FixtureFeedTests.swift */,
 				224D454EAC9823857511D758 /* FixtureReconcilerTests.swift */,
+				7261B8166D94D163B767FF90 /* FollowingFixtureSummaryTests.swift */,
+				DFE5558E331E2826A329A22F /* LiveReminderDeliveryTests.swift */,
+				B4574970BA97AF41E79B18EF /* NotificationTimingTests.swift */,
 				E3F4F52E93CC471A6AB99432 /* RefreshPolicyTests.swift */,
+				C727524BF8E34B61B0E9D7DD /* ScreenshotFixturesTests.swift */,
 				1A2ED228214661B200EBF1F1 /* SyncHealthStoreTests.swift */,
+				E2B261566168281227B2B2D2 /* WidgetSnapshotTests.swift */,
 			);
 			path = SportsCalendarSyncTests;
+			sourceTree = "<group>";
+		};
+		19B0FFCE684E907F3E62E17D /* SportsCalendarSyncScreenshotTests */ = {
+			isa = PBXGroup;
+			children = (
+				1431612D6A8CB8F94509DCA6 /* CaptureTests.swift */,
+				0D498EB3DDDD46AB585EC3A3 /* DiscoverReviewTests.swift */,
+				E44981CD8FB7587F9598C239 /* FeedbackFlowTests.swift */,
+				7827A4ABEF48CAE4F2D236F5 /* FollowingReviewTests.swift */,
+				3FA03B9A9CAA7F1F98A62B0C /* WidgetReviewTests.swift */,
+			);
+			path = SportsCalendarSyncScreenshotTests;
 			sourceTree = "<group>";
 		};
 		358E2184B7CEB6DDF6BA4D30 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				51599D9D567D8382C99D9FD4 /* SportsCalendarSync.app */,
+				9C93473A2D0873CD39580706 /* SportsCalendarSyncScreenshotTests.xctest */,
 				34605E4C35A3FC0CCBEF802A /* SportsCalendarSyncTests.xctest */,
 				028FEB61A0C27F238DC38AC3 /* SportsCalendarSyncWidget.appex */,
 			);
@@ -179,10 +346,12 @@
 				4AF01D45EB9EE870252B5D04 /* ContentView.swift */,
 				AFF14711D65B0F0371FEBE4D /* Info.plist */,
 				8209202B6D8DB6596AB61F7B /* PrivacyInfo.xcprivacy */,
+				292FE2470D53E3F99DD4B663 /* SportsCalendarSync.debug.entitlements */,
 				307B52401C12FCC1519A1803 /* SportsCalendarSync.entitlements */,
 				F6FFC01B01E76CCA54F34CCC /* SportsCalendarSyncApp.swift */,
 				CD3AD79C85086388C3D04C09 /* Extensions */,
 				563DF44FAF94AD29AFBC79A9 /* Models */,
+				EC60132FFBE529FCD0BD59F4 /* Resources */,
 				B24DFF8C5D1359A9F2A06626 /* Services */,
 				998841DE8D57966960282A1F /* Views */,
 			);
@@ -193,9 +362,15 @@
 			isa = PBXGroup;
 			children = (
 				4388A48991EE1B171CFD94E7 /* APIModels.swift */,
+				0D195E9C97DE1102E5A6C770 /* CompetitionArtwork.swift */,
+				F4CF8C6A4A18F0B67E651689 /* DiscoveryTeam.swift */,
+				AECD51560E24E9EAE2512DFE /* FeedbackDraft.swift */,
+				D2B74628E60FB5C239C09B57 /* FollowingFixtureSummary.swift */,
 				2DCD233FFCC07FFEABE9A6CD /* League.swift */,
 				6CEEB4EB681472A64382863E /* TrackedGame.swift */,
 				939B517B8DE0CDB668F920C9 /* TrackedTeam.swift */,
+				74095D31D496DC95AEE2DEB5 /* UserSurvey.swift */,
+				3A173D89D4564B0C51717330 /* WidgetSnapshot.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,10 +382,14 @@
 				BC7BDC77720F36E07A562806 /* CrestView.swift */,
 				0643D2BDE60237DACCA371FC /* DetailChip.swift */,
 				BCE392C36A13924DBD087D9D /* EmptyState.swift */,
+				8D3B96DF1AA243576808CA2B /* FeedbackButton.swift */,
+				D6C71A9B5DFC201A8248C8C4 /* FeedbackLifecycle.swift */,
+				BA37C470A55148CB318E1A1C /* FeedbackSupportSection.swift */,
 				049061A9986F02A2C5177493 /* FeedRow.swift */,
 				BBD8B2792478B50B724C3A63 /* FeedRowActionButton.swift */,
 				04169247BB8E3D86EC60AED4 /* FeedSection.swift */,
 				F6B62E636FF07C167E4BB038 /* LucideIcon.swift */,
+				FAA281D136CAE876542FD7ED /* ReadableListLayout.swift */,
 				BDB8A81C3D9405DBEA2F6E21 /* SearchBar.swift */,
 				34EA3AB6D351BC65EDC861CA /* SettingsRow.swift */,
 				F9647F047BAB48A7247B72CD /* SkeletonView.swift */,
@@ -223,6 +402,7 @@
 			isa = PBXGroup;
 			children = (
 				3DE9FFB5D046ED6DCDA17E38 /* SportsCalendarSync */,
+				19B0FFCE684E907F3E62E17D /* SportsCalendarSyncScreenshotTests */,
 				17F8B65AFA3A4E94DE1B146C /* SportsCalendarSyncTests */,
 				C1493070538BA3C11F4F69F0 /* SportsCalendarSyncWidget */,
 				358E2184B7CEB6DDF6BA4D30 /* Products */,
@@ -243,10 +423,14 @@
 			isa = PBXGroup;
 			children = (
 				FDAEC5315CEA125C926117A5 /* DiscoverView.swift */,
+				D270E82C6351DAEA3EE62E58 /* FeedbackView.swift */,
+				CDAFD6F1908C11B929AB2BF1 /* MockReviewView.swift */,
 				6EEE45D9116E55EBF01000F7 /* ProfileView.swift */,
 				360CFAA22BCD5B0D6AFE107B /* TeamDetailView.swift */,
 				1C990849E8919E1FD396D357 /* ToastView.swift */,
 				8E1ABE18234D1190ABB285E5 /* UpcomingView.swift */,
+				7F5BED128940721A65224C93 /* UserSurveyView.swift */,
+				ACDBE4DD3E347E2279FC72F8 /* WidgetDesignReviewView.swift */,
 				656BC6C46601AC336D48F99C /* Components */,
 				742EAFF571D2AD6348C91241 /* Modifiers */,
 			);
@@ -260,13 +444,18 @@
 				C4E1CE0A05CAC1E8E774050B /* AppSettings.swift */,
 				A348AC41BE1C52404CDA4B78 /* AutomaticRefreshService.swift */,
 				A73F4AF01F71077A055F67FA /* CalendarService.swift */,
+				8444EF23D4874778C78F8151 /* DiscoveryCatalog.swift */,
 				17AD6B7CFABED4A2B0D60916 /* ESPNService.swift */,
+				DAC3F6E7855709F2CE647D7D /* FeedbackEnvironment.swift */,
 				17AE0C2CB1B90C8521F140D1 /* NotificationService.swift */,
+				43FD30666D7F414427614E4C /* ScreenshotFixtures.swift */,
 				C5C36619B3503A73AE3DEFD0 /* SeedData.swift */,
 				0FA6EBA5CAA2B6E3467FE7B3 /* StoreService.swift */,
 				B1199B5734C8877A5F881634 /* SyncHealthStore.swift */,
 				3B7CA509D2EA80758F3A81D0 /* SyncModels.swift */,
 				DD088C9A685E87EDE85329A5 /* TeamManager.swift */,
+				2EC947A1FB402A22C9592060 /* UserSurveyStore.swift */,
+				F41FB7DCE8613E6895939715 /* WidgetSnapshotPublisher.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -275,8 +464,10 @@
 			isa = PBXGroup;
 			children = (
 				1CE928E3AA3ADF6C94E2C266 /* Info.plist */,
+				3D2E6C0AC37AAB499C0586AE /* SportsCalendarSyncWidget.debug.entitlements */,
 				98B6FE5E6D620EB2004C3FAE /* SportsCalendarSyncWidget.entitlements */,
 				8B0D0FCDE8417F49CCB9CFD0 /* SportsCalendarSyncWidget.swift */,
+				7E2D92E6E1148C16C10FDB7A /* WidgetContentView.swift */,
 			);
 			path = SportsCalendarSyncWidget;
 			sourceTree = "<group>";
@@ -287,6 +478,55 @@
 				25B701D87D75ECCEA25A8667 /* Color+Theme.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		EB2BDBB6C60650149430129E /* MockArtwork */ = {
+			isa = PBXGroup;
+			children = (
+				88ACD33B61A906FFCC82106C /* mock-crest-catalog-ac-milan.png */,
+				175A5C51271FD730584F356E /* mock-crest-catalog-arsenal.png */,
+				6ED1E4A25EE761321DF52D92 /* mock-crest-catalog-atletico.png */,
+				B47500DA1DF072DE86D2BB09 /* mock-crest-catalog-barcelona.png */,
+				28D4FB8F229B36D32037A5FE /* mock-crest-catalog-chelsea.png */,
+				71F5B8B9600F367F98F2812F /* mock-crest-catalog-dortmund.png */,
+				B160A896B8F70DCA8E99D3FB /* mock-crest-catalog-galaxy.png */,
+				3DA3B73F00BDB2CCF1DBE92D /* mock-crest-catalog-inter.png */,
+				2656EA50A524C31D88C2A611 /* mock-crest-catalog-juventus.png */,
+				A0F0B286D425F816EFEE3475 /* mock-crest-catalog-leverkusen.png */,
+				B1922CBDAAD38E8BE5E885D6 /* mock-crest-catalog-liverpool.png */,
+				4E7FD545525E0D7D0B16D572 /* mock-crest-catalog-lyon.png */,
+				4F895044D23BAE9E6D660553 /* mock-crest-catalog-man-city.png */,
+				E6CFCBEBB7F2EA9A06F59A52 /* mock-crest-catalog-marseille.png */,
+				F6EA21FE10580F11451797B8 /* mock-crest-catalog-miami.png */,
+				0F5D85D4F31C996D1BBCBE04 /* mock-crest-catalog-monaco.png */,
+				C44CD33E5B77549ED75A8CEB /* mock-crest-catalog-napoli.png */,
+				4D0A0CE41AB5470BECED07EC /* mock-crest-catalog-seattle.png */,
+				3489B4E300C772F7C3966AD8 /* mock-crest-screenshot-bayern.png */,
+				48CB84D2B20AC4095DDFA598 /* mock-crest-screenshot-juventus.png */,
+				7B2F758D2BAAFD01883907CE /* mock-crest-screenshot-lafc.png */,
+				05F4021E09FCB9CB2C6176CB /* mock-crest-screenshot-psg.png */,
+				A71430C817B5EB17CD26887D /* mock-crest-screenshot-real-madrid.png */,
+				905DE08146A9BD1B8DD39F1C /* mock-crest-screenshot-united.png */,
+			);
+			path = MockArtwork;
+			sourceTree = "<group>";
+		};
+		EC60132FFBE529FCD0BD59F4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0A3D2CE65A155AAB74A9D578 /* mock-crest-review-178.png */,
+				410AE9DF6A0A88DE0C8DD7EC /* mock-crest-review-376.png */,
+				74021EEC2CF075AC8D4DF48F /* mock-crest-review-381.png */,
+				F08CE5BB54D2C4695610DB93 /* mock-crest-review-2428.png */,
+				BCB98329B38F6394160664B9 /* mock-crest-review-2734.png */,
+				1D58FF47BE94D419C15C22F0 /* mock-crest-review-2923.png */,
+				438BB701E7A96DF0BA82167C /* mock-crest-review-3243.png */,
+				74FF61D928ED1F51A31DDCF8 /* mock-crest-review-3747.png */,
+				7ACB91118684294FF53D3D89 /* mock-crest-review-3812.png */,
+				0A2CEFA32E6253541E347E3D /* mock-crest-review-6832.png */,
+				EB2BDBB6C60650149430129E /* MockArtwork */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,6 +551,24 @@
 			productName = SportsCalendarSync;
 			productReference = 51599D9D567D8382C99D9FD4 /* SportsCalendarSync.app */;
 			productType = "com.apple.product-type.application";
+		};
+		9519BDE1E61F78B8C8A6F207 /* SportsCalendarSyncScreenshotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 17B9DC0B93C83D58188F6334 /* Build configuration list for PBXNativeTarget "SportsCalendarSyncScreenshotTests" */;
+			buildPhases = (
+				9D0920216F844671CE365B6F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C07AE1D2D0B52EAF6184B87E /* PBXTargetDependency */,
+			);
+			name = SportsCalendarSyncScreenshotTests;
+			packageProductDependencies = (
+			);
+			productName = SportsCalendarSyncScreenshotTests;
+			productReference = 9C93473A2D0873CD39580706 /* SportsCalendarSyncScreenshotTests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		A5C7335EB93DE25E35CE1D21 /* SportsCalendarSyncWidget */ = {
 			isa = PBXNativeTarget;
@@ -360,6 +618,11 @@
 						DevelopmentTeam = BXKNJTU253;
 						ProvisioningStyle = Automatic;
 					};
+					9519BDE1E61F78B8C8A6F207 = {
+						DevelopmentTeam = BXKNJTU253;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 511582DF97C8B8079096CD55;
+					};
 					A5C7335EB93DE25E35CE1D21 = {
 						DevelopmentTeam = BXKNJTU253;
 						ProvisioningStyle = Automatic;
@@ -387,6 +650,7 @@
 				511582DF97C8B8079096CD55 /* SportsCalendarSync */,
 				A5C7335EB93DE25E35CE1D21 /* SportsCalendarSyncWidget */,
 				B2F62DAA5C752B035821D2CC /* SportsCalendarSyncTests */,
+				9519BDE1E61F78B8C8A6F207 /* SportsCalendarSyncScreenshotTests */,
 			);
 		};
 /* End PBXProject section */
@@ -398,6 +662,40 @@
 			files = (
 				779D2ADE899227CA8A596032 /* Assets.xcassets in Resources */,
 				DA11C62CA642354A2F03886D /* PrivacyInfo.xcprivacy in Resources */,
+				A1936CD379B87FFCEDCD20F2 /* mock-crest-catalog-ac-milan.png in Resources */,
+				EBA0A24972241A0776D7066E /* mock-crest-catalog-arsenal.png in Resources */,
+				64D8466CB6B8BED1C648853A /* mock-crest-catalog-atletico.png in Resources */,
+				393CCC78BA66414E5CAA3929 /* mock-crest-catalog-barcelona.png in Resources */,
+				4AF341874C62EF1A1BFF8B0B /* mock-crest-catalog-chelsea.png in Resources */,
+				4B80535BD1D91D9FD35B257A /* mock-crest-catalog-dortmund.png in Resources */,
+				1174DAB56AD17FD73B4C192C /* mock-crest-catalog-galaxy.png in Resources */,
+				CD06BAD24DB196477871523D /* mock-crest-catalog-inter.png in Resources */,
+				D5F511CC6AB0F59D49826332 /* mock-crest-catalog-juventus.png in Resources */,
+				DFAC2E99F5716898BC927B98 /* mock-crest-catalog-leverkusen.png in Resources */,
+				11B8899645E3E2454B382053 /* mock-crest-catalog-liverpool.png in Resources */,
+				4C52EC8D315ECDED94BFDBD6 /* mock-crest-catalog-lyon.png in Resources */,
+				EBB139FF8ECF0B3B068F5602 /* mock-crest-catalog-man-city.png in Resources */,
+				293AF4C8E97B862A7BA08420 /* mock-crest-catalog-marseille.png in Resources */,
+				6C3B32DE336AE422F568FA3E /* mock-crest-catalog-miami.png in Resources */,
+				40C4101CC1603899102CD6F9 /* mock-crest-catalog-monaco.png in Resources */,
+				BBBC901CBC1644A43DBCB58D /* mock-crest-catalog-napoli.png in Resources */,
+				06B2A52FA1742CE0C1B1BCED /* mock-crest-catalog-seattle.png in Resources */,
+				6CDE4E287AF1CB43DDA18B23 /* mock-crest-review-178.png in Resources */,
+				6D8960BAFE621D6A8AF751DD /* mock-crest-review-2428.png in Resources */,
+				D727DCBDF2EE76CBD8AF1729 /* mock-crest-review-2734.png in Resources */,
+				019C4A755DD707FDB90E245E /* mock-crest-review-2923.png in Resources */,
+				03B830F08CEDFB86AB9D33F3 /* mock-crest-review-3243.png in Resources */,
+				D92EEF52802617E0E8E1D5FB /* mock-crest-review-3747.png in Resources */,
+				174345D380EC7C3624AD480C /* mock-crest-review-376.png in Resources */,
+				5505B2421697B88C3F81F3DF /* mock-crest-review-381.png in Resources */,
+				964E11129143CEACB0A8C480 /* mock-crest-review-3812.png in Resources */,
+				685DF62484289582D2784B47 /* mock-crest-review-6832.png in Resources */,
+				0D7966ABBF0B8AFC89E110CF /* mock-crest-screenshot-bayern.png in Resources */,
+				FC9A53C851B3DD2CE4AFB019 /* mock-crest-screenshot-juventus.png in Resources */,
+				FD6BA69A1AA8719FE5FE861B /* mock-crest-screenshot-lafc.png in Resources */,
+				16DE81EA5D1990A273FFE9F9 /* mock-crest-screenshot-psg.png in Resources */,
+				A2F2F02D53C8E054EB5D75DC /* mock-crest-screenshot-real-madrid.png in Resources */,
+				67E7C8A782D8EB1CF7517D26 /* mock-crest-screenshot-united.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +710,8 @@
 				AED1178312D734A443568843 /* SportsCalendarSyncWidget.swift in Sources */,
 				54B0E8ADF7853E5E167B5C7C /* TrackedGame.swift in Sources */,
 				C5FC2D22A39B9E28AC445A22 /* TrackedTeam.swift in Sources */,
+				63817E16F52BFB20371E1ADA /* WidgetContentView.swift in Sources */,
+				12E539E21E17963BD0FF7460 /* WidgetSnapshot.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,20 +727,33 @@
 				637BCDC37F9BFD772087FCED /* CalendarService.swift in Sources */,
 				714AB70003E5C87069296B06 /* CapsuleGlass.swift in Sources */,
 				F3277A065F1D8957FC48F27B /* Color+Theme.swift in Sources */,
+				31B670F69B490B40F7698C96 /* CompetitionArtwork.swift in Sources */,
 				19FB2208D567E8D5661A46AA /* ContentView.swift in Sources */,
 				91AF57C27EFA67B5A0D97403 /* CrestView.swift in Sources */,
 				F92B8513FDE83C21ABB69DB5 /* DetailChip.swift in Sources */,
 				E7467DDAF593A56104B95AF2 /* DiscoverView.swift in Sources */,
+				9FE53B56BACBABBEAC001439 /* DiscoveryCatalog.swift in Sources */,
+				F4B0DEE7223928570FBAFEBF /* DiscoveryTeam.swift in Sources */,
 				0221049DF7CF8DE2B7BE19A0 /* ESPNService.swift in Sources */,
 				19F3382A4DD13E4A11DF589C /* EmptyState.swift in Sources */,
 				1D34E1C82BD057544F237E18 /* FeedRow.swift in Sources */,
 				F25DF16965492C693AE4F583 /* FeedRowActionButton.swift in Sources */,
 				88F8721A294DF1851B5D7865 /* FeedSection.swift in Sources */,
+				1F872E6A076290A2162D8989 /* FeedbackButton.swift in Sources */,
+				B799346933B12F70F0AFF8F2 /* FeedbackDraft.swift in Sources */,
+				44FE9DEF790F69670A59B71E /* FeedbackEnvironment.swift in Sources */,
+				55D1AFE62F03EC7C713203E7 /* FeedbackLifecycle.swift in Sources */,
+				B9581CB875D50EA6D3E77F8C /* FeedbackSupportSection.swift in Sources */,
+				709CB3950A2FF56A6D511806 /* FeedbackView.swift in Sources */,
+				6A9A2202ECC35FC1318BD607 /* FollowingFixtureSummary.swift in Sources */,
 				BED065424FAE7F5726942075 /* HiddenChevron.swift in Sources */,
 				412B18B740BE2ED1EDC08694 /* League.swift in Sources */,
 				587F3742280C71F30439E00C /* LucideIcon.swift in Sources */,
+				3E1D359600AD4DFCD4F274EC /* MockReviewView.swift in Sources */,
 				F7DDD52C2882178E0736D6B7 /* NotificationService.swift in Sources */,
 				4CCB4C8D7B1F6E9B356BCE88 /* ProfileView.swift in Sources */,
+				010E990DDA08950CE09F4107 /* ReadableListLayout.swift in Sources */,
+				83292711F823AC3910F864F1 /* ScreenshotFixtures.swift in Sources */,
 				D6728AB17B69917CFB617D65 /* SearchBar.swift in Sources */,
 				257890E7CAA22D10A80F539A /* SectionHeader.swift in Sources */,
 				B005534288A691EC33A49CF7 /* SeedData.swift in Sources */,
@@ -457,6 +770,13 @@
 				D35B03471A83B7DECB9308FD /* TrackedGame.swift in Sources */,
 				8B04A9EB66056C8E8CDD94AE /* TrackedTeam.swift in Sources */,
 				358181D453FEA918B8925E27 /* UpcomingView.swift in Sources */,
+				86151EA0CDED69597879FDA2 /* UserSurvey.swift in Sources */,
+				63F9037AD7E9D07083CDC5F3 /* UserSurveyStore.swift in Sources */,
+				DE22427B628552A825EC4DA8 /* UserSurveyView.swift in Sources */,
+				268A2BBAF6FFB9CF0FBF69EF /* WidgetContentView.swift in Sources */,
+				C17DA86D11683D91593BE44B /* WidgetDesignReviewView.swift in Sources */,
+				2A4A3AEEEA31078D03E4C694 /* WidgetSnapshot.swift in Sources */,
+				5932161D17487AF6B8EE724A /* WidgetSnapshotPublisher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,10 +786,30 @@
 			files = (
 				5A82FD242A71ACC6882D972B /* BackgroundRefreshSchedulingTests.swift in Sources */,
 				0672ACF18F5ACE9B8D4A7F1D /* CompetitionTests.swift in Sources */,
+				E70F32C94E6FB9C2A533D4B8 /* DiscoveryTeamTests.swift in Sources */,
 				AA8E7E95B36DED88670675EB /* ESPNDecodingTests.swift in Sources */,
+				D802846D6D92D8AE22BE5C4C /* FeedbackTests.swift in Sources */,
+				C4AC8107EE2849747F4DCD68 /* FixtureFeedTests.swift in Sources */,
 				FE48E1B2DA36AC3E2965FEEC /* FixtureReconcilerTests.swift in Sources */,
+				8629FE9A1A880464B628F2E6 /* FollowingFixtureSummaryTests.swift in Sources */,
+				E52659C5A9E128DED5205AA0 /* LiveReminderDeliveryTests.swift in Sources */,
+				C916743DD4DDA2C7EDBEFCFF /* NotificationTimingTests.swift in Sources */,
 				25B5C7790EA23DF82E2D0108 /* RefreshPolicyTests.swift in Sources */,
+				25794F1E6A3824D14BBCD99F /* ScreenshotFixturesTests.swift in Sources */,
 				2B337BB66779C836ABC82C5B /* SyncHealthStoreTests.swift in Sources */,
+				8FFA66E1C18CCF10B799F5A1 /* WidgetSnapshotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D0920216F844671CE365B6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F9F876CE3A93C5D0D6E0A18 /* CaptureTests.swift in Sources */,
+				1FB67930D8625727E1D04B22 /* DiscoverReviewTests.swift in Sources */,
+				EAE07DD94266D7B15CDD1729 /* FeedbackFlowTests.swift in Sources */,
+				51A09E3F9791C9C4C7AE5AE4 /* FollowingReviewTests.swift in Sources */,
+				E350B5B5A60401CEECFAD66A /* WidgetReviewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +820,11 @@
 			isa = PBXTargetDependency;
 			target = A5C7335EB93DE25E35CE1D21 /* SportsCalendarSyncWidget */;
 			targetProxy = 35BA86245AD2C20CC1F76377 /* PBXContainerItemProxy */;
+		};
+		C07AE1D2D0B52EAF6184B87E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 511582DF97C8B8079096CD55 /* SportsCalendarSync */;
+			targetProxy = D9E08A888B18F05B89587239 /* PBXContainerItemProxy */;
 		};
 		C39C1D62D01EA1EAB8A3AE5F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -493,7 +838,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_DISPLAY_NAME = "Sports Calendar Sync (L)";
-				CODE_SIGN_ENTITLEMENTS = SportsCalendarSyncWidget/SportsCalendarSyncWidget.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SportsCalendarSyncWidget/SportsCalendarSyncWidget.debug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BXKNJTU253;
 				INFOPLIST_FILE = SportsCalendarSyncWidget/Info.plist;
@@ -502,7 +847,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync.local.widget;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -515,6 +860,7 @@
 				BUNDLE_DISPLAY_NAME = "Sports Sync";
 				CODE_SIGN_ENTITLEMENTS = SportsCalendarSync/SportsCalendarSync.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				EXCLUDED_SOURCE_FILE_NAMES = "$(inherited) mock-crest-*.png";
 				INFOPLIST_FILE = SportsCalendarSync/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -522,7 +868,25 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync;
 				SDKROOT = iphoneos;
+				SPORTS_URL_SCHEME = sportssync;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		66B4FD614BE4A051AAED1E73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync.screenshots;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SportsCalendarSync;
 			};
 			name = Release;
 		};
@@ -561,7 +925,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1790809115;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = BXKNJTU253;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -581,7 +945,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -590,7 +954,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -612,6 +976,23 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
+		};
+		94D8B7D01A6B995FB1B5136D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync.screenshots;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SportsCalendarSync;
+			};
+			name = Debug;
 		};
 		AED3AC26D9D19FE0E7835C5E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -635,15 +1016,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_DISPLAY_NAME = "Sports Sync (L)";
-				CODE_SIGN_ENTITLEMENTS = SportsCalendarSync/SportsCalendarSync.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SportsCalendarSync/SportsCalendarSync.debug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SportsCalendarSync/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync;
+				PRODUCT_BUNDLE_IDENTIFIER = com.keithbarney.sportssync.local;
 				SDKROOT = iphoneos;
+				SPORTS_URL_SCHEME = "sportssync-local";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -700,7 +1082,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1790809115;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BXKNJTU253;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -714,7 +1096,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -722,13 +1104,22 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		17B9DC0B93C83D58188F6334 /* Build configuration list for PBXNativeTarget "SportsCalendarSyncScreenshotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94D8B7D01A6B995FB1B5136D /* Debug */,
+				66B4FD614BE4A051AAED1E73 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		6AFD659893F85D63810428F1 /* Build configuration list for PBXNativeTarget "SportsCalendarSyncWidget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

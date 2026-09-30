@@ -2,6 +2,15 @@ import XCTest
 @testable import SportsCalendarSync
 
 final class ESPNDecodingTests: XCTestCase {
+    func testCrestsDecodeFromScoreboardAndScheduleFormats() throws {
+        let scoreboard = Data(#"{"id":"357","displayName":"Leeds United","logo":"https://a.espncdn.com/i/teamlogos/soccer/500/357.png"}"#.utf8)
+        let schedule = Data(#"{"id":"357","logos":[{"href":"https://a.espncdn.com/i/teamlogos/soccer/500/357.png"}]}"#.utf8)
+        for data in [scoreboard, schedule] {
+            let team = try JSONDecoder().decode(ESPNTeam.self, from: data)
+            XCTAssertEqual(team.crestURL, "https://a.espncdn.com/i/teamlogos/soccer/500/357.png")
+        }
+    }
+
     func testCompetitorScoreObjectDoesNotBreakEventDecoding() throws {
         let json = """
         {

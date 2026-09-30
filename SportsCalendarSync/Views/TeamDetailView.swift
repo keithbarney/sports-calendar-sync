@@ -22,8 +22,8 @@ struct TeamDetailView: View {
     @Query private var followedTeams: [TrackedTeam]
     @Query private var allGames: [TrackedGame]
 
-    @State private var previewFixtures: [ESPNEvent] = []
-    @State private var previewRecent: [ESPNEvent] = []
+    @State private var previewFixtures: [CompetitionFixture] = []
+    @State private var previewRecent: [CompetitionFixture] = []
     @State private var isRefreshing = false
     @State private var isAdding = false
     @State private var didInitialLoad = false
@@ -32,6 +32,8 @@ struct TeamDetailView: View {
     @State private var isLoadingCompetitions = false
     @State private var discoveredCompetitions: [Competition] = []
     @State private var unavailableCompetitions: [Competition] = []
+    @State private var previewUnavailable: [Competition] = []
+    @State private var competitionDiscoveryFailed = false
 
     /// Convenience init for a team we already persisted.
     init(team: TrackedTeam) {
@@ -59,8 +61,6 @@ struct TeamDetailView: View {
 
     private var isFollowed: Bool { !followedCompetitionTeams.isEmpty }
 
-    private var league: League? { League(rawValue: leagueSlug) }
-
     private var sourceCompetition: Competition? { Competition(rawValue: leagueSlug) }
 
     private var availableCompetitions: [Competition] {
@@ -83,6 +83,9 @@ struct TeamDetailView: View {
     /// Upcoming fixture count & list — uses stored TrackedGame if followed, else ESPN preview.
     private var fixtureCount: Int { isFollowed ? storedFixtures.count : previewFixtures.count }
     private var recentCount: Int { isFollowed ? storedRecent.count : previewRecent.count }
+    private var hasIncompletePreview: Bool {
+        !isFollowed && (!previewUnavailable.isEmpty || !unavailableCompetitions.isEmpty || competitionDiscoveryFailed)
+    }
 
     private var followedCompetitionTeams: [TrackedTeam] {
         followedTeams.filter(isSameClub)
@@ -138,14 +141,11 @@ struct TeamDetailView: View {
             }
             .listRowBackground(Color.clear)
 
+            competitionsSection
+
             Section {
-                if isFollowed {
-                    competitionControls
-                } else if let league {
-                    LabeledContent("Competition", value: league.displayName)
-                }
-                LabeledContent("Upcoming fixtures", value: "\(fixtureCount)")
-                LabeledContent("Recent fixtures", value: "\(recentCount)")
+                LabeledContent("Upcoming fixtures", value: fixtureCountLabel(fixtureCount))
+                LabeledContent("Recent fixtures", value: fixtureCountLabel(recentCount))
             }
 
             fixturesSection
@@ -153,7 +153,12 @@ struct TeamDetailView: View {
             if recentCount > 0 {
                 recentSection
             }
+
+            Section("Feedback") {
+                FeedbackButton(label: "Report Incorrect Fixture", category: .incorrectFixture, source: "Team details", context: displayName)
+            }
         }
+        .modifier(ReadableListLayout())
         .navigationTitle(displayName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -199,7 +204,9 @@ struct TeamDetailView: View {
             didInitialLoad = true
             // Followed teams display the locally synced fixtures. The app-level
             // refresh owns automatic syncing; opening a team must not trigger it.
-            if !isFollowed {
+            if isFollowed {
+                await loadCompetitions()
+            } else {
                 await refresh()
             }
         }
@@ -213,6 +220,9 @@ struct TeamDetailView: View {
             if fixtureCount == 0 {
                 if isRefreshing {
                     ProgressView("Loading fixtures…")
+                } else if hasIncompletePreview {
+                    ContentUnavailableView("Fixtures unavailable", systemImage: "wifi.exclamationmark",
+                                           description: Text("We couldn’t load the schedule. Pull to refresh and try again."))
                 } else {
                     ContentUnavailableView("No upcoming fixtures", systemImage: "calendar", description: Text("New fixtures will appear here when they are available."))
                 }
@@ -221,9 +231,14 @@ struct TeamDetailView: View {
                     FixtureRow(game: game)
                 }
             } else {
-                ForEach(previewFixtures, id: \.id) { event in
-                    PreviewFixtureRow(event: event, espn: espn, competitionName: league?.displayName)
+                ForEach(previewFixtures) { fixture in
+                    PreviewFixtureRow(event: fixture.event, espn: espn, competitionName: fixture.competition.displayName)
                 }
+            }
+            if hasIncompletePreview && fixtureCount > 0 {
+                Label("Some fixtures could not be loaded. Pull to refresh to try again.", systemImage: "exclamationmark.triangle")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
         }
     }
@@ -235,8 +250,8 @@ struct TeamDetailView: View {
                     FixtureRow(game: game)
                 }
             } else {
-                ForEach(previewRecent, id: \.id) { event in
-                    PreviewFixtureRow(event: event, espn: espn, competitionName: league?.displayName)
+                ForEach(previewRecent) { fixture in
+                    PreviewFixtureRow(event: fixture.event, espn: espn, competitionName: fixture.competition.displayName)
                 }
             }
         }
@@ -251,7 +266,37 @@ struct TeamDetailView: View {
         .disabled(isAdding || isLoadingCompetitions)
     }
 
-    private func openCompetitionSheet() async {
+    private var competitionsSection: some View {
+        Section("Competitions") {
+            ForEach(availableCompetitions) { competition in
+                if isFollowing(competition) {
+                    LabeledContent(competition.displayName, value: "Following")
+                } else {
+                    Text(competition.displayName)
+                }
+            }
+            if isLoadingCompetitions {
+                ProgressView("Checking competitions…")
+            }
+            if competitionDiscoveryFailed || !unavailableCompetitions.isEmpty {
+                Label("Some competitions could not be checked. Pull to refresh to try again.", systemImage: "exclamationmark.triangle")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            if isFollowed { competitionControls }
+        }
+    }
+
+    private func fixtureCountLabel(_ count: Int) -> String {
+        guard !isFollowed else { return "\(count)" }
+        if isRefreshing && count == 0 { return "Loading…" }
+        if hasIncompletePreview {
+            return count == 0 ? "Unavailable" : "\(count) (partial)"
+        }
+        return "\(count)"
+    }
+
+    private func loadCompetitions() async {
         guard let sourceCompetition, !isLoadingCompetitions else { return }
         isLoadingCompetitions = true
         defer { isLoadingCompetitions = false }
@@ -259,12 +304,16 @@ struct TeamDetailView: View {
             let result = try await espn.getCompetitions(for: makeESPNTeam(), source: sourceCompetition)
             discoveredCompetitions = result.competitions
             unavailableCompetitions = result.unavailable
-            showingCompetitionSheet = true
+            competitionDiscoveryFailed = false
         } catch {
-            if !Task.isCancelled {
-                toast.show("Could not load competitions. Please try again.", icon: "exclamationmark.triangle", isDestructive: true)
-            }
+            if !Task.isCancelled { competitionDiscoveryFailed = true }
         }
+    }
+
+    private func openCompetitionSheet() async {
+        await loadCompetitions()
+        guard !Task.isCancelled else { return }
+        showingCompetitionSheet = true
     }
 
     // MARK: - Data
@@ -297,6 +346,8 @@ struct TeamDetailView: View {
     private func refresh() async {
         isRefreshing = true
         defer { isRefreshing = false }
+        await loadCompetitions()
+        guard !Task.isCancelled else { return }
 
         if isFollowed {
             for team in followedCompetitionTeams {
@@ -310,24 +361,18 @@ struct TeamDetailView: View {
                     notifications: notifications
                 )
             }
-        } else if let league {
-            // Unfollowed — fetch a preview directly without persisting.
-            async let futureTask = try? espn.getUpcomingFixtures(league: league, teamId: espnId)
-            async let pastTask = try? espn.getSchedule(league: league, teamId: espnId, useCache: false)
-            let future = await futureTask ?? []
-            let past = await pastTask ?? []
-            let now = Date()
-            previewFixtures = future
-                .compactMap { evt in (espn.parseDate(evt.date).map { ($0, evt) }) }
-                .filter { $0.0 >= now.addingTimeInterval(-3 * 60 * 60) }
-                .sorted { $0.0 < $1.0 }
-                .map { $0.1 }
-            previewRecent = past
-                .compactMap { evt in (espn.parseDate(evt.date).map { ($0, evt) }) }
-                .filter { $0.0 < now }
-                .sorted { $0.0 > $1.0 }
-                .prefix(5)
-                .map { $0.1 }
+        } else if let sourceCompetition {
+            // Preview all detected competitions without following or persisting them.
+            do {
+                let preview = try await espn.getClubFixturePreview(
+                    for: makeESPNTeam(), source: sourceCompetition, competitions: availableCompetitions
+                )
+                previewFixtures = preview.upcoming
+                previewRecent = preview.recent
+                previewUnavailable = preview.unavailable
+            } catch {
+                if !Task.isCancelled { previewUnavailable = availableCompetitions }
+            }
         }
     }
 
@@ -381,7 +426,7 @@ struct TeamDetailView: View {
 
 // MARK: - Competition Selection
 
-private struct CompetitionSelectionSheet: View {
+struct CompetitionSelectionSheet: View {
     let teamName: String
     let competitions: [Competition]
     let isInitialFollow: Bool

@@ -1,144 +1,91 @@
 import WidgetKit
 import SwiftUI
-import SwiftData
 
 struct GameSyncEntry: TimelineEntry {
     let date: Date
-    let title: String
-    let subtitle: String
-    let kickoffDisplay: String?
-    let isEmpty: Bool
+    let fixtures: [WidgetFixture]
+    let hasFollowedTeams: Bool
+    var isReview = false
+    var needsOpen = false
 
-    static let placeholder = GameSyncEntry(
-        date: Date(),
-        title: "Arsenal vs. Liverpool",
-        subtitle: "Premier League",
-        kickoffDisplay: "Sat 12:30",
-        isEmpty: false
-    )
-
-    static let empty = GameSyncEntry(
-        date: Date(),
-        title: "No Upcoming",
-        subtitle: "Follow teams to track fixtures",
-        kickoffDisplay: nil,
-        isEmpty: true
-    )
+    static var placeholder: GameSyncEntry {
+        GameSyncEntry(date: Date(), fixtures: (0..<6).map { index in
+            WidgetFixture(id: "preview-\(index)", homeTeam: ["Arsenal", "SV Darmstadt 98", "Real Madrid"][index % 3],
+                          awayTeam: ["Liverpool", "Hannover 96", "Barcelona"][index % 3],
+                          competition: ["EPL", "2. Bundesliga", "La Liga"][index % 3],
+                          kickoff: Date().addingTimeInterval(Double(index + 1) * 86400))
+        }, hasFollowedTeams: true)
+    }
 }
 
 struct GameSyncProvider: TimelineProvider {
     func placeholder(in context: Context) -> GameSyncEntry { .placeholder }
 
     func getSnapshot(in context: Context, completion: @escaping (GameSyncEntry) -> Void) {
-        completion(.placeholder)
+        let entry = entries().first!
+        completion(context.isPreview && entry.fixtures.isEmpty ? .placeholder : entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<GameSyncEntry>) -> Void) {
-        let entry: GameSyncEntry
-        do {
-            let container = try ModelContainer(for: TrackedGame.self, TrackedTeam.self)
-            let modelContext = ModelContext(container)
-
-            let descriptor = FetchDescriptor<TrackedGame>(
-                sortBy: [SortDescriptor(\.kickoff)]
-            )
-            let games = (try? modelContext.fetch(descriptor)) ?? []
-            let now = Date()
-
-            if let next = games.first(where: { $0.kickoff >= now }) {
-                let leagueName = League(rawValue: next.leagueSlug)?.displayName ?? next.leagueSlug.uppercased()
-                entry = GameSyncEntry(
-                    date: now,
-                    title: "\(next.homeTeamName) vs. \(next.awayTeamName)",
-                    subtitle: leagueName,
-                    kickoffDisplay: Self.formatKickoff(next.kickoff),
-                    isEmpty: false
-                )
-            } else {
-                entry = .empty
-            }
-        } catch {
-            entry = .empty
-        }
-
-        let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
-        completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
+        completion(Timeline(entries: entries(), policy: .after(Date().addingTimeInterval(3600))))
     }
 
-    private static func formatKickoff(_ date: Date) -> String {
-        let cal = Calendar.current
-        let fmt = DateFormatter()
-        fmt.locale = .current
-        if cal.isDateInToday(date) {
-            fmt.dateFormat = "h:mm a"
-            return "Today \(fmt.string(from: date))"
+    private func entries() -> [GameSyncEntry] {
+        let now = Date()
+        var isReview = false
+        guard let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WidgetSnapshot.groupID) else {
+            return [GameSyncEntry(date: now, fixtures: [], hasFollowedTeams: false, needsOpen: true)]
         }
-        if cal.isDateInTomorrow(date) {
-            fmt.dateFormat = "h:mm a"
-            return "Tomorrow \(fmt.string(from: date))"
+        var url = directory.appendingPathComponent(WidgetSnapshot.filename)
+        #if DEBUG && targetEnvironment(simulator)
+        let reviewURL = directory.appendingPathComponent(WidgetSnapshot.reviewFilename)
+        if FileManager.default.fileExists(atPath: reviewURL.path) {
+            url = reviewURL
+            isReview = true
         }
-        if let week = cal.date(byAdding: .day, value: 7, to: Date()), date < week {
-            fmt.dateFormat = "EEE h:mm a"
-            return fmt.string(from: date)
+        #endif
+        guard let data = try? Data(contentsOf: url), let snapshot = try? JSONDecoder().decode(WidgetSnapshot.self, from: data) else {
+            return [GameSyncEntry(date: now, fixtures: [], hasFollowedTeams: false, needsOpen: true)]
         }
-        fmt.dateFormat = "M/d h:mm a"
-        return fmt.string(from: date)
+        // Queue the next state at kickoff, so a started match drops out even without a new app sync.
+        let dates = [now] + Array(Set(snapshot.upcoming(at: now).map(\.kickoff))).sorted()
+        return dates.map { date in
+            GameSyncEntry(date: date, fixtures: Array(snapshot.upcoming(at: date).prefix(6)),
+                          hasFollowedTeams: snapshot.hasFollowedTeams, isReview: isReview)
+        }
     }
 }
 
 struct SportsCalendarSyncWidgetView: View {
-    var entry: GameSyncEntry
+    @Environment(\.widgetFamily) private var family
+    let entry: GameSyncEntry
+
+    #if DEBUG
+    private let appURL = URL(string: "sportssync-local://following")
+    #else
+    private let appURL = URL(string: "sportssync://following")
+    #endif
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 4) {
-                Image(systemName: "soccerball")
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.6))
-                Text("Sports")
-                    .font(.caption2)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white.opacity(0.6))
-                Spacer()
-            }
-
-            Spacer()
-
-            Text(entry.title)
-                .font(.subheadline)
-                .fontWeight(.bold)
-                .foregroundStyle(.white)
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
-
-            Text(entry.subtitle)
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.7))
-                .lineLimit(1)
-
-            if let kickoff = entry.kickoffDisplay {
-                Text(kickoff)
-                    .font(.caption2)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.white.opacity(0.5))
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(16)
+        WidgetContentView(fixtures: entry.fixtures, family: family, isReview: entry.isReview,
+                          hasFollowedTeams: entry.hasFollowedTeams, needsOpen: entry.needsOpen)
+            .padding(16)
+            .widgetURL(appURL)
     }
 }
 
 @main
 struct SportsCalendarSyncWidgetBundle: Widget {
-    let kind: String = "SportsCalendarSyncWidget"
+    let kind = WidgetSnapshot.widgetKind
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: GameSyncProvider()) { entry in
             SportsCalendarSyncWidgetView(entry: entry)
-                .containerBackground(.black, for: .widget)
+                .containerBackground(.background, for: .widget)
         }
-        .configurationDisplayName("Next Match")
-        .description("Your next upcoming fixture.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .configurationDisplayName("Upcoming Matches")
+        .description("Upcoming matches across all your followed teams and competitions.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .contentMarginsDisabled()
     }
 }

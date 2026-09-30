@@ -1,0 +1,508 @@
+{
+  "verified": "2026-09-14",
+  "competitions": [
+    {
+      "slug": "usa.1",
+      "name": "MLS",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/19.png",
+          "sha256": "9e4b7c06391ad3742294dc761e7b951d0bf8603fd2b360370e1299832f602a9e"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/19.png",
+          "sha256": "9e4b7c06391ad3742294dc761e7b951d0bf8603fd2b360370e1299832f602a9e"
+        }
+      ]
+    },
+    {
+      "slug": "eng.1",
+      "name": "English Premier League",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/23.png",
+          "sha256": "42e2fdced44ff542fa734409667c733841a7bcb903b526c85d12aac78aff2464"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/23.png",
+          "sha256": "3fbb077c9331046d0dc96c0bbcc12e3795bdbd9b43a6bbe3a18ab6b6aedc47bf"
+        }
+      ]
+    },
+    {
+      "slug": "esp.1",
+      "name": "Spanish LALIGA",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/15.png",
+          "sha256": "4af38ab01c0313ff54bcfdaf24658100e4302134052a40529500e9551e92b1aa"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/15.png",
+          "sha256": "4af38ab01c0313ff54bcfdaf24658100e4302134052a40529500e9551e92b1aa"
+        }
+      ]
+    },
+    {
+      "slug": "ger.1",
+      "name": "German Bundesliga",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/10.png",
+          "sha256": "463b74682c9030631d8fc19a1535875496009a8f296775323127e2a2365094d0"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/10.png",
+          "sha256": "a34af0a55df761a807dc43d1afff86ffa3d3a7fabf4d952c1364562973c5cff3"
+        }
+      ]
+    },
+    {
+      "slug": "ita.1",
+      "name": "Italian Serie A",
+      "status": "bundled",
+      "source": "https://www.legaseriea.it/supercoppa",
+      "artwork": [
+        {
+          "variant": "universal",
+          "url": "https://images.legaseriea.it/image/private/t_q_good/v1766422496/prd/assets/icons/nav-serieaeni-v2_qoj76t.png",
+          "sha256": "4d32132805970749ffdd390a0cff6706ca43a418e11d0c8b8946cd26617866da"
+        }
+      ]
+    },
+    {
+      "slug": "fra.1",
+      "name": "French Ligue 1",
+      "status": "bundled",
+      "source": "https://ligueun.brandcenter.lfp.fr/logotype/",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://ligueun.brandcenter.lfp.fr/wp-content/uploads/sites/2/2025/07/LIGUE_1_MCDONALDS_LOGOTYPES.zip",
+          "archiveMember": "02_LFP_L1_MCDONALDS_LOGOTYPES/LFP_LOGOTYPE_L1_MCDONALDS_VERTICAL/RVB/CHARCOAL/LFP_LOGOTYPE_L1_MCDONALDS_MASTER_CHARCOAL_RVB.png",
+          "sha256": "e32f6672e4caa0650e64d539de3b9287c1c763ea16ca917ed5e2671feede98a4"
+        },
+        {
+          "variant": "dark",
+          "url": "https://ligueun.brandcenter.lfp.fr/wp-content/uploads/sites/2/2025/07/LIGUE_1_MCDONALDS_LOGOTYPES.zip",
+          "archiveMember": "02_LFP_L1_MCDONALDS_LOGOTYPES/LFP_LOGOTYPE_L1_MCDONALDS_VERTICAL/RVB/WHITE/LFP_LOGOTYPE_L1_MCDONALDS_MASTER_WHITE_RVB.png",
+          "sha256": "2a035f6438beadf97492c997736650db1eb18bcd108ee909c8a7631ab08ee0b4"
+        }
+      ]
+    },
+    {
+      "slug": "uefa.champions",
+      "name": "UEFA Champions League",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/2.png",
+          "sha256": "638ba01ea2dc0679766a8a1c4152756108cadb6763b2f016c8ca5f5c9784ebc7"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/2.png",
+          "sha256": "a603dfbec53840a728229e2c2c1848e77c096e5018256fe260fa7dafd559deca"
+        }
+      ]
+    },
+    {
+      "slug": "eng.fa",
+      "name": "English FA Cup",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.fa/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/40.png",
+          "sha256": "a955f8c43f6b4d78c8f82058a6434dcc7a373cbd5c463f2ac3a07814435fed2f"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/40.png",
+          "sha256": "a955f8c43f6b4d78c8f82058a6434dcc7a373cbd5c463f2ac3a07814435fed2f"
+        }
+      ]
+    },
+    {
+      "slug": "eng.league_cup",
+      "name": "English Carabao Cup",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.league_cup/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/41.png",
+          "sha256": "37e7a1d549f3b3d7c3d37bb8093aba04f9650337de80c72e1b8dc862895ff983"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/41.png",
+          "sha256": "37e7a1d549f3b3d7c3d37bb8093aba04f9650337de80c72e1b8dc862895ff983"
+        }
+      ]
+    },
+    {
+      "slug": "concacaf.champions",
+      "name": "Concacaf Champions Cup",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/concacaf.champions/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/2298.png",
+          "sha256": "f2585ec0a4b543aafd5fa82afa6ba0a5d62262200e2f10a5c23d7508d5f3ae01"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/2298.png",
+          "sha256": "f2585ec0a4b543aafd5fa82afa6ba0a5d62262200e2f10a5c23d7508d5f3ae01"
+        }
+      ]
+    },
+    {
+      "slug": "concacaf.leagues.cup",
+      "name": "Leagues Cup",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/concacaf.leagues.cup/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/2410.png",
+          "sha256": "6f84cfda78086a399e7e95df5d8d33703a6cbf2c06223617eb8142789f6fb2fe"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/2410.png",
+          "sha256": "6f84cfda78086a399e7e95df5d8d33703a6cbf2c06223617eb8142789f6fb2fe"
+        }
+      ]
+    },
+    {
+      "slug": "uefa.europa",
+      "name": "UEFA Europa League",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/2310.png",
+          "sha256": "6cfc1e2185c75b3a7d811246fba0699066db19f96444a1834b5a0b9efc1063e6"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/2310.png",
+          "sha256": "777cbf4306bc8809ca7f855bb3376df7dc9ef442970c9378b07b34ef316a4bbe"
+        }
+      ]
+    },
+    {
+      "slug": "uefa.europa.conf",
+      "name": "UEFA Conference League",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa.conf/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/20296.png",
+          "sha256": "80dbd2b26c6ad073ab2e38aa4fa61672e8de038816fdee26cf44bbd141a8c3d7"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/20296.png",
+          "sha256": "1cda0a7e931ccd3f22a2823944128fd3f5c0d8db48562c5bce55085c069571ac"
+        }
+      ]
+    },
+    {
+      "slug": "esp.copa_del_rey",
+      "name": "Spanish Copa del Rey",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.copa_del_rey/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/80.png",
+          "sha256": "7b0ec8a2fe2daeb1796b7bbda997666cb678d3b734e55f15e832895c1d047105"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/80.png",
+          "sha256": "bdf1f3342cd424ecea69e9ef3978ab3685265ad36efe3ae2d3b405bf570feb09"
+        }
+      ]
+    },
+    {
+      "slug": "esp.super_cup",
+      "name": "Spanish Supercopa",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.super_cup/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/431.png",
+          "sha256": "51a457bb87e6b1b49ecba5b77871ee85c2d113f82e685e446dd0db685bff07dc"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/guid/f3ea21b4-d55a-317d-9e8e-6dfd6cd7963a/logos/default-dark.png",
+          "sha256": "ee70f3b2729b75428df806f693b3c1f22be09b2e9939e9265bbc56229b8ad66a"
+        }
+      ]
+    },
+    {
+      "slug": "ger.dfb_pokal",
+      "name": "German Cup",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.dfb_pokal/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/2061.png",
+          "sha256": "26386d89bec67f475d5eaf001edacaa0463c621c9e902a53d47e1844cd2aca76"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/2061.png",
+          "sha256": "02918d1d2178cdff679cf22bda3b7d5584b5f988cecd7146eb035230e4e7c54f"
+        }
+      ]
+    },
+    {
+      "slug": "ger.super_cup",
+      "status": "missing",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.super_cup/scoreboard?limit=1"
+    },
+    {
+      "slug": "ita.coppa_italia",
+      "name": "Coppa Italia",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.coppa_italia/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/2192.png",
+          "sha256": "a4b3143a74880cf46b4dc55b791368a46001240f3576f679e56f66d4b0b55f07"
+        }
+      ]
+    },
+    {
+      "slug": "ita.super_cup",
+      "status": "bundled",
+      "source": "https://www.legaseriea.it/supercoppa",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://images.legaseriea.it/image/private/t_w_480/v1764689565/prd/assets/mobileapp/logos/supercup-logo_kbf1ph.png",
+          "sha256": "ff814d3e440f56a915fc61f8a496b69a796d6069426a24067887a2df73658d06"
+        }
+      ]
+    },
+    {
+      "slug": "fra.coupe_de_france",
+      "name": "Coupe de France",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.coupe_de_france/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/182.png",
+          "sha256": "a1aba04332e7d752d712d7328aa57492910c228a037e1cdf411e8d9637347ff2"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/182.png",
+          "sha256": "a1aba04332e7d752d712d7328aa57492910c228a037e1cdf411e8d9637347ff2"
+        }
+      ]
+    },
+    {
+      "slug": "fra.super_cup",
+      "status": "missing",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.super_cup/scoreboard?limit=1"
+    },
+    {
+      "slug": "eng.charity",
+      "status": "missing",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.charity/scoreboard?limit=1"
+    },
+    {
+      "slug": "uefa.super_cup",
+      "name": "UEFA Super Cup",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.super_cup/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/1272.png",
+          "sha256": "5682f68fee1eb0efa08f17c0c6d8c1cefb2d3da00bf98cecdd203d6878d9c845"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/1272.png",
+          "sha256": "5682f68fee1eb0efa08f17c0c6d8c1cefb2d3da00bf98cecdd203d6878d9c845"
+        }
+      ]
+    },
+    {
+      "slug": "usa.open",
+      "name": "U.S. Open Cup",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.open/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/69.png",
+          "sha256": "2845dfd9f2335de976d1d8814623e771210b5c7529fa24d22744bf696908325b"
+        }
+      ]
+    },
+    {
+      "slug": "fifa.cwc",
+      "name": "FIFA Club World Cup",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.cwc/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/1932.png",
+          "sha256": "24f04212ed5221d0a51d8927411c097db8ca29761d37c34cc2355cb10d9e5686"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/1932.png",
+          "sha256": "24f04212ed5221d0a51d8927411c097db8ca29761d37c34cc2355cb10d9e5686"
+        }
+      ]
+    },
+    {
+      "slug": "fifa.intercontinental_cup",
+      "status": "missing",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.intercontinental_cup/scoreboard?limit=1"
+    },
+    {
+      "slug": "eng.2",
+      "name": "English League Championship",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.2/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/24.png",
+          "sha256": "feb8770d25551bd3b05a8f1ea3cdd4779ffb11a30df9f6cf031c6f6a3fb78940"
+        },
+        {
+          "variant": "dark",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500-dark/24.png",
+          "sha256": "feb8770d25551bd3b05a8f1ea3cdd4779ffb11a30df9f6cf031c6f6a3fb78940"
+        }
+      ]
+    },
+    {
+      "slug": "esp.2",
+      "name": "Spanish LALIGA 2",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.2/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/107.png",
+          "sha256": "5470ffaf3012d303ea5b5c095f300d82797a2b6c3109c3037980e90ca1f2bf40"
+        }
+      ]
+    },
+    {
+      "slug": "ger.2",
+      "name": "German 2. Bundesliga",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.2/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/97.png",
+          "sha256": "5ca603e4929cdaf65c34d1eddbca7c2843f8592a182075aca95c108de97ce2c1"
+        }
+      ]
+    },
+    {
+      "slug": "ita.2",
+      "name": "Italian Serie B",
+      "status": "bundled",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.2/scoreboard?limit=1",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://a.espncdn.com/i/leaguelogos/soccer/500/99.png",
+          "sha256": "6cf36040decfe9552c6f1e567e667e035e3d25c035162307bf09056acdd33756"
+        }
+      ]
+    },
+    {
+      "slug": "fra.2",
+      "name": "French Ligue 2",
+      "status": "bundled",
+      "source": "https://liguedeux.brandcenter.lfp.fr/logotype/",
+      "artwork": [
+        {
+          "variant": "light",
+          "url": "https://liguedeux.brandcenter.lfp.fr/wp-content/uploads/sites/4/2025/07/LIGUE2_BKT_LOGOTYPES.zip",
+          "archiveMember": "02_LFP_L2_BKT_LOGOTYPES/LFP_LOGOTYPE_L2_BKT_VERTICAL/RVB/CHARCOAL/LFP_LOGOTYPE_L2_BKT_MASTER_CHARCOAL_RVB.png",
+          "sha256": "948a7739e4f680dfe8d1c986f26dd07b5eea4efb1269b2ea860491599db49b17"
+        },
+        {
+          "variant": "dark",
+          "url": "https://liguedeux.brandcenter.lfp.fr/wp-content/uploads/sites/4/2025/07/LIGUE2_BKT_LOGOTYPES.zip",
+          "archiveMember": "02_LFP_L2_BKT_LOGOTYPES/LFP_LOGOTYPE_L2_BKT_VERTICAL/RVB/WHITE/LFP_LOGOTYPE_L2_BKT_MASTER_WHITE_RVB.png",
+          "sha256": "f1d74e8e48bf1fba6d9556011af03b470f73507f1ed3b8cc94a1134af54bc046"
+        }
+      ]
+    },
+    {
+      "slug": "ger.playoff.relegation",
+      "status": "parent-league",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.playoff.relegation/scoreboard?limit=1",
+      "artworkCompetition": "ger.1"
+    },
+    {
+      "slug": "ger.2.promotion.relegation",
+      "status": "parent-league",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.2.promotion.relegation/scoreboard?limit=1",
+      "artworkCompetition": "ger.2"
+    },
+    {
+      "slug": "fra.1.promotion.relegation",
+      "status": "parent-league",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1.promotion.relegation/scoreboard?limit=1",
+      "artworkCompetition": "fra.1"
+    },
+    {
+      "slug": "fra.2.promotion.relegation",
+      "status": "parent-league",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.2.promotion.relegation/scoreboard?limit=1",
+      "artworkCompetition": "fra.2"
+    },
+    {
+      "slug": "club.friendly",
+      "status": "missing",
+      "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/club.friendly/scoreboard?limit=1"
+    }
+  ]
+}

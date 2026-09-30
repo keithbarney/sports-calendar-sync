@@ -1,0 +1,101 @@
+{
+  "valid": true,
+  "display": "ipad-13",
+  "specifications_checked": "2026-09-12",
+  "folder": "/Users/keithbarney/Documents/Github/sports-calendar-sync/screenshots/ipad/light",
+  "errors": [],
+  "images": [
+    {
+      "file": "1-ipad-light-following.png",
+      "bytes": 379773,
+      "sha256": "7a520ec829201c8af70adff3d6a90fd1f7a0c1f4024a21f1523d30228bf512bf",
+      "width": 2048,
+      "height": 2732,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "10-ipad-light-broadcasts.png",
+      "bytes": 496094,
+      "sha256": "3c1ab98a4e82afbf0aaf7217e8d2bcb6afc03a10918e1a6f9d35e868cafd5fd2",
+      "width": 2048,
+      "height": 2732,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "11-ipad-light-calendar.png",
+      "bytes": 414095,
+      "sha256": "2515191ca16a4d202b484659eaee6203c1c34b7456c9e52a0dcea135879268f3",
+      "width": 2048,
+      "height": 2732,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "2-ipad-light-team-detail.png",
+      "bytes": 404824,
+      "sha256": "d759adf6ba44e14a02c0544e8be1f472d758ac31a8ccaf7b499588c61e34b511",
+      "width": 2048,
+      "height": 2732,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "7-ipad-light-reminder.png",
+      "bytes": 205197,
+      "sha256": "7b1c19fe04aa5685c70c90826ceefdd920d98fa1859f06093851452872c518b9",
+      "width": 2048,
+      "height": 2732,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "8-ipad-light-appearance.png",
+      "bytes": 453318,
+      "sha256": "b2654ca4f539e7d29762feb2e0a78f58cb87ccb29cb9e463db1243ccde3c8787",
+      "width": 2048,
+      "height": 2732,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    }
+  ],
+  "validatedAt": "2026-09-15T06:37:14.924714+00:00",
+  "requestedCombination": "ipad/light",
+  "visualReview": {
+    "passed": true,
+    "reviewer": "Codex",
+    "hashes": {
+      "iphone/light/1-iphone-light-following.png": "2021bd136dcff1161abc1b021f7a4c14736f9e159f3aa7ef480256c8f227214e",
+      "iphone/light/8-iphone-light-appearance.png": "cef2a195fe0b582542924080fbc926e19b3a130eedff90efcca4cdc55f30a579",
+      "iphone/light/7-iphone-light-reminder.png": "a9daa923426ccadb3d2cece8d52b2214f4560fb396d1134aad7d45fa87cdcf92",
+      "iphone/light/11-iphone-light-calendar.png": "cc90072db663ed847c19b879d712c982cd52eddb53c21d205ec71c2c5575b1e9",
+      "iphone/light/2-iphone-light-team-detail.png": "b28148a36ed4111f68209c4ad4ab17601e04cf25a55a63725f3e8ba21bea52ba",
+      "iphone/light/10-iphone-light-broadcasts.png": "a8eac68f6396f4b16c2bbfdaa20a130f19cd7eec52e621c75009780b5e673b58",
+      "iphone/dark/7-iphone-dark-reminder.png": "18c06ed4c8ea9ed0353ca3e08941f26c5d0b1fa16f816710141c0ef7ffafad6c",
+      "iphone/dark/1-iphone-dark-following.png": "8c5f5e486cf15c67a8f9ca57ccd509c6f9519d7bc0157c2ebbb7baf64bb68337",
+      "iphone/dark/2-iphone-dark-team-detail.png": "c5897057e100ac23acc9bcd87566ec7e01c49c7d7a7235f68fcbe56d6f854f77",
+      "iphone/dark/10-iphone-dark-broadcasts.png": "161023d28c27384d774f600e00c57c6204c62c187261fa5f4a467e42a1a6002d",
+      "iphone/dark/8-iphone-dark-appearance.png": "d8500423e41131eecbdca805f2edef345874ea30755e6a7909c97a4007543d3c",
+      "iphone/dark/11-iphone-dark-calendar.png": "26015fb1c2aee7cea642a6201240f0ed26f403a7d7daf4195f8a9aed4e79d1d9",
+      "ipad/light/1-ipad-light-following.png": "7a520ec829201c8af70adff3d6a90fd1f7a0c1f4024a21f1523d30228bf512bf",
+      "ipad/light/10-ipad-light-broadcasts.png": "3c1ab98a4e82afbf0aaf7217e8d2bcb6afc03a10918e1a6f9d35e868cafd5fd2",
+      "ipad/light/11-ipad-light-calendar.png": "2515191ca16a4d202b484659eaee6203c1c34b7456c9e52a0dcea135879268f3",
+      "ipad/light/8-ipad-light-appearance.png": "b2654ca4f539e7d29762feb2e0a78f58cb87ccb29cb9e463db1243ccde3c8787",
+      "ipad/light/7-ipad-light-reminder.png": "7b1c19fe04aa5685c70c90826ceefdd920d98fa1859f06093851452872c518b9",
+      "ipad/light/2-ipad-light-team-detail.png": "d759adf6ba44e14a02c0544e8be1f472d758ac31a8ccaf7b499588c61e34b511",
+      "ipad/dark/10-ipad-dark-broadcasts.png": "4ad72c8047447f6deb470b0d2f7e030ba4c1ad9d43e185adb624f477218ec5fc",
+      "ipad/dark/1-ipad-dark-following.png": "490d0165cdc64e947f189b275f56f2a19871c376ec09ef05e3a37e411a6a3116",
+      "ipad/dark/7-ipad-dark-reminder.png": "1a6f1b50e53c4bc25df95b0b276769fb0c59a9e9287570ed545e509a7cc056ec",
+      "ipad/dark/8-ipad-dark-appearance.png": "b2654ca4f539e7d29762feb2e0a78f58cb87ccb29cb9e463db1243ccde3c8787",
+      "ipad/dark/2-ipad-dark-team-detail.png": "369a3cefd1b089a74f1a7dc7ea48e247f7c81d5e0be00a4f81bb0302eb967a97",
+      "ipad/dark/11-ipad-dark-calendar.png": "74fc80a37bd1e3c4aa35dd6e67e19ec28f3f582c3cce505f91931b2d5318401b"
+    }
+  }
+}
