@@ -3,6 +3,15 @@ import XCTest
 
 @MainActor
 final class RefreshPolicyTests: XCTestCase {
+    func testMetadataRepairCanRefreshOnUpgradeWithoutChangingNormalThrottle() {
+        let now = Date()
+        let policy = RefreshPolicy()
+        XCTAssertTrue(policy.shouldRefresh(trigger: .launch, lastAttempt: now, now: now, needsMetadataRepair: true))
+        XCTAssertTrue(policy.shouldRefresh(trigger: .foreground, lastAttempt: now, now: now, needsMetadataRepair: true))
+        XCTAssertFalse(policy.shouldRefresh(trigger: .launch, lastAttempt: now, now: now))
+        XCTAssertFalse(policy.shouldRefresh(trigger: .background, lastAttempt: now, now: now, needsMetadataRepair: true))
+    }
+
     private let now = Date(timeIntervalSince1970: 1_800_000_000)
 
     func testDefaultAutomaticIntervalWaitsSixHours() {
@@ -36,8 +45,8 @@ final class RefreshPolicyTests: XCTestCase {
         )
     }
 
-    func testAutomaticRefreshRunsOnlyFromAppActivation() {
-        XCTAssertFalse(AutomaticRefreshService.backgroundRefreshEnabled)
+    func testAutomaticRefreshLifecycleIsEnabledForPermittedDevices() {
+        XCTAssertTrue(AutomaticRefreshService.backgroundRefreshEnabled)
     }
 
     func testFirstAutomaticRefreshRuns() {
@@ -95,6 +104,9 @@ final class RefreshPolicyTests: XCTestCase {
     }
 
     func testManualRefreshMessageReportsNoOpSync() {
-        XCTAssertEqual(SyncResult().manualRefreshMessage, "Calendar is up to date")
+        var result = SyncResult()
+        XCTAssertEqual(result.manualRefreshMessage, "Follow a team to add calendar events")
+        result.teamsAttempted = 1
+        XCTAssertEqual(result.manualRefreshMessage, "Calendar is up to date")
     }
 }

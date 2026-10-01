@@ -4,7 +4,9 @@ import SwiftData
 /// First tab — lists all teams the user is following. Tap a team → `TeamDetailView` shows fixtures.
 struct FollowingView: View {
     @Binding var leagueFilter: League?
+    @EnvironmentObject private var userSurvey: UserSurveyStore
     @Query(sort: \TrackedTeam.addedAt, order: .reverse) private var teams: [TrackedTeam]
+    @Query private var games: [TrackedGame]
 
     private struct FollowedClub: Identifiable {
         let id: String
@@ -28,7 +30,20 @@ struct FollowingView: View {
     }
 
     var body: some View {
-        List {
+        TimelineView(.periodic(from: .now, by: 60)) { timeline in
+            followingList(at: timeline.date)
+        }
+        .navigationTitle("Following")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                CompetitionFilterMenu(selection: $leagueFilter)
+            }
+        }
+    }
+
+    private func followingList(at now: Date) -> some View {
+        let nextFixtures = FollowingFixtureSummary.nextByClub(teams: teams, games: games, now: now)
+        return List {
             ForEach(visibleClubs) { club in
                 NavigationLink(value: club.team) {
                     FeedRow(
@@ -39,12 +54,31 @@ struct FollowingView: View {
                         Text(club.competitions.map(\.shortName).joined(separator: " · "))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                        if let fixture = nextFixtures[club.id] {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text("Next: \(fixture.matchup)")
+                                    .font(.subheadline.weight(.medium))
+                                    .foregroundStyle(.primary)
+                                Text("\(fixture.kickoff.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().hour().minute())) · \(fixture.competition)")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .padding(.top, 4)
+                        } else {
+                            Text("No upcoming fixtures")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .padding(.top, 4)
+                        }
                     }
+                    .padding(.vertical, 4)
                 }
+                .accessibilityIdentifier("following-club-\(club.id)")
             }
+            Section { UserSurveyInvitationCard() }
         }
         .overlay {
-            if visibleClubs.isEmpty {
+            if visibleClubs.isEmpty && !userSurvey.shouldInvite {
                 ContentUnavailableView(
                     leagueFilter == nil ? "No followed teams" : "No teams in this competition",
                     systemImage: "calendar.badge.plus",
@@ -52,12 +86,7 @@ struct FollowingView: View {
                 )
             }
         }
-        .navigationTitle("Following")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                CompetitionFilterMenu(selection: $leagueFilter)
-            }
-        }
+        .modifier(ReadableListLayout())
     }
 
     private func clubKey(for team: TrackedTeam) -> String {

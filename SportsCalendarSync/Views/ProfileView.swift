@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 import EventKit
 import UserNotifications
 import UIKit
@@ -7,10 +8,12 @@ struct ProfileView: View {
     @EnvironmentObject private var appSettings: AppSettings
     @EnvironmentObject private var calendarService: CalendarService
     @EnvironmentObject private var notifications: NotificationService
+    @EnvironmentObject private var teamManager: TeamManager
     @EnvironmentObject private var toastManager: ToastManager
     @EnvironmentObject private var syncHealth: SyncHealthStore
     @EnvironmentObject private var automaticRefresh: AutomaticRefreshService
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.modelContext) private var modelContext
     @State private var notificationStatus: UNAuthorizationStatus = .notDetermined
 
     var body: some View {
@@ -23,14 +26,26 @@ struct ProfileView: View {
                     }
                 }
                 .pickerStyle(.navigationLink)
+                .onChange(of: appSettings.kickoffReminder) { _, _ in
+                    Task {
+                        let result = await teamManager.reconcileReminderPreference(
+                            context: modelContext,
+                            calendar: calendarService,
+                            notifications: notifications
+                        )
+                        if result.isSuccessful {
+                            toastManager.show("Reminder updated for existing fixtures")
+                        } else if let failure = result.failures.first {
+                            toastManager.show(failure, icon: "exclamationmark.triangle", isDestructive: true)
+                        } else if result.calendarWritesPending > 0 {
+                            toastManager.show("Reminder saved — Calendar needs repair", icon: "exclamationmark.triangle", isDestructive: true)
+                        }
+                    }
+                }
             }
 
             // MARK: - Calendar Sync
-            Section("Calendar Sync") {
-                SyncRefreshSummary(
-                    lastRefresh: syncHealth.lastSuccessfulSync.map { formatted($0, fallback: "") }
-                )
-
+            Section {
                 if let guidance = capabilityRepairGuidance {
                     SyncFeedbackBanner(
                         tone: .warning,
@@ -48,6 +63,7 @@ struct ProfileView: View {
                         message: lastError,
                         dismiss: syncHealth.dismissLastError
                     )
+                    FeedbackButton(label: "Report a Sync Problem", category: .calendarSync, source: "Calendar sync failure")
                 }
                 if let schedulingError = syncHealth.backgroundSchedulingError {
                     SyncFeedbackBanner(
@@ -67,16 +83,7 @@ struct ProfileView: View {
                 }
 
                 Button {
-                    Task {
-                        let result = await automaticRefresh.manualRefresh()
-                        if let result, result.isSuccessful {
-                            toastManager.show(result.manualRefreshMessage)
-                        } else if let result, result.calendarWritesPending > 0 {
-                            toastManager.show("Fixtures downloaded — Calendar needs repair")
-                        } else {
-                            toastManager.show("Refresh incomplete — existing games were kept")
-                        }
-                    }
+                    Task { await refreshCalendar() }
                 } label: {
                     HStack(spacing: SettingsRowLayout.iconTextSpacing) {
                         SettingsRowIcon(
@@ -84,7 +91,7 @@ struct ProfileView: View {
                             tint: Color.accentColor
                         )
                         VStack(alignment: .leading, spacing: 3) {
-                            Text(automaticRefresh.isRefreshing ? "Syncing Calendar" : "Sync Calendar Now")
+                            Text(automaticRefresh.isRefreshing ? "Syncing Calendar Events" : "Sync Calendar Events")
                             Text("Refresh fixtures and repair calendar events")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
@@ -96,8 +103,10 @@ struct ProfileView: View {
                     }
                 }
                 .disabled(automaticRefresh.isRefreshing)
-                .accessibilityLabel(automaticRefresh.isRefreshing ? "Syncing Calendar" : "Sync Calendar Now")
+                .accessibilityLabel(automaticRefresh.isRefreshing ? "Syncing Calendar Events" : "Sync Calendar Events")
                 .accessibilityHint("Refresh fixtures and repair calendar events")
+            } header: {
+                Text("Calendar Sync")
             }
 
             // MARK: - Appearance
@@ -127,10 +136,13 @@ struct ProfileView: View {
                 Text("Manage calendar and notification access in iOS Settings.")
             }
 
+            FeedbackSupportSection()
+
             Section("About") {
                 LabeledContent("Version", value: "\(Bundle.main.marketingVersion) (\(Bundle.main.buildNumber))")
             }
         }
+        .modifier(ReadableListLayout())
         .navigationTitle("Settings")
         .task { await refreshNotificationStatus() }
         .onChange(of: scenePhase) { _, phase in
@@ -143,7 +155,24 @@ struct ProfileView: View {
 
     // MARK: - Permission state
 
+    private func refreshCalendar() async {
+        let result = await automaticRefresh.manualRefresh()
+        if !calendarService.isAuthorized {
+            toastManager.show("Calendar access needed to sync events",
+                icon: "exclamationmark.triangle", isDestructive: true)
+        } else if let result, result.isSuccessful {
+            toastManager.show(result.manualRefreshMessage)
+        } else if let result, result.calendarWritesPending > 0 {
+            toastManager.show("Fixtures downloaded — Calendar needs repair")
+        } else {
+            toastManager.show("Refresh incomplete — existing games were kept")
+        }
+    }
+
     private var calendarPermissionState: PermissionState {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return .granted }
+        #endif
         switch EKEventStore.authorizationStatus(for: .event) {
         case .fullAccess: return .granted
         case .notDetermined: return .notDetermined
@@ -190,6 +219,9 @@ struct ProfileView: View {
     }
 
     private func openSettings() {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return }
+        #endif
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         UIApplication.shared.open(url)
     }
@@ -219,32 +251,6 @@ struct ProfileView: View {
         !calendarService.isAuthorized || UIApplication.shared.backgroundRefreshStatus == .denied
     }
 
-    private func formatted(_ date: Date?, fallback: String) -> String {
-        guard let date else { return fallback }
-        return date.formatted(date: .abbreviated, time: .shortened)
-    }
-}
-
-private struct SyncRefreshSummary: View {
-    let lastRefresh: String?
-
-    var body: some View {
-        HStack(spacing: SettingsRowLayout.iconTextSpacing) {
-            SettingsRowIcon(
-                systemImage: "clock.arrow.circlepath",
-                tint: .secondary
-            )
-            VStack(alignment: .leading, spacing: 3) {
-                Text("Last successful refresh")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text(lastRefresh ?? "No completed sync yet")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.primary)
-            }
-        }
-        .accessibilityElement(children: .combine)
-    }
 }
 
 private struct SyncFeedbackBanner: View {

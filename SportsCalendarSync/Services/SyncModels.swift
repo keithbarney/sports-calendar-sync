@@ -40,6 +40,9 @@ struct SyncResult: Equatable {
         if calendarRepairs > 0 {
             return "Calendar repaired — \(calendarRepairs) event\(calendarRepairs == 1 ? "" : "s")"
         }
+        if teamsAttempted == 0 {
+            return "Follow a team to add calendar events"
+        }
         if gamesChanged == 0 {
             return "Calendar is up to date"
         }
@@ -65,7 +68,8 @@ struct RefreshPolicy: Equatable {
     var minimumAutomaticInterval: TimeInterval = 6 * 60 * 60
     var backgroundRefreshInterval: TimeInterval = 6 * 60 * 60
 
-    func shouldRefresh(trigger: SyncTrigger, lastAttempt: Date?, now: Date) -> Bool {
+    func shouldRefresh(trigger: SyncTrigger, lastAttempt: Date?, now: Date, needsMetadataRepair: Bool = false) -> Bool {
+        if needsMetadataRepair && (trigger == .launch || trigger == .foreground) { return true }
         guard trigger.isAutomatic else { return true }
         guard let lastAttempt else { return true }
         return now.timeIntervalSince(lastAttempt) >= minimumAutomaticInterval

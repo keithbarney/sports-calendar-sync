@@ -13,6 +13,9 @@ class StoreService: ObservableObject {
     @Published var product: Product?
 
     init() {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return }
+        #endif
         Task { await loadProduct() }
         Task { await checkPurchased() }
         observeTransactions()
@@ -50,6 +53,9 @@ class StoreService: ObservableObject {
     }
 
     func purchase() async -> Bool {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return false }
+        #endif
         guard let product else { return false }
         do {
             let result = try await product.purchase()
@@ -72,6 +78,9 @@ class StoreService: ObservableObject {
     }
 
     func restorePurchases() async {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return }
+        #endif
         try? await AppStore.sync()
         await checkPurchased()
     }

@@ -33,6 +33,7 @@ struct SportsCalendarSyncApp: App {
             health: health
         )
 
+        WidgetSnapshotPublisher.publish(context: container.mainContext)
         sharedModelContainer = container
         _calendarService = StateObject(wrappedValue: calendar)
         _notificationService = StateObject(wrappedValue: notifications)
@@ -44,18 +45,38 @@ struct SportsCalendarSyncApp: App {
         _automaticRefresh = StateObject(wrappedValue: refresh)
     }
 
-    private static func makeModelContainer() -> ModelContainer {
+    static func makeModelContainer(
+        emptyScreenshotScenario: Bool? = nil,
+        mockScenario: MockReviewScenario? = nil
+    ) -> ModelContainer {
         let schema = Schema([
             TrackedTeam.self,
             TrackedGame.self,
         ])
         let modelConfiguration = ModelConfiguration(
             schema: schema,
-            isStoredInMemoryOnly: false,
+            isStoredInMemoryOnly: {
+                #if DEBUG
+                return ScreenshotFixtures.isEnabled
+                #else
+                return false
+                #endif
+            }(),
+            groupContainer: .none,
             cloudKitDatabase: .none
         )
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            #if DEBUG
+            if ScreenshotFixtures.isEnabled {
+                ScreenshotFixtures.populate(
+                    context: container.mainContext,
+                    empty: emptyScreenshotScenario,
+                    scenario: mockScenario
+                )
+            }
+            #endif
+            return container
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
@@ -63,7 +84,9 @@ struct SportsCalendarSyncApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            appContent
+                .modifier(FeedbackLifecycle())
+                .preferredColorScheme(appSettings.appearanceMode.colorScheme)
                 .environmentObject(calendarService)
                 .environmentObject(notificationService)
                 .environmentObject(toastManager)
@@ -103,12 +126,29 @@ struct SportsCalendarSyncApp: App {
         .modelContainer(sharedModelContainer)
     }
 
+    @ViewBuilder
+    private var appContent: some View {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled && !ScreenshotFixtures.isCapturing {
+            MockReviewView(initialContainer: sharedModelContainer)
+        } else {
+            ContentView()
+        }
+        #else
+        ContentView()
+        #endif
+    }
+
     private var isRunningTests: Bool {
         ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 
     private func performLaunchRefresh() async {
         #if DEBUG
+        if ScreenshotFixtures.isEnabled {
+            ScreenshotFixtures.populate(context: sharedModelContainer.mainContext)
+            return
+        }
         if CommandLine.arguments.contains("-seed-data") {
             let context = sharedModelContainer.mainContext
             await SeedData.populate(modelContext: context, espn: espnService)

@@ -9,6 +9,18 @@ struct UpcomingFixturesFetchResult {
     let failures: [String]
 }
 
+struct CompetitionFixture: Identifiable {
+    let event: ESPNEvent
+    let competition: Competition
+    var id: String { event.id }
+}
+
+struct ClubFixturePreview {
+    let upcoming: [CompetitionFixture]
+    let recent: [CompetitionFixture]
+    let unavailable: [Competition]
+}
+
 struct ClubCompetitionsResult {
     let competitions: [Competition]
     let unavailable: [Competition]
@@ -50,6 +62,9 @@ final class ESPNService: ObservableObject {
     // MARK: - Teams
 
     func getTeams(league: League, useCache: Bool = true) async throws -> [ESPNTeam] {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return ScreenshotFixtures.teams[league] ?? [] }
+        #endif
         if useCache, let cached = teamsCache[league.slug] { return cached }
 
         // Cup fields exceed ESPN's default page size (Copa del Rey has 126 teams).
@@ -87,6 +102,9 @@ final class ESPNService: ObservableObject {
     // MARK: - Schedule
 
     func getSchedule(league: League, teamId: String, useCache: Bool = true) async throws -> [ESPNEvent] {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return ScreenshotFixtures.events(league: league, teamId: teamId) }
+        #endif
         let key = "\(league.slug):\(teamId)"
         if useCache, let cached = scheduleCache[key] { return cached }
 
@@ -100,6 +118,9 @@ final class ESPNService: ObservableObject {
     // MARK: - Scoreboard (all upcoming matches for a league on a given date)
 
     func getScoreboard(league: League, date: Date? = nil) async throws -> [ESPNEvent] {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return ScreenshotFixtures.events(league: league) }
+        #endif
         var path = "\(base)/\(league.slug)/scoreboard"
         if let date {
             let fmt = DateFormatter()
@@ -112,9 +133,9 @@ final class ESPNService: ObservableObject {
         return response.events
     }
 
-    /// Fetch upcoming fixtures for a team by sweeping the league scoreboard week-by-week
-    /// and filtering events where the team appears. Works around the fact that
-    /// `/teams/{id}/schedule` only exposes past matches for some leagues (notably MLS).
+    /// Fetch upcoming fixtures using league scoreboards, with fixture-enabled team
+    /// schedules as a fallback. The default team schedule can contain only results,
+    /// while some leagues reject the scoreboard's date-range requests.
     func getUpcomingFixtures(league: League, teamId: String, weeksAhead: Int = 16) async throws -> [ESPNEvent] {
         let result = try await getUpcomingFixturesResult(
             league: league,
@@ -135,6 +156,9 @@ final class ESPNService: ObservableObject {
         teamIds: Set<String>,
         weeksAhead: Int = 16
     ) async throws -> UpcomingFixturesFetchResult {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { return UpcomingFixturesFetchResult(eventsByTeamId: Dictionary(uniqueKeysWithValues: teamIds.map { ($0, ScreenshotFixtures.events(league: league, teamId: $0)) }), isComplete: true, failures: []) }
+        #endif
         let fmt = DateFormatter()
         fmt.dateFormat = "yyyyMMdd"
         fmt.timeZone = TimeZone(identifier: "UTC")
@@ -178,7 +202,38 @@ final class ESPNService: ObservableObject {
             } catch {
                 print("[ESPN] chunk \(range) FAILED: \(error)")
                 failures.append("\(range): \(error.localizedDescription)")
+                // Some feeds (including ger.2) reject date ranges entirely.
+                if case APIError.badResponse(status: 400) = error { break }
             }
+        }
+
+        if !failures.isEmpty {
+            var fallbackFailures: [String] = []
+            let end = cal.date(byAdding: .day, value: weeksAhead * 7, to: now) ?? now
+            for teamId in teamIds.sorted() {
+                try Task.checkCancellation()
+                do {
+                    let url = try buildURL("\(base)/\(league.slug)/teams/\(teamId)/schedule?fixture=true&limit=1000")
+                    let response: ESPNScheduleResponse = try await fetch(url)
+                    // A missing events key is not an authoritative empty schedule.
+                    guard let events = response.events else {
+                        throw APIError.incompleteFixtureCoverage(["Missing fixture list"])
+                    }
+                    for event in events {
+                        guard let date = parseDate(event.date),
+                              date >= cal.startOfDay(for: now), date < end,
+                              event.competitions.contains(where: { $0.competitors.contains(where: { $0.team.id == teamId }) }) else { continue }
+                        byTeam[teamId, default: [:]][event.id] = event
+                    }
+                } catch is CancellationError {
+                    throw CancellationError()
+                } catch {
+                    fallbackFailures.append("\(teamId): \(error.localizedDescription)")
+                }
+            }
+            // Successful team fixture feeds cover the requested window. Otherwise,
+            // retain partial events and prevent sync from removing absent matches.
+            failures = fallbackFailures
         }
 
         let eventsByTeamId = byTeam.mapValues { events in
@@ -189,6 +244,53 @@ final class ESPNService: ObservableObject {
             isComplete: failures.isEmpty,
             failures: failures
         )
+    }
+
+    /// Read-only preview across the club's detected competitions, with feed identity
+    /// retained for each match. Failures must never be presented as an empty schedule.
+    func getClubFixturePreview(for team: ESPNTeam, source: Competition,
+                               competitions: [Competition]) async throws -> ClubFixturePreview {
+        var upcoming: [String: CompetitionFixture] = [:]
+        var recent: [String: CompetitionFixture] = [:]
+        var unavailable: [Competition] = []
+        let now = Date()
+        for competition in competitions {
+            try Task.checkCancellation()
+            do {
+                let teamId: String
+                if competition == source {
+                    teamId = team.id
+                } else {
+                    let teams = try await getTeams(league: competition)
+                    guard let matching = teams.first(where: { $0.matchesClub(team) }) else {
+                        unavailable.append(competition)
+                        continue
+                    }
+                    teamId = matching.id
+                }
+                let result = try await getUpcomingFixturesResult(league: competition, teamIds: [teamId])
+                if !result.isComplete { unavailable.append(competition) }
+                for event in result.eventsByTeamId[teamId] ?? [] {
+                    guard let date = parseDate(event.date), date >= now.addingTimeInterval(-3 * 60 * 60),
+                          event.status?.type?.completed != true else { continue }
+                    upcoming[event.id] = CompetitionFixture(event: event, competition: competition)
+                }
+                let past = try await getSchedule(league: competition, teamId: teamId, useCache: false)
+                for event in past {
+                    guard let date = parseDate(event.date), date < now,
+                          upcoming[event.id] == nil else { continue }
+                    recent[event.id] = CompetitionFixture(event: event, competition: competition)
+                }
+            } catch is CancellationError {
+                throw CancellationError()
+            } catch {
+                unavailable.append(competition)
+            }
+        }
+        let orderedUpcoming = upcoming.values.sorted { parseDate($0.event.date)! < parseDate($1.event.date)! }
+        let orderedRecent = recent.values.sorted { parseDate($0.event.date)! > parseDate($1.event.date)! }
+        return ClubFixturePreview(upcoming: orderedUpcoming, recent: Array(orderedRecent.prefix(5)),
+                                  unavailable: Competition.allCases.filter(Set(unavailable).contains))
     }
 
     // MARK: - Helpers
@@ -211,6 +313,9 @@ final class ESPNService: ObservableObject {
     }
 
     private func fetch<T: Decodable>(_ url: URL) async throws -> T {
+        #if DEBUG
+        if ScreenshotFixtures.isEnabled { throw APIError.invalidURL }
+        #endif
         do {
             let (data, response) = try await session.data(from: url)
             if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {

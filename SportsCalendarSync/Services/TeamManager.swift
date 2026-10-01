@@ -13,16 +13,167 @@ final class TeamManager: ObservableObject {
     /// Human-readable summary of the last sync, for on-device debugging.
     @Published var lastSyncSummary: String = ""
     private var activeSyncKeys: Set<String> = []
+    private let preferences: UserDefaults
+    private var reminderReconciliationGeneration = 0
+    private var reminderReconciliationTail: Task<SyncResult, Never>?
 
-    /// Resolve the user's current kickoff-reminder preference from UserDefaults
-    /// (shared storage with `@AppStorage("kickoffReminder")` in AppSettings).
+    init(preferences: UserDefaults? = nil) {
+        self.preferences = preferences ?? AppSettings.preferenceDefaults()
+    }
+
+    /// Resolve the current kickoff-reminder preference from the same isolated
+    /// store used by AppSettings.
     private var currentReminder: KickoffReminder {
-        let raw = UserDefaults.standard.string(forKey: "kickoffReminder") ?? KickoffReminder.thirtyMin.rawValue
+        let raw = preferences.string(forKey: "kickoffReminder") ?? KickoffReminder.thirtyMin.rawValue
         return KickoffReminder(rawValue: raw) ?? .thirtyMin
     }
 
     private var currentReminderOffset: TimeInterval? {
         currentReminder.offsetSeconds
+    }
+
+    /// Repair pre-time-zone-fix notifications locally, without Calendar writes
+    /// or an ESPN request. Unchanged fixtures also need this upgrade repair.
+    func repairLegacyNotifications(
+        context: ModelContext,
+        notifications: NotificationService
+    ) async -> SyncResult {
+        var result = SyncResult()
+        do {
+            let games = try context.fetch(FetchDescriptor<TrackedGame>())
+            let write = await notifications.repairLegacyGameNotifications(
+                fixtures: games.map { snapshot(from: $0) },
+                reminder: currentReminder
+            )
+            if let error = write.errorMessage, !write.succeeded {
+                result.failures.append(error)
+            }
+        } catch {
+            result.failures.append("Stored fixtures could not be loaded to repair kickoff reminders.")
+        }
+        return result
+    }
+
+    /// Immediately rewrite every existing app-owned calendar alarm and pending
+    /// notification after the reminder preference changes.
+    @discardableResult
+    func reconcileReminderPreference(
+        context: ModelContext,
+        calendar: CalendarFixtureScheduling,
+        notifications: ReminderNotificationScheduling? = nil
+    ) async -> SyncResult {
+        let reminder = currentReminder
+        reminderReconciliationGeneration += 1
+        let generation = reminderReconciliationGeneration
+        let predecessor = reminderReconciliationTail
+        let operation = Task { @MainActor [weak self] in
+            _ = await predecessor?.value
+            guard let self else {
+                var result = SyncResult()
+                result.wasCancelled = true
+                return result
+            }
+            guard generation == self.reminderReconciliationGeneration else {
+                var result = SyncResult()
+                result.wasCancelled = true
+                return result
+            }
+            let result = await self.performReminderReconciliation(
+                reminder: reminder,
+                context: context,
+                calendar: calendar,
+                notifications: notifications
+            )
+            guard generation == self.reminderReconciliationGeneration else {
+                var superseded = result
+                superseded.wasCancelled = true
+                return superseded
+            }
+            return result
+        }
+        reminderReconciliationTail = operation
+        return await operation.value
+    }
+
+    private func performReminderReconciliation(
+        reminder: KickoffReminder,
+        context: ModelContext,
+        calendar: CalendarFixtureScheduling,
+        notifications: ReminderNotificationScheduling?
+    ) async -> SyncResult {
+        var result = SyncResult()
+        let games: [TrackedGame]
+        do {
+            games = try context.fetch(FetchDescriptor<TrackedGame>())
+        } catch {
+            result.failures = ["Stored fixtures could not be loaded for reminder update."]
+            return result
+        }
+        result.teamsAttempted = games.count
+
+        for game in games {
+            guard let league = Competition(rawValue: game.leagueSlug) else {
+                result.failures.append("A stored fixture has an unsupported competition and could not be updated.")
+                continue
+            }
+            if calendar.isAuthorized {
+                let write = calendar.upsertGame(
+                    identifier: game.calendarEventId,
+                    fixtureIdentity: "\(game.leagueSlug)|\(game.followedTeamId)|\(game.espnEventId)",
+                    homeTeam: game.homeTeamName,
+                    awayTeam: game.awayTeamName,
+                    kickoff: game.kickoff,
+                    venue: game.venue,
+                    broadcasts: game.broadcasts,
+                    leagueName: league.displayName,
+                    status: game.status,
+                    reminderOffset: reminder.offsetSeconds
+                )
+                game.calendarEventId = write.identifier ?? game.calendarEventId
+                game.calendarSyncPending = !write.succeeded
+                if let error = write.errorMessage { result.failures.append(error) }
+                if !write.succeeded { result.calendarWritesPending += 1 }
+            } else {
+                game.calendarSyncPending = true
+                result.calendarWritesPending += 1
+            }
+
+            if let notifications {
+                let notificationResult = await notifications.reconcileGameNotification(
+                    homeTeam: game.homeTeamName,
+                    awayTeam: game.awayTeamName,
+                    leagueName: league.displayName,
+                    kickoff: game.kickoff,
+                    followedTeamId: game.followedTeamId,
+                    espnEventId: game.espnEventId,
+                    reminder: notificationReminder(for: game, selected: reminder)
+                )
+                if let error = notificationResult.errorMessage, !notificationResult.succeeded {
+                    result.failures.append(error)
+                }
+            }
+            result.updated += 1
+        }
+
+        do {
+            try context.save()
+        } catch {
+            result.failures.append("Reminder changes could not be saved locally.")
+        }
+        if result.failures.isEmpty && result.calendarWritesPending == 0 {
+            result.teamsSucceeded = result.teamsAttempted
+        }
+        return result
+    }
+
+    private func notificationReminder(
+        for game: TrackedGame,
+        selected reminder: KickoffReminder
+    ) -> KickoffReminder {
+        guard let status = game.status?.uppercased() else { return reminder }
+        return status.contains("POSTPONED") || status.contains("CANCELED") || status.contains("CANCELLED")
+            ? .off
+            : reminder
     }
 
     /// Follow a team: persist + immediately fetch & mirror schedule to Calendar.
@@ -49,11 +200,12 @@ final class TeamManager: ObservableObject {
             name: espnTeam.displayName ?? espnTeam.name ?? "Unknown",
             shortDisplayName: espnTeam.shortDisplayName,
             abbreviation: espnTeam.abbreviation,
-            logoURL: espnTeam.logos?.first?.href,
+            logoURL: espnTeam.crestURL,
             primaryColor: espnTeam.color
         )
         context.insert(team)
         try? context.save()
+        WidgetSnapshotPublisher.publish(context: context)
 
         // Ensure we have calendar access BEFORE trying to write events —
         // otherwise `CalendarService.addGame` silently no-ops.
@@ -141,6 +293,7 @@ final class TeamManager: ObservableObject {
         notifications?.removeAllNotifications(followedTeamId: id)
         context.delete(team)
         try? context.save()
+        WidgetSnapshotPublisher.publish(context: context)
     }
 
     /// Stop syncing one competition while retaining its existing calendar events and
@@ -166,6 +319,7 @@ final class TeamManager: ObservableObject {
         }
         context.delete(team)
         try? context.save()
+        WidgetSnapshotPublisher.publish(context: context)
     }
 
     /// Sync every followed team's schedule. Sync adds new fixtures and updates existing ones;
@@ -374,9 +528,9 @@ final class TeamManager: ObservableObject {
             followedTeamId: followedTeamId,
             leagueSlug: league.slug,
             homeTeamName: home.team.displayName ?? home.team.name ?? "Home",
-            homeTeamLogo: home.team.logos?.first?.href,
+            homeTeamLogo: home.team.crestURL,
             awayTeamName: away.team.displayName ?? away.team.name ?? "Away",
-            awayTeamLogo: away.team.logos?.first?.href,
+            awayTeamLogo: away.team.crestURL,
             kickoff: kickoff,
             venue: competition.venue?.fullName,
             broadcasts: competition.broadcasts?.flatMap { $0.names ?? [] } ?? [],
@@ -438,7 +592,7 @@ final class TeamManager: ObservableObject {
                 broadcasts: fixture.broadcasts,
                 status: fixture.status
             )
-            if calendar.isAuthorized {
+            if calendar.canSyncCalendar {
                 let write = writeCalendarEvent(fixture, identifier: nil, league: league, calendar: calendar)
                 row.calendarEventId = write.identifier
                 row.calendarSyncPending = !write.succeeded
@@ -455,7 +609,7 @@ final class TeamManager: ObservableObject {
         for fixture in plan.updates {
             guard let row = rowsById[fixture.espnEventId] else { continue }
             apply(fixture, to: row)
-            if calendar.isAuthorized {
+            if calendar.canSyncCalendar {
                 let write = writeCalendarEvent(
                     fixture,
                     identifier: row.calendarEventId,
@@ -480,7 +634,7 @@ final class TeamManager: ObservableObject {
             rowsById[id]?.missingSince = date
         }
 
-        if calendar.isAuthorized {
+        if calendar.canSyncCalendar {
             for fixture in fetched where originalIds.contains(fixture.espnEventId) {
                 guard let row = rowsById[fixture.espnEventId] else { continue }
                 let resolvedIdentifier = calendar.resolveEventIdentifier(
@@ -520,7 +674,7 @@ final class TeamManager: ObservableObject {
         for stored in plan.removals {
             guard let row = rowsById[stored.fixture.espnEventId] else { continue }
             if let eventId = row.calendarEventId {
-                guard calendar.isAuthorized else {
+                guard calendar.canSyncCalendar else {
                     result.calendarWritesPending += 1
                     continue
                 }
@@ -541,6 +695,7 @@ final class TeamManager: ObservableObject {
 
         do {
             try context.save()
+            WidgetSnapshotPublisher.publish(context: context)
         } catch {
             result.failures.append("Fixture changes could not be saved locally.")
         }

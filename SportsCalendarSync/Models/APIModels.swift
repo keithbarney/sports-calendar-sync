@@ -26,6 +26,10 @@ struct ESPNTeam: Decodable {
     let abbreviation: String?
     let color: String?
     let logos: [ESPNLogo]?
+    // Scoreboards use a single logo; team directories and schedules use logos.
+    var logo: String? = nil
+
+    var crestURL: String? { logos?.first?.href ?? logo }
 
     /// ESPN club IDs are shared across feeds. Names cover older feed aliases without
     /// matching abbreviations (which can belong to several unrelated clubs).

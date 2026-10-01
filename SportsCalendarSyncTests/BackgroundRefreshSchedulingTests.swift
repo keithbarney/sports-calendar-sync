@@ -1,4 +1,5 @@
 import BackgroundTasks
+import SwiftData
 import XCTest
 @testable import SportsCalendarSync
 
@@ -47,6 +48,30 @@ final class BackgroundRefreshSchedulingTests: XCTestCase {
         XCTAssertNotNil(health.backgroundSchedulingError)
     }
 
+    func testServiceRegistersAndSchedulesBackgroundRefreshWhenEnabled() {
+        let schema = Schema([TrackedTeam.self, TrackedGame.self])
+        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: schema, configurations: [configuration])
+        let scheduler = FakeBackgroundScheduler()
+        let (health, defaults) = makeHealthStore()
+        defer { defaults.removePersistentDomain(forName: defaultsSuiteName) }
+        let service = AutomaticRefreshService(
+            teamManager: TeamManager(preferences: defaults),
+            espn: ESPNService(),
+            calendar: CalendarService(),
+            notifications: NotificationService(),
+            modelContainer: container,
+            health: health,
+            scheduler: scheduler,
+            now: { Date(timeIntervalSince1970: 1_800_000_000) }
+        )
+
+        XCTAssertEqual(scheduler.registeredIdentifier, AutomaticRefreshService.backgroundTaskIdentifier)
+        service.scheduleNextRefresh()
+        XCTAssertEqual(scheduler.submittedIdentifier, AutomaticRefreshService.backgroundTaskIdentifier)
+        XCTAssertNotNil(health.nextPlannedRefresh)
+    }
+
     private var defaultsSuiteName: String {
         "BackgroundRefreshSchedulingTests"
     }
@@ -63,12 +88,14 @@ private enum TestError: Error {
 }
 
 private final class FakeBackgroundScheduler: BackgroundRefreshScheduling {
+    var registeredIdentifier: String?
     var submittedIdentifier: String?
     var submittedDate: Date?
     var submitError: Error?
 
     func register(identifier: String, handler: @escaping (BGTask) -> Void) -> Bool {
-        true
+        registeredIdentifier = identifier
+        return true
     }
 
     func replaceRequest(identifier: String, earliestBeginDate: Date) throws {

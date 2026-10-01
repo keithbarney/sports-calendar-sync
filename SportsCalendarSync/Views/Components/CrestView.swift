@@ -8,6 +8,27 @@ struct CrestView: View {
     var fallbackIcon: String = "shield"
 
     var body: some View {
+        artwork
+            .frame(width: size, height: size)
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+    }
+
+    @ViewBuilder
+    private var artwork: some View {
+        #if DEBUG
+        if let image = ScreenshotFixtures.artwork(for: url) {
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else {
+            remoteArtwork
+        }
+        #else
+        remoteArtwork
+        #endif
+    }
+
+    private var remoteArtwork: some View {
         AsyncImage(url: resolved) { image in
             image
                 .resizable()
@@ -21,8 +42,6 @@ struct CrestView: View {
                         .foregroundStyle(.textTertiary)
                 }
         }
-        .frame(width: size, height: size)
-        .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
     private var resolved: URL? {
