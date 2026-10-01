@@ -1,0 +1,239 @@
+{
+  "appId": "6763406189",
+  "bundleId": "com.keithbarney.sportssync",
+  "version": "1.1.4",
+  "versionId": "1b517d4d-571d-4c0d-8b54-2d05b509692d",
+  "build": "1790809115",
+  "localeId": "943d60a1-d1dd-4ad6-9c1c-47feeabb943c",
+  "releaseType": "AFTER_APPROVAL",
+  "notes": "Calendar sync is now simpler: followed teams stay connected to your calendar whenever access is allowed.\n\nUse Sync Calendar Events to refresh fixtures and repair missing events. We also improved guidance when Calendar access is unavailable or no teams are followed yet.",
+  "originalScreenshots": [
+    {
+      "id": "410049da-f54d-474b-b809-537a6d6434f1",
+      "display": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "id": "dbfae341-12dc-40c2-abe9-98b5119f4ce7",
+          "filename": "11-iphone-light-calendar.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "ec486f8f770fef6f58dc3e351a99baae"
+        },
+        {
+          "id": "6bb4164f-4ea6-4d33-b2e9-6112c82380d9",
+          "filename": "2-iphone-light-team-detail.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "9bc0994839ebe82da53ad1e03ac36fb8"
+        },
+        {
+          "id": "ae713381-422c-412a-8a20-b1444874eb3b",
+          "filename": "10-iphone-light-broadcasts.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "cb2c1ae5f92562207977d947e6c6d53c"
+        },
+        {
+          "id": "83ca64f5-c4ca-4456-8af6-f9a1f7d6728f",
+          "filename": "7-iphone-light-reminder.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "8ede9a68dbd4b18d1222715b814cef73"
+        },
+        {
+          "id": "a39f6cc3-4559-4bfe-8b2f-cdc5a2c80813",
+          "filename": "1-iphone-light-following.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "4acdd7f6af4317e0c3d5b08650b3b3a8"
+        },
+        {
+          "id": "191d55f2-11bd-4556-824c-3d350bf801d0",
+          "filename": "8-iphone-light-appearance.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "379f6e0a7c8c43083c0cfa4abf3a7747"
+        }
+      ]
+    },
+    {
+      "id": "2b40513d-7215-414f-beb2-82e46cf34cda",
+      "display": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "id": "10463850-4630-4764-8b64-602b5735faf7",
+          "filename": "11-ipad-light-calendar.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "a261cc5ca0f6355622924d1bb6ae2a88"
+        },
+        {
+          "id": "601da3b4-948b-4a5a-a04c-a8e017c563cc",
+          "filename": "2-ipad-light-team-detail.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "3dd6a97d8851fd1c7a08c675ee2062d6"
+        },
+        {
+          "id": "2b07408e-22f4-4d8b-a1a1-748afc1f1a8f",
+          "filename": "10-ipad-light-broadcasts.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "8bb44d85cfb7bc90dd57be27e5782e9c"
+        },
+        {
+          "id": "a11f1cbd-37ff-4279-afc2-28f5969afed8",
+          "filename": "7-ipad-light-reminder.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "4716efe66d03af711aea91bcb3c9d014"
+        },
+        {
+          "id": "de0f5750-bf96-4af3-ae2f-4aa06f8c2541",
+          "filename": "1-ipad-light-following.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "cfddaff573829c4c8fad7e04db450a16"
+        },
+        {
+          "id": "37403f4a-4556-4455-9622-42e6ec0e3409",
+          "filename": "8-ipad-light-appearance.png",
+          "state": {
+            "errors": [],
+            "warnings": null,
+            "state": "COMPLETE"
+          },
+          "checksum": "3c014f87d133b5fb15e178e2acb3818a"
+        }
+      ]
+    }
+  ],
+  "reviewDetailsPresent": true,
+  "state": "WAITING_FOR_REVIEW",
+  "buildId": "b1c26094-b6d1-4a79-a7a5-ec9f73b7fefb",
+  "buildAttached": true,
+  "screenshotUploads": {
+    "iphone/light/11-iphone-light-calendar.png": {
+      "id": "c9d8f189-6a57-4c26-853c-1fd684982bac",
+      "sha256": "0b217fb8f19ccb814f35f6425ebd0ed4976b217b8ff37f19661b68553b9b7fd4",
+      "md5": "08612b95203ae1e23dc35dc7a4059856",
+      "setId": "410049da-f54d-474b-b809-537a6d6434f1",
+      "state": "COMPLETE"
+    },
+    "iphone/light/2-iphone-light-team-detail.png": {
+      "id": "7e26abe5-8e3e-428f-8909-655e4cf12bc1",
+      "sha256": "702a0116502de14b0ff84c741653d275da92bbc4620d0675366373a0fcaedb71",
+      "md5": "1861cade9ced0040b090ce9bd61851aa",
+      "setId": "410049da-f54d-474b-b809-537a6d6434f1",
+      "state": "COMPLETE"
+    },
+    "iphone/light/10-iphone-light-broadcasts.png": {
+      "id": "74dd9575-2074-43bf-b3fb-54a5f2360d12",
+      "sha256": "c2f1f79eb8b6aba0d520ddbb4e63f476c1fd4ec7853a2cd43376563a5aaedc6e",
+      "md5": "b54999a887d3a1d30348a28185f11cd2",
+      "setId": "410049da-f54d-474b-b809-537a6d6434f1",
+      "state": "COMPLETE"
+    },
+    "iphone/light/7-iphone-light-reminder.png": {
+      "id": "0c592057-40f3-4a23-9272-bb437502ba36",
+      "sha256": "13909650df2125752c1d4bb1eca69a04808b0664d3b2acbe724dc2d48f6242a1",
+      "md5": "d2a4e63a3f2626465dc948f881957363",
+      "setId": "410049da-f54d-474b-b809-537a6d6434f1",
+      "state": "COMPLETE"
+    },
+    "iphone/light/1-iphone-light-following.png": {
+      "id": "6f530376-61cb-4d56-ac54-451f51fe3f60",
+      "sha256": "4cf9cb9b6aee746018f482e206b203b99a5291c9c4801b4d01658ddd4a328d35",
+      "md5": "12c1a5348720b1ab51677c1c63cfdd05",
+      "setId": "410049da-f54d-474b-b809-537a6d6434f1",
+      "state": "COMPLETE"
+    },
+    "iphone/light/8-iphone-light-appearance.png": {
+      "id": "5a7ec65f-5f7c-4ccb-b1fb-539c792896d3",
+      "sha256": "c06adc66d0db1611655fed12f2fe6fd14610c46e8f9c4e8bd51fd248a3686123",
+      "md5": "4ec6a231eafb7c425caf8d53025bd488",
+      "setId": "410049da-f54d-474b-b809-537a6d6434f1",
+      "state": "COMPLETE"
+    },
+    "ipad/light/11-ipad-light-calendar.png": {
+      "id": "558432a8-308f-430d-81aa-8c0ec9e75866",
+      "sha256": "f8713d6188796ca03b7a2397be5bebfec02f6de06f23e64c2fc3bde3e95df276",
+      "md5": "72afaee8e02031f0725038b038f4e16a",
+      "setId": "2b40513d-7215-414f-beb2-82e46cf34cda",
+      "state": "COMPLETE"
+    },
+    "ipad/light/2-ipad-light-team-detail.png": {
+      "id": "52e6a8d7-5a3d-493c-8946-5fe703c1a137",
+      "sha256": "4454e742815365f8a693334d3de1e372d7173b15c1a192a9320d4535b681bcbc",
+      "md5": "b05ad27136f68fead319783085b2e085",
+      "setId": "2b40513d-7215-414f-beb2-82e46cf34cda",
+      "state": "COMPLETE"
+    },
+    "ipad/light/10-ipad-light-broadcasts.png": {
+      "id": "399f6d54-7611-41cf-9a9c-9fdd6fb26aaf",
+      "sha256": "37f783f21f21cd125a0ba97ba4fc5ff9ad52e07cf42ba12b695281231bd1ad42",
+      "md5": "5e7a3bf0443c3e9ca6d3393aec0f5f78",
+      "setId": "2b40513d-7215-414f-beb2-82e46cf34cda",
+      "state": "COMPLETE"
+    },
+    "ipad/light/7-ipad-light-reminder.png": {
+      "id": "38385766-f053-40cd-a3a3-639b7b55de35",
+      "sha256": "5e56dccb10b4f8c17e46c663212a80df3a4b9fbd22722fb735bc38e3101f8cf4",
+      "md5": "4b0c2c63cb08bd0aa000cab3d8c0c059",
+      "setId": "2b40513d-7215-414f-beb2-82e46cf34cda",
+      "state": "COMPLETE"
+    },
+    "ipad/light/1-ipad-light-following.png": {
+      "id": "bdadca8c-5884-43b2-b87e-9a0db1706560",
+      "sha256": "240c6e5c15213749fcc8ac723885439db9d4c3ca240da86d70e70a3bcf27878c",
+      "md5": "08b3695583ee3044f483b321532dc611",
+      "setId": "2b40513d-7215-414f-beb2-82e46cf34cda",
+      "state": "COMPLETE"
+    },
+    "ipad/light/8-ipad-light-appearance.png": {
+      "id": "72c41512-a08f-4cf2-9679-9137791f89ca",
+      "sha256": "a23be7efd5ae046dac2a9537d8cdc479b6c9db19b0794e8171334db0f29833fd",
+      "md5": "78a0ffd05611b43b2fa5c608fce61a78",
+      "setId": "2b40513d-7215-414f-beb2-82e46cf34cda",
+      "state": "COMPLETE"
+    }
+  },
+  "screenshotsVerified": true,
+  "reviewSubmissionId": "79864f5d-12b6-4962-8d3d-356adcc24c44",
+  "reviewItemId": "Nzk4NjRmNWQtMTJiNi00OTYyLThkM2QtMzU2YWRjYzI0YzQ0fDZ8ODkyMzA4OTA5",
+  "reviewState": "WAITING_FOR_REVIEW",
+  "submittedAt": "2026-09-30T23:38:56.518Z"
+}

@@ -18,6 +18,10 @@ Package.resolved
 # macOS
 .DS_Store
 
+# Python script caches
+__pycache__/
+*.py[cod]
+
 # Secrets
 SportsCalendarSync/Secrets.swift
 
@@ -40,3 +44,6 @@ node_modules/
 _*.sh
 _*.txt
 /tmp/
+
+# Generated screenshot captures and test results
+artifacts/screenshots/

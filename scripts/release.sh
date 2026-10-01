@@ -10,7 +10,7 @@ BUILD_ROOT="$ROOT_DIR/build/release"
 DERIVED_DATA="$BUILD_ROOT/DerivedData"
 ARCHIVE_PATH="$BUILD_ROOT/SportsCalendarSync.xcarchive"
 EXPORT_PATH="$BUILD_ROOT/export"
-EXPORT_OPTIONS="$ROOT_DIR/config/ExportOptions.plist"
+EXPORT_OPTIONS="${APPSTORE_EXPORT_OPTIONS_PLIST:-$ROOT_DIR/config/ExportOptions.plist}"
 MINIMUM_XCODE_MAJOR=26
 
 COMMAND="${1:-}"
@@ -38,6 +38,7 @@ Options:
   --confirm-upload       Required when stdin is non-interactive.
 
 Environment:
+  APPSTORE_EXPORT_OPTIONS_PLIST  Optional external export settings for matched signing profiles.
   APPSTORE_ENV_FILE      Credentials file path. Defaults to:
                          ~/.config/sports-calendar-sync/appstore.env
   RELEASE_BUILD_NUMBER   Alternative build-number override.

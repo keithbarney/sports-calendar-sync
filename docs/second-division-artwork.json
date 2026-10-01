@@ -1,0 +1,55 @@
+{
+  "purpose": "Opt-in second-division review fixtures, fictional matchups",
+  "assets": [
+    {
+      "espnTeamID": "3812",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/3812.png",
+      "file": "mock-crest-review-3812.png"
+    },
+    {
+      "espnTeamID": "2428",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/2428.png",
+      "file": "mock-crest-review-2428.png"
+    },
+    {
+      "espnTeamID": "381",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/381.png",
+      "file": "mock-crest-review-381.png"
+    },
+    {
+      "espnTeamID": "376",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/376.png",
+      "file": "mock-crest-review-376.png"
+    },
+    {
+      "espnTeamID": "6832",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/6832.png",
+      "file": "mock-crest-review-6832.png"
+    },
+    {
+      "espnTeamID": "3747",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/3747.png",
+      "file": "mock-crest-review-3747.png"
+    },
+    {
+      "espnTeamID": "2923",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/2923.png",
+      "file": "mock-crest-review-2923.png"
+    },
+    {
+      "espnTeamID": "2734",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/2734.png",
+      "file": "mock-crest-review-2734.png"
+    },
+    {
+      "espnTeamID": "178",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/178.png",
+      "file": "mock-crest-review-178.png"
+    },
+    {
+      "espnTeamID": "3243",
+      "source": "https://a.espncdn.com/i/teamlogos/soccer/500/3243.png",
+      "file": "mock-crest-review-3243.png"
+    }
+  ]
+}

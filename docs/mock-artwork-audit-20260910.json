@@ -1,0 +1,209 @@
+[
+  {
+    "club": "Manchester United",
+    "fixture_id": "screenshot-united",
+    "provider_id": "360",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/360.png",
+    "filename": "mock-crest-screenshot-united.png",
+    "sha256": "03486cf5cf90d580d6132ab115cc747be7b2e3519fd6e08be56675cf5897f0b7"
+  },
+  {
+    "club": "Arsenal",
+    "fixture_id": "catalog-arsenal",
+    "provider_id": "359",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/359.png",
+    "filename": "mock-crest-catalog-arsenal.png",
+    "sha256": "92f1bb35662ff56dde09e1f8084221a458357a6df390bc97b2ed6495f6e39f53"
+  },
+  {
+    "club": "Chelsea",
+    "fixture_id": "catalog-chelsea",
+    "provider_id": "363",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/363.png",
+    "filename": "mock-crest-catalog-chelsea.png",
+    "sha256": "6f14d86b5e35074e91462c7ede6e822f6a6c9f6cb723cd04ea6b8d36f2fa5392"
+  },
+  {
+    "club": "Liverpool",
+    "fixture_id": "catalog-liverpool",
+    "provider_id": "364",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/364.png",
+    "filename": "mock-crest-catalog-liverpool.png",
+    "sha256": "9f2c56faf3631eb32fb5cccd84d31827ba38fcd9dd3280f597b221711a8797de"
+  },
+  {
+    "club": "Manchester City",
+    "fixture_id": "catalog-man-city",
+    "provider_id": "382",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/382.png",
+    "filename": "mock-crest-catalog-man-city.png",
+    "sha256": "70e005bdab0ada41a153760398b4a2ef99f956bf9e72954686caa70da8c30c0b"
+  },
+  {
+    "club": "Real Madrid",
+    "fixture_id": "screenshot-real-madrid",
+    "provider_id": "86",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/86.png",
+    "filename": "mock-crest-screenshot-real-madrid.png",
+    "sha256": "acdcaaf2c60c3cc65a270dac1bd59f3a2b52911b8c45510d4e7f86d47ed714ba"
+  },
+  {
+    "club": "Barcelona",
+    "fixture_id": "catalog-barcelona",
+    "provider_id": "83",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/83.png",
+    "filename": "mock-crest-catalog-barcelona.png",
+    "sha256": "9987e9acd8f542f74402f5a62ac2bcbb350c5ed2bf38831779d56a375ae76eb9"
+  },
+  {
+    "club": "Atl\u00e9tico Madrid",
+    "fixture_id": "catalog-atletico",
+    "provider_id": "1068",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/1068.png",
+    "filename": "mock-crest-catalog-atletico.png",
+    "sha256": "00e98bfb76fe09a385afc20f73ae0f9ac076f9a22cc559d32cee30fd492f0f10"
+  },
+  {
+    "club": "Bayern Munich",
+    "fixture_id": "screenshot-bayern",
+    "provider_id": "132",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/132.png",
+    "filename": "mock-crest-screenshot-bayern.png",
+    "sha256": "97d9c68c3fbc44834e836b6b82afab725e450d0a7c5f5d6a328f4888297511ed"
+  },
+  {
+    "club": "Borussia Dortmund",
+    "fixture_id": "catalog-dortmund",
+    "provider_id": "124",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/124.png",
+    "filename": "mock-crest-catalog-dortmund.png",
+    "sha256": "bd11d3d9f17caf5352cb44234961b89b8794a453b2fa9c355586b68a828facd8"
+  },
+  {
+    "club": "Bayer Leverkusen",
+    "fixture_id": "catalog-leverkusen",
+    "provider_id": "131",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/131.png",
+    "filename": "mock-crest-catalog-leverkusen.png",
+    "sha256": "e0be43c3d770332d031309e661f127e22bc8202a1211993c467193444481cb4b"
+  },
+  {
+    "club": "Juventus",
+    "fixture_id": "screenshot-juventus",
+    "provider_id": "111",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/111.png",
+    "filename": "mock-crest-screenshot-juventus.png",
+    "sha256": "6c190f73f8913b8d0c040e5773c377517a2e1e2e76b8145c87d73c3d2a9a87d3"
+  },
+  {
+    "club": "Internazionale",
+    "fixture_id": "catalog-inter",
+    "provider_id": "110",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/110.png",
+    "filename": "mock-crest-catalog-inter.png",
+    "sha256": "3020e0fba5c9391d6e8fa119ad67b93f1ad2fa77a2939a5dd42320495fd477a4"
+  },
+  {
+    "club": "AC Milan",
+    "fixture_id": "catalog-ac-milan",
+    "provider_id": "103",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/103.png",
+    "filename": "mock-crest-catalog-ac-milan.png",
+    "sha256": "32f172036837a0a4a7ef3aadd67f2f3d5cb9f697b698ff6c7722b42faa8ae42e"
+  },
+  {
+    "club": "Napoli",
+    "fixture_id": "catalog-napoli",
+    "provider_id": "114",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/114.png",
+    "filename": "mock-crest-catalog-napoli.png",
+    "sha256": "e871ac8b6d9cf7acd850bfcf8e22e20d6258f55a45cf97023d937c5bdb515b4f"
+  },
+  {
+    "club": "Paris Saint-Germain",
+    "fixture_id": "screenshot-psg",
+    "provider_id": "160",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/160.png",
+    "filename": "mock-crest-screenshot-psg.png",
+    "sha256": "d3c4321f76c2475d10dd76757e623367ab7549a9a55cdee7ced09cf6327d4f5b"
+  },
+  {
+    "club": "Marseille",
+    "fixture_id": "catalog-marseille",
+    "provider_id": "176",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/176.png",
+    "filename": "mock-crest-catalog-marseille.png",
+    "sha256": "55fde2ea6f3e0524ae9226ccbf9240cf1cc6f49f6a402ed444b147558040428e"
+  },
+  {
+    "club": "AS Monaco",
+    "fixture_id": "catalog-monaco",
+    "provider_id": "174",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/174.png",
+    "filename": "mock-crest-catalog-monaco.png",
+    "sha256": "bd23a74bdca89df5ed4876567478e5f08e82a4d6576e0252f16968f266300d64"
+  },
+  {
+    "club": "Lyon",
+    "fixture_id": "catalog-lyon",
+    "provider_id": "167",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/167.png",
+    "filename": "mock-crest-catalog-lyon.png",
+    "sha256": "8d19c1378008637e0f7a75c4a56bd82610c719ae3bfdcb7c1305edfe81710bcf"
+  },
+  {
+    "club": "LAFC",
+    "fixture_id": "screenshot-lafc",
+    "provider_id": "18966",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/18966.png",
+    "filename": "mock-crest-screenshot-lafc.png",
+    "sha256": "1433adb2ec11c30bbcd306fce3674f2d253372ae2fd4492e210b222d7d24439f"
+  },
+  {
+    "club": "LA Galaxy",
+    "fixture_id": "catalog-galaxy",
+    "provider_id": "187",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/187.png",
+    "filename": "mock-crest-catalog-galaxy.png",
+    "sha256": "e0418f5d80a7c1f28d2ea234084d22006c8293131165d848869959b1be5f0d04"
+  },
+  {
+    "club": "Seattle Sounders FC",
+    "fixture_id": "catalog-seattle",
+    "provider_id": "9726",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/9726.png",
+    "filename": "mock-crest-catalog-seattle.png",
+    "sha256": "2d44906cfcc797aefdc9010ac7d6b1438e54c72c12723384530d4378fc4578b4"
+  },
+  {
+    "club": "Inter Miami CF",
+    "fixture_id": "catalog-miami",
+    "provider_id": "20232",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/20232.png",
+    "filename": "mock-crest-catalog-miami.png",
+    "sha256": "a1ea4f53629ee3849d72d928d4c54dadb1c3e4e57dc842aba4dbba59c08d12f4"
+  }
+]

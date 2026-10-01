@@ -1,0 +1,108 @@
+{
+  "valid": true,
+  "display": "iphone-6.9",
+  "specifications_checked": "2026-09-30",
+  "folder": "/Users/keithbarney/Documents/Github/sports-calendar-sync/screenshots/iphone/light",
+  "errors": [],
+  "images": [
+    {
+      "file": "1-iphone-light-following.png",
+      "bytes": 437338,
+      "sha256": "4cf9cb9b6aee746018f482e206b203b99a5291c9c4801b4d01658ddd4a328d35",
+      "width": 1320,
+      "height": 2868,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "10-iphone-light-broadcasts.png",
+      "bytes": 432576,
+      "sha256": "c2f1f79eb8b6aba0d520ddbb4e63f476c1fd4ec7853a2cd43376563a5aaedc6e",
+      "width": 1320,
+      "height": 2868,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "11-iphone-light-calendar.png",
+      "bytes": 305017,
+      "sha256": "0b217fb8f19ccb814f35f6425ebd0ed4976b217b8ff37f19661b68553b9b7fd4",
+      "width": 1320,
+      "height": 2868,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "2-iphone-light-team-detail.png",
+      "bytes": 369725,
+      "sha256": "702a0116502de14b0ff84c741653d275da92bbc4620d0675366373a0fcaedb71",
+      "width": 1320,
+      "height": 2868,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "7-iphone-light-reminder.png",
+      "bytes": 169570,
+      "sha256": "13909650df2125752c1d4bb1eca69a04808b0664d3b2acbe724dc2d48f6242a1",
+      "width": 1320,
+      "height": 2868,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    },
+    {
+      "file": "8-iphone-light-appearance.png",
+      "bytes": 584975,
+      "sha256": "c06adc66d0db1611655fed12f2fe6fd14610c46e8f9c4e8bd51fd248a3686123",
+      "width": 1320,
+      "height": 2868,
+      "format": "PNG",
+      "mode": "RGB",
+      "errors": []
+    }
+  ],
+  "validatedAt": "2026-09-30T23:32:51.417231+00:00",
+  "requestedCombination": "iphone/light",
+  "visualReview": {
+    "passed": true,
+    "reviewedAt": "2026-09-30T23:32:51.322819+00:00",
+    "checks": [
+      "All six benefits present per variant",
+      "Native device and actual Light/Dark appearance",
+      "Fictional fixtures and bundled club artwork",
+      "No private data, review controls, permissions, or helper breadcrumbs",
+      "Headlines fit and originals legible at native dimensions"
+    ],
+    "hashes": {
+      "ipad/dark/1-ipad-dark-following.png": "b1fbf9f530a1b44431b6165a552e21242c9ea2ab7add52ba849d0f2b974e1e09",
+      "ipad/dark/10-ipad-dark-broadcasts.png": "2b3e3e41d2eea15739b888ac5df5dca672f4a33596b0703b17b49c5f6b1d7a28",
+      "ipad/dark/11-ipad-dark-calendar.png": "6c37ff713ab5959e2b781dcd765c8eeabe1f50d64d461fab27df3eaea07ae121",
+      "ipad/dark/2-ipad-dark-team-detail.png": "6ec04613bb766e25d73d4d3ac89ecf1fbbc49b4d5b79f3896d671b0452268d84",
+      "ipad/dark/7-ipad-dark-reminder.png": "a5e654904c5367d77aa59dfcc5e104f248e557b744d66b9e7c4f15837e7c34df",
+      "ipad/dark/8-ipad-dark-appearance.png": "a23be7efd5ae046dac2a9537d8cdc479b6c9db19b0794e8171334db0f29833fd",
+      "ipad/light/1-ipad-light-following.png": "240c6e5c15213749fcc8ac723885439db9d4c3ca240da86d70e70a3bcf27878c",
+      "ipad/light/10-ipad-light-broadcasts.png": "37f783f21f21cd125a0ba97ba4fc5ff9ad52e07cf42ba12b695281231bd1ad42",
+      "ipad/light/11-ipad-light-calendar.png": "f8713d6188796ca03b7a2397be5bebfec02f6de06f23e64c2fc3bde3e95df276",
+      "ipad/light/2-ipad-light-team-detail.png": "4454e742815365f8a693334d3de1e372d7173b15c1a192a9320d4535b681bcbc",
+      "ipad/light/7-ipad-light-reminder.png": "5e56dccb10b4f8c17e46c663212a80df3a4b9fbd22722fb735bc38e3101f8cf4",
+      "ipad/light/8-ipad-light-appearance.png": "a23be7efd5ae046dac2a9537d8cdc479b6c9db19b0794e8171334db0f29833fd",
+      "iphone/dark/1-iphone-dark-following.png": "014cf025da3b6694341423f1e3ec7f8133294954360c5ca118f557c9a14aa8f1",
+      "iphone/dark/10-iphone-dark-broadcasts.png": "4ac5a43f01c669bca3fe8f6d14cf9d8870b79858da7ef2a5a1adba1f0659e632",
+      "iphone/dark/11-iphone-dark-calendar.png": "25c742ac695ef5a9b7a90fa639d200cdb2087255f3733b221655608c5a50daf7",
+      "iphone/dark/2-iphone-dark-team-detail.png": "a35459649ea1a1cb65c987dee7e707e6fde5e4f297fcfe98dce138a19dbfa118",
+      "iphone/dark/7-iphone-dark-reminder.png": "65e5e4bfd673c75aa0440d6d5692137e30dde840abcc24b38d344b8c74b0a158",
+      "iphone/dark/8-iphone-dark-appearance.png": "c06adc66d0db1611655fed12f2fe6fd14610c46e8f9c4e8bd51fd248a3686123",
+      "iphone/light/1-iphone-light-following.png": "4cf9cb9b6aee746018f482e206b203b99a5291c9c4801b4d01658ddd4a328d35",
+      "iphone/light/10-iphone-light-broadcasts.png": "c2f1f79eb8b6aba0d520ddbb4e63f476c1fd4ec7853a2cd43376563a5aaedc6e",
+      "iphone/light/11-iphone-light-calendar.png": "0b217fb8f19ccb814f35f6425ebd0ed4976b217b8ff37f19661b68553b9b7fd4",
+      "iphone/light/2-iphone-light-team-detail.png": "702a0116502de14b0ff84c741653d275da92bbc4620d0675366373a0fcaedb71",
+      "iphone/light/7-iphone-light-reminder.png": "13909650df2125752c1d4bb1eca69a04808b0664d3b2acbe724dc2d48f6242a1",
+      "iphone/light/8-iphone-light-appearance.png": "c06adc66d0db1611655fed12f2fe6fd14610c46e8f9c4e8bd51fd248a3686123"
+    }
+  }
+}

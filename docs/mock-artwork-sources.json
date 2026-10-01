@@ -1,0 +1,50 @@
+[
+  {
+    "club": "Manchester United",
+    "provider_id": "360",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/360.png",
+    "filename": "mock-crest-screenshot-united.png",
+    "sha256": "03486cf5cf90d580d6132ab115cc747be7b2e3519fd6e08be56675cf5897f0b7"
+  },
+  {
+    "club": "Real Madrid",
+    "provider_id": "86",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/86.png",
+    "filename": "mock-crest-screenshot-real-madrid.png",
+    "sha256": "acdcaaf2c60c3cc65a270dac1bd59f3a2b52911b8c45510d4e7f86d47ed714ba"
+  },
+  {
+    "club": "Bayern Munich",
+    "provider_id": "132",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/132.png",
+    "filename": "mock-crest-screenshot-bayern.png",
+    "sha256": "97d9c68c3fbc44834e836b6b82afab725e450d0a7c5f5d6a328f4888297511ed"
+  },
+  {
+    "club": "Juventus",
+    "provider_id": "111",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/111.png",
+    "filename": "mock-crest-screenshot-juventus.png",
+    "sha256": "6c190f73f8913b8d0c040e5773c377517a2e1e2e76b8145c87d73c3d2a9a87d3"
+  },
+  {
+    "club": "Paris Saint-Germain",
+    "provider_id": "160",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/160.png",
+    "filename": "mock-crest-screenshot-psg.png",
+    "sha256": "d3c4321f76c2475d10dd76757e623367ab7549a9a55cdee7ced09cf6327d4f5b"
+  },
+  {
+    "club": "LAFC",
+    "provider_id": "18966",
+    "endpoint": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams?limit=1000",
+    "url": "https://a.espncdn.com/i/teamlogos/soccer/500/18966.png",
+    "filename": "mock-crest-screenshot-lafc.png",
+    "sha256": "1433adb2ec11c30bbcd306fce3674f2d253372ae2fd4492e210b222d7d24439f"
+  }
+]
